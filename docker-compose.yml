@@ -1,0 +1,17 @@
+version: "3"
+services:
+  server:
+    build: ./api
+    ports:
+      - "8080:3000"
+
+  client_web:
+    build: ./area
+    depends_on:
+      server:
+        condition: service_started
+    ports:
+      - "8081:3000"
+
+volumes:
+  common_volume:
