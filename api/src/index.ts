@@ -1,14 +1,23 @@
 require('dotenv').config();
 import { Express } from 'express';
+import session from 'express-session';
+import bodyParser from 'body-parser';
+import dbConnect from './database/db';
 
 const app: Express = require('express')();
 const port: number = 3000;
-const bodyParser = require('body-parser');
 const pjson = require('../package.json');
-import dbConnect from './database/db';
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || 'default_secret',
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -22,11 +31,12 @@ app.use(function (req, res, next) {
 });
 
 require('./routes/auth/auth')(app);
+require('./routes/twitch/twitch')(app);
 
 dbConnect.then(() => {
     app.listen(port, () => {
         console.log(
-            `${pjson.name} listen on port ${port} - version ${pjson.version}`
+            `${pjson.name} listening on port ${port} - version ${pjson.version}`
         );
     });
 });
