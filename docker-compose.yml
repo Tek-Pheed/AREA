@@ -18,10 +18,10 @@ services:
             server:
                 condition: service_started
         ports:
-            - 4201:4200
+            - 8081:4200
         volumes:
             - common_volume:/usr/data
-        network_mode: "host"
+        #network_mode: "host"
 
 volumes:
     common_volume:
