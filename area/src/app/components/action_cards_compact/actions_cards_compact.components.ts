@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-actions-cards-compact',
@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['actions_cards_compact.components.scss'],
 })
 export class ActionsCardsCompactComponent {
+
+  @Input() action_name: string = "";
 
   constructor() {}
 
