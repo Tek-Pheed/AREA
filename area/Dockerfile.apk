@@ -40,12 +40,18 @@ RUN ionic capacitor build android
 
 # Step 11: Build the Android project using Gradle
 WORKDIR /app/android
-RUN ./gradlew assembleRelease
+#RUN ./gradlew assembleRelease
 
 # Step 12: Expose APK build path (Optional, to check the build)
-RUN mkdir /output
-RUN cp /app/android/app/build/outputs/apk/release/app-release-unsigned.apk /output/
+#RUN mkdir /output
+#RUN cp /app/android/app/build/outputs/apk/release/app-release-unsigned.apk /output/
 
+COPY android_build.sh /app/android_build.sh
+
+USER root
+RUN mkdir /output
 
 # APK output path
 VOLUME /output
+
+CMD [ "bash", "/app/android_build.sh" ]

@@ -1,5 +1,6 @@
 FROM node:20-alpine
-VOLUME ["/usr/data"]
+USER root
+VOLUME /output
 WORKDIR /usr/src/app
 COPY . /usr/src/app/
 RUN npm i

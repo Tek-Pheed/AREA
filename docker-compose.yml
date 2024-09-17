@@ -1,3 +1,6 @@
+volumes:
+  common_volume:
+
 services:
     #webservice:
     #  build: ./ws
@@ -7,6 +10,8 @@ services:
         build:
             context: ./area
             dockerfile: Dockerfile.apk
+        volumes:
+          - common_volume:/output
 
     server:
         build: ./api
@@ -24,8 +29,5 @@ services:
         ports:
             - 8081:4200
         volumes:
-            - common_volume:/usr/data
-        #network_mode: "host"
+            - common_volume:/output
 
-volumes:
-    common_volume:
