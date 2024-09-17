@@ -1,28 +1,27 @@
-version: "3"
 services:
+    #webservice:
+    #  build: ./ws
+    #  ports:
+    #    - "8082:3000"
 
-  #webservice:
-  #  build: ./ws
-  #  ports:
-  #    - "8082:3000"
+    server:
+        build: ./api
+        ports:
+            - 8080:3000
+        #depends_on:
+        #  webservice:
+        #    condition: service_started
 
-  server:
-    build: ./api
-    ports:
-      - 8080:3000
-    #depends_on:
-    #  webservice:
-    #    condition: service_started
-
-  client_web:
-    build: ./area
-    depends_on:
-      server:
-        condition: service_started
-    ports:
-      - 8081:4200
-    volumes:
-      - common_volume:/usr/data
+    client_web:
+        build: ./area
+        depends_on:
+            server:
+                condition: service_started
+        ports:
+            - 4201:4200
+        volumes:
+            - common_volume:/usr/data
+        network_mode: "host"
 
 volumes:
-  common_volume:
+    common_volume:
