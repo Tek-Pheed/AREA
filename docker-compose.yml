@@ -3,6 +3,10 @@ services:
     #  build: ./ws
     #  ports:
     #    - "8082:3000"
+    android:
+        build:
+            context: ./area
+            dockerfile: Dockerfile.apk
 
     server:
         build: ./api

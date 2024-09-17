@@ -1,0 +1,41 @@
+FROM ubuntu
+ 
+# Définir la version d'Android SDK et de Build Tools
+ENV ANDROID_SDK_VERSION="commandlinetools-linux-9477386_latest.zip"
+ENV SDK_TOOLS="9477386"
+ENV BUILD_TOOLS_VERSION="30.0.3"
+ENV TARGET_SDK_VERSION="30"
+ENV ANDROID_HOME="/opt/android-sdk"
+ENV PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+ 
+# Installer les dépendances nécessaires
+RUN apt-get update && apt-get install -y \
+    unzip \
+    wget \
+    git \
+    sdkmanager \
+    openjdk \
+&& apt-get clean
+ 
+# Télécharger et installer le SDK Android
+RUN mkdir -p $ANDROID_HOME/cmdline-tools && \
+    wget https://dl.google.com/android/repository/$ANDROID_SDK_VERSION -O /tmp/sdk.zip && \
+    unzip /tmp/sdk.zip -d $ANDROID_HOME/cmdline-tools && \
+    rm /tmp/sdk.zip && \
+    yes | sdkmanager --licenses
+ 
+# Mettre à jour les outils SDK et installer les build tools, plateforme Android, etc.
+RUN sdkmanager --sdk_root=$ANDROID_HOME \
+    "build-tools;$BUILD_TOOLS_VERSION" \
+    "platforms;android-$TARGET_SDK_VERSION" \
+    "platform-tools"
+ 
+# Copier le projet dans le conteneur
+WORKDIR /app
+COPY . /app
+ 
+# Exécuter la compilation du projet avec Gradle
+RUN ./gradlew assembleDebug
+ 
+# Indiquer la commande par défaut (au besoin)
+CMD ["./gradlew", "assembleDebug"]
