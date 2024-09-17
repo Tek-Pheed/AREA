@@ -1,6 +1,6 @@
-<div class="card-container">
+<div class="card-container" [style]="'background-color:'+background_color">
     <div class="top-row">
-        <img class="circle-image" src="https://img.freepik.com/vecteurs-premium/logo-youtube-rouge-logo-medias-sociaux_197792-1803.jpg" alt="Profile Image">
+        <img class="circle-image" [src]="image" alt="image_action_card" />
         <h2 class="card-title">{{ title }}</h2>
     </div>
     <p class="card-description">{{ description }}</p>
