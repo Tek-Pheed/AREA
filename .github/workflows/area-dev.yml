@@ -67,3 +67,25 @@ jobs:
         run: |
           cd area/ios/App
           xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'App' -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' -allowProvisioningUpdates DEVELOPMENT_TEAM=${{ secrets.SIGNING_TEAM_ID }}
+  open_pr:
+    needs:
+      - ios_compile_test
+      - test_docker_compose
+      - web_compile_test
+    name: Create pull request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: 'MERGE: dev to master'
+          base: master
+          branch: dev
