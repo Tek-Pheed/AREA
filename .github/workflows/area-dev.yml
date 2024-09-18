@@ -29,10 +29,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Install ionic and angular
+        run: |
+          npm i -g @ionic/cli
+          npm i -g @angular/cli
       - name: Install npm dependencies
         run: |
           cd area
           npm i
-          ionic capacitor build ios
+      - name: Export app on ios
+        run: ionic capacitor build ios
       - name: Build app
         run: xcodebuild clean build -project 'area.xcodeproj' -scheme 'area' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest'
