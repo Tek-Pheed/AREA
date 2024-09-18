@@ -10,7 +10,7 @@ on:
 
 jobs:
   test_docker_compose:
-    name: Docker compose (test)
+    name: Docker compose
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -41,6 +41,39 @@ jobs:
         run: |
           cd area/
           npm run build
+  android_compile_test:
+    name: Mobile (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+      - name: Install ionic and angular
+        run: |
+          npm i -g @ionic/cli
+          npm i -g @angular/cli
+      - name: Install npm dependencies
+        run: |
+          cd area
+          npm i
+      - name: Build website
+        run: |
+          cd area/
+          npm run build
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: |
+          cd area/android/
+          ./gradlew assembleDebug
   ios_compile_test:
     name: Mobile (IOS)
     runs-on: macos-latest
@@ -67,13 +100,36 @@ jobs:
         run: |
           cd area/ios/App
           xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'App' -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' -allowProvisioningUpdates DEVELOPMENT_TEAM=${{ secrets.SIGNING_TEAM_ID }}
-  open_pr:
+  run_test:
+    name: Angular (test)
+    runs-on: ubuntu-latest
     needs:
-      - ios_compile_test
-      - test_docker_compose
       - web_compile_test
+      - ios_compile_test
+      - android_compile_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install ionic and angular
+        run: |
+          npm i -g @ionic/cli
+          npm i -g @angular/cli
+      - name: Install npm dependencies
+        run: |
+          cd area
+          npm i
+      - name: Launch test
+        run: |
+          cd area/
+          npm run test
+  open_pr:
     name: Create pull request
     runs-on: ubuntu-latest
+    needs: run_test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
