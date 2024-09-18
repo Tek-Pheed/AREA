@@ -2,16 +2,8 @@ name: Build - all services
 
 on:
   push:
-    branches-ignore:
-      - 'ga-ignore-*'
-  pull_request:
-    branches-ignore:
-      - 'ga-ignore-*'
-
-permissions:
-  contents: write
-  pull-requests: write
-
+    branches:
+      - dev
 
 jobs:
   web_compile_test:
@@ -115,19 +107,3 @@ jobs:
         run: |
           cd api/
           npm run build
-  open_pr:
-    name: Create pull request
-    runs-on: ubuntu-latest
-    needs:
-      - web_compile_test
-      - ios_compile_test
-      - android_compile_test
-      - api_compile_test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'MERGE: dev to master'

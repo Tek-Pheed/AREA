@@ -2,11 +2,8 @@ name: Docker - testing docker compose
 
 on:
   push:
-    branches-ignore:
-      - 'ga-ignore-*'
-  pull_request:
-    branches-ignore:
-      - 'ga-ignore-*'
+    branches:
+      - dev
 
 jobs:
   test_docker_compose:
