@@ -66,12 +66,14 @@ jobs:
         run: |
           cd area
           npm i
-      - name: Build website
+      - name: Export app on android
         run: |
           cd area/
-          npm run build
+          ionic capacitor build android
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: |
+          cd area/android/
+          chmod +x gradlew
       - name: Build with Gradle
         run: |
           cd area/android/
