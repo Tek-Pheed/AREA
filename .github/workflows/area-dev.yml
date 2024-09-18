@@ -1,0 +1,19 @@
+name: AREA Development
+
+on:
+  push:
+    branches-ignore:
+      - 'ga-ignore-*'
+  pull_request:
+    branches-ignore:
+      - 'ga-ignore-*'
+
+jobs:
+  test_docker_compose:
+    name: Docker compose (test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compile and run docker compose
+        run: docker-compose up
