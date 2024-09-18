@@ -66,4 +66,4 @@ jobs:
       - name: Xcode build
         run: |
           cd area/ios/App
-          xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'App' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' -allowProvisioningUpdates -signingTeam ${{ secrets.SIGNING_TEAM_ID }}
+          xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'App' -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' -allowProvisioningUpdates DEVELOPMENT_TEAM=${{ secrets.SIGNING_TEAM_ID }}
