@@ -19,6 +19,28 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.yml"
+  web_compile_test:
+    name: Website (Angular)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install ionic and angular
+        run: |
+          npm i -g @ionic/cli
+          npm i -g @angular/cli
+      - name: Install npm dependencies
+        run: |
+          cd area
+          npm i
+      - name: Export app on ios
+        run: |
+          cd area/
+          npm run build
   ios_compile_test:
     name: Mobile (IOS)
     runs-on: macos-latest
@@ -41,5 +63,7 @@ jobs:
         run: |
           cd area/
           ionic capacitor build ios
-      - name: Build app
-        run: xcodebuild clean build -project 'area.xcodeproj' -scheme 'area' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest'
+      - name: Xcode build
+        run: |
+          cd area/ios/App
+          xcodebuild clean build -project 'App.xcworkspace' -scheme 'area' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest'
