@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { Request, Response, NextFunction, Express } from 'express';
 import * as querystring from 'querystring';
+import { ensureAuthenticated } from '../../middlewares/oauth';
 
-// Environment variables for Twitch
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
 const TWITCH_OAUTH_SCOPE = 'user:read:email';
 
-// Function to get OAuth token from Twitch
 async function getOAuthToken(code: string): Promise<string> {
     const response = await axios.post(
         'https://id.twitch.tv/oauth2/token',
@@ -64,7 +63,6 @@ export function redirectToTwitch(req: Request, res: Response) {
     res.redirect(twitchAuthUrl);
 }
 
-// Handle the Twitch callback
 export async function handleTwitchCallback(
     req: Request,
     res: Response,
@@ -79,7 +77,6 @@ export async function handleTwitchCallback(
         const token = await getOAuthToken(code);
         const userInfo = await getUserInfo(token);
 
-        // Store token and user info in session
         req.session.twitchToken = token;
         req.session.userInfo = userInfo;
 
@@ -88,18 +85,6 @@ export async function handleTwitchCallback(
         next(error);
     }
     return;
-}
-
-// Middleware to ensure user is authenticated
-export function ensureAuthenticated(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    if (!req.session || !req.session.twitchToken) {
-        return res.redirect('/auth/twitch');
-    }
-    next();
 }
 
 module.exports = (app: Express) => {
