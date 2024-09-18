@@ -66,4 +66,4 @@ jobs:
       - name: Xcode build
         run: |
           cd area/ios/App
-          xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'area' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest'
+          xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'App' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest'
