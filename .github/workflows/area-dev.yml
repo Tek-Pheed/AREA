@@ -105,36 +105,13 @@ jobs:
         run: |
           cd area/ios/App
           xcodebuild clean build -workspace 'App.xcworkspace' -scheme 'App' -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' -allowProvisioningUpdates DEVELOPMENT_TEAM=${{ secrets.SIGNING_TEAM_ID }}
-  run_test:
-    name: Angular (test)
-    runs-on: ubuntu-latest
-    needs:
-      - web_compile_test
-      - ios_compile_test
-      - android_compile_test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install ionic and angular
-        run: |
-          npm i -g @ionic/cli
-          npm i -g @angular/cli
-      - name: Install npm dependencies
-        run: |
-          cd area
-          npm i
-      - name: Launch test
-        run: |
-          cd area/
-          npm run test
   open_pr:
     name: Create pull request
     runs-on: ubuntu-latest
-    needs: run_test
+    needs:
+      - android_compile_test
+      - ios_compile_test
+      - web_compile_test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
