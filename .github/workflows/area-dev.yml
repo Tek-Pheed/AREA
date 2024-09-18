@@ -38,6 +38,8 @@ jobs:
           cd area
           npm i
       - name: Export app on ios
-        run: ionic capacitor build ios
+        run: |
+          cd area/
+          ionic capacitor build ios
       - name: Build app
         run: xcodebuild clean build -project 'area.xcodeproj' -scheme 'area' -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest'
