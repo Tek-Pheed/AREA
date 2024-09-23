@@ -1,4 +1,23 @@
-<div>
-    <app-navbar></app-navbar>
-    <p>test</p>
+<app-navbar></app-navbar>
+<div class="content">
+    <div class="leftSide">
+        <div class="topProfile">
+            <img src="assets/samy.jpeg" class="profileImg">
+            <div>
+                <h1>Samy Nasset</h1>
+                <h4>itachi84</h4>
+            </div>
+        </div>
+        <div class="inputBlock">
+            <input value="Samy Nasset" placeholder="Name" type="text">
+            <input value="Samy Nasset" placeholder="Email" type="email">
+            <input value="Samy Nasset" placeholder="Password" type="password">
+        </div>
+        <div class="bottomBlock">
+            <button>Apply Changes</button>
+        </div>
+    </div>
+    <div class="rightSide">
+        <app-connection-card></app-connection-card>
+    </div>
 </div>
