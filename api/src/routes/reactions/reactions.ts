@@ -1,10 +1,11 @@
 import { Request, Response, Router } from 'express';
 import API from '../../middlewares/api';
 import { getAllReactions } from './reactions.query';
+import { auth } from '../../middlewares/auth';
 
 export const reactionRouter = Router();
 
-reactionRouter.get('/', async (req: Request, res: Response) => {
+reactionRouter.get('/', auth, async (req: Request, res: Response) => {
     res.header('Content-Type', 'application/json');
     const data = await getAllReactions();
     if (data !== null) {
