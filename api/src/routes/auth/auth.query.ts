@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { IUsers } from '../../utils/data.model';
-const { db } = require('../../database/db');
+import { db } from '../../database/db';
 
 export async function login(email: string, password: string): Promise<boolean> {
     if (!email || !password) {
@@ -8,7 +8,7 @@ export async function login(email: string, password: string): Promise<boolean> {
     }
 
     try {
-        const result = await db
+        const result: any = await db
             .promise()
             .query('SELECT * FROM users WHERE email=?', email);
 
