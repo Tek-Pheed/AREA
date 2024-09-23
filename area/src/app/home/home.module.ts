@@ -16,6 +16,6 @@ import { DashboardCardsComponent } from '../components/dashboard_cards/dashboard
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, ActionsCardsComponent, DashboardCardsComponent]
+  declarations: [HomePage, DashboardCardsComponent]
 })
 export class HomePageModule {}

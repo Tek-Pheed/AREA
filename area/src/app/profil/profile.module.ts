@@ -12,8 +12,8 @@ import { AppConnectedCardComponent } from '../components/application_connection/
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule
+    ProfilePageRoutingModule,
   ],
-  declarations: [ProfilePage, NavbarComponent, AppConnectedCardComponent]
+  declarations: [ProfilePage, AppConnectedCardComponent]
 })
 export class ProfilePageModule {}
