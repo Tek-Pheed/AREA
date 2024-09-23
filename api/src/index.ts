@@ -48,7 +48,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/actions', actionsRouter);
 app.use('/api/reactions', reactionRouter);
 
-require('./routes/twitch/twitch')(app);
 require('./routes/twitch/twitch')(app, passport);
 require('./routes/spotify/spotify')(app, passport);
 require('./routes/discord/discord')(app, passport);
