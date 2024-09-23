@@ -13,7 +13,6 @@
 .login-container {
     width: 30%;
     height: 35%;
-    // padding: 40px;
     border-radius: 8px;
     text-align: center;
 }
@@ -59,10 +58,10 @@ button {
 }
 
 hr {
-    width: 150%; /* La ligne dépasse la largeur du conteneur */
+    width: 150%;
     height: 1px;
     background-color: black;
     border: none;
     margin-top: 30px;
-    margin-left: -25%; /* Centrer la ligne en décalant */
+    margin-left: -25%;
 }
