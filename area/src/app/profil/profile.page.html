@@ -18,8 +18,7 @@
         </div>
     </div>
     <div class="rightSide">
-        <app-connection-card class="serviceCard"
-        app_name="Instagram" app_icon="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png"></app-connection-card>
-        <app-connection-card class="serviceCard" app_name="Discord" app_icon="https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png"></app-connection-card>
+        <app-connection-card *ngFor="let s of servicesData" class="serviceCard"
+        app_name="{{s.Name}}" app_icon="{{s.ImgSrc}}" [connected]=s.Connected></app-connection-card>
     </div>
 </div>
