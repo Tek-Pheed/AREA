@@ -1,0 +1,24 @@
+<app-navbar></app-navbar>
+<div class="content">
+    <div class="leftSide">
+        <div class="topProfile">
+            <img src="{{data.ImgSrc}}" class="profileImg">
+            <div>
+                <h1>{{data.Name}}</h1>
+                <h4>{{data.Tag}}</h4>
+            </div>
+        </div>
+        <div class="inputBlock">
+            <input value="{{data.Name}}" placeholder="Name" type="text">
+            <input value="{{data.Email}}" placeholder="Email" type="email">
+            <input placeholder="Password" type="password">
+        </div>
+        <div class="bottomBlock">
+            <button>Apply Changes</button>
+        </div>
+    </div>
+    <div class="rightSide">
+        <app-connection-card *ngFor="let s of servicesData" class="serviceCard"
+        app_name="{{s.Name}}" app_icon="{{s.ImgSrc}}" [connected]=s.Connected></app-connection-card>
+    </div>
+</div>

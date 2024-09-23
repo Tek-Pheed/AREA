@@ -10,11 +10,14 @@ import { authRouter } from './routes/auth/auth';
 import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 
+const LocalStrategy = require('passport-local');
 const app: Express = require('express')();
 const port: number = 3000;
 const pjson = require('../package.json');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerOutput = require('../swagger_output.json');
+const passport: any = require('passport');
+require('https').globalAgent.options.rejectUnauthorized = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,6 +29,9 @@ app.use(
         saveUninitialized: true,
     })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -43,6 +49,9 @@ app.use('/api/actions', actionsRouter);
 app.use('/api/reactions', reactionRouter);
 
 require('./routes/twitch/twitch')(app);
+require('./routes/twitch/twitch')(app, passport);
+require('./routes/spotify/spotify')(app, passport);
+require('./routes/discord/discord')(app, passport);
 
 app.use(
     '/docs',
