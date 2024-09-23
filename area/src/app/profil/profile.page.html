@@ -2,16 +2,16 @@
 <div class="content">
     <div class="leftSide">
         <div class="topProfile">
-            <img src="assets/samy.jpeg" class="profileImg">
+            <img src="{{data.ImgSrc}}" class="profileImg">
             <div>
-                <h1>Samy Nasset</h1>
-                <h4>itachi84</h4>
+                <h1>{{data.Name}}</h1>
+                <h4>{{data.Tag}}</h4>
             </div>
         </div>
         <div class="inputBlock">
-            <input value="Samy Nasset" placeholder="Name" type="text">
-            <input value="Samy Nasset" placeholder="Email" type="email">
-            <input value="Samy Nasset" placeholder="Password" type="password">
+            <input value="{{data.Name}}" placeholder="Name" type="text">
+            <input value="{{data.Email}}" placeholder="Email" type="email">
+            <input placeholder="Password" type="password">
         </div>
         <div class="bottomBlock">
             <button>Apply Changes</button>
