@@ -25,7 +25,6 @@
     }
 
     .connect-btn {
-        background-color: #1db954;
         color: white;
         border: none;
         border-radius: 13px;
@@ -36,5 +35,13 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+    }
+
+    .red {
+        background-color: red;
+    }
+
+    .green {
+        background-color: green;
     }
 }
