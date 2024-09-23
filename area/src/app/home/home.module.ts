@@ -7,6 +7,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { ActionsCardsComponent } from '../components/action_cards/actions_cards.components';
 import { DashboardCardsComponent } from '../components/dashboard_cards/dashboard_cards.components';
+import { NavbarComponent } from '../components/navbar/navbar.components';
 
 
 @NgModule({
@@ -16,6 +17,6 @@ import { DashboardCardsComponent } from '../components/dashboard_cards/dashboard
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, ActionsCardsComponent, DashboardCardsComponent]
+  declarations: [HomePage, ActionsCardsComponent, DashboardCardsComponent, NavbarComponent]
 })
 export class HomePageModule {}
