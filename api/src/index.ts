@@ -39,6 +39,7 @@ app.use(function (req, res, next) {
 require('./routes/auth/auth')(app);
 require('./routes/twitch/twitch')(app, passport);
 require('./routes/spotify/spotify')(app, passport);
+require('./routes/discord/discord')(app, passport);
 require('./routes/actions/actions')(app);
 require('./routes/reactions/reactions')(app);
 
