@@ -2,7 +2,6 @@ import { Request, Response, NextFunction, Express } from 'express';
 import { isAuthenticatedSpotify } from '../../middlewares/oauth';
 const axios = require('axios');
 const session = require('express-session');
-const OAuth2Strategy = require('passport-oauth2').Strategy;
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
@@ -53,7 +52,7 @@ async function refreshSpotifyToken(refreshToken: string): Promise<string> {
 module.exports = (app: Express, passport: any) => {
     app.use(
         session({
-            secret: 'your_secret_key', // Set a secure key here
+            secret: process.env.SESSION_SECRET || 'default_secret',
             resave: false,
             saveUninitialized: true,
         })
@@ -69,13 +68,17 @@ module.exports = (app: Express, passport: any) => {
                 scope: SPOTIFY_SCOPES,
             },
             function (
-                accessToken: string,
-                refreshToken: string,
+                accessTokenSpotify: string,
+                refreshTokenSpotify: string,
                 expires_in: any,
-                profile: any,
+                profileSpotify: any,
                 done: any
             ) {
-                const user = { profile, accessToken, refreshToken };
+                const user = {
+                    profileSpotify,
+                    accessTokenSpotify,
+                    refreshTokenSpotify,
+                };
                 done(null, user);
             }
         )
@@ -95,8 +98,7 @@ module.exports = (app: Express, passport: any) => {
     app.get(
         '/auth/spotify/callback',
         passport.authenticate('spotify', { failureRedirect: '/auth/spotify' }),
-        function (req: any, res: Response) {
-            // User is authenticated at this point
+        (req: any, res: Response) => {
             res.redirect('/api/get_current_song');
         }
     );
@@ -105,21 +107,24 @@ module.exports = (app: Express, passport: any) => {
         '/api/get_current_song',
         isAuthenticatedSpotify,
         async (req: any, res: Response) => {
+            if (!req.user || !req.user.accessTokenSpotify) {
+                return res.redirect('/auth/spotify');
+            }
             try {
-                let accessToken = req.user.accessToken;
-                const refreshToken = req.user.refreshToken;
-                let live = await getCurrentSong(accessToken);
+                let accessToken = req.user.accessTokenSpotify;
+                const refreshToken = req.user.refreshTokenSpotify;
+                let currentSong = await getCurrentSong(accessToken);
 
-                if (!live && refreshToken) {
+                if (!currentSong && refreshToken) {
                     accessToken = await refreshSpotifyToken(refreshToken);
-                    req.user.accessToken = accessToken;
-                    live = await getCurrentSong(accessToken);
+                    req.user.accessTokenSpotify = accessToken;
+                    currentSong = await getCurrentSong(accessToken);
                 }
 
-                return res.json({ live });
+                return res.json({ currentSong });
             } catch (error) {
                 console.error('Error fetching current song', error);
-                return res.status(500).send('Error checking live status');
+                return res.status(500).send('Error checking current song');
             }
         }
     );

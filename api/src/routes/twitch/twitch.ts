@@ -1,31 +1,53 @@
 import { Request, Response, NextFunction, Express } from 'express';
 import { Passport } from 'passport';
+import { isAuthenticatedTwitch } from '../../middlewares/oauth';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
+const session = require('express-session');
 
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
-const TWITCH_OAUTH_SCOPE = 'user:read:email';
+const TWITCH_OAUTH_SCOPE = 'user:read:follows';
 
-export async function isUserLive(
-    userName: string,
-    token: string
-): Promise<boolean> {
-    const response = await axios.get('https://api.twitch.tv/helix/streams', {
+export async function getUserId(token: string): Promise<string> {
+    const resp = await axios.get('https://api.twitch.tv/helix/users/', {
         headers: {
             'Client-ID': TWITCH_CLIENT_ID,
             Authorization: `Bearer ${token}`,
         },
-        params: {
-            user_login: userName,
-        },
     });
-    return response.data.data.length > 0;
+    return resp.data.data[0].id || null;
+}
+
+export async function getFollowedStreams(token: string): Promise<any> {
+    const id = await getUserId(token);
+    if (id === null) return null;
+    const response = await axios.get(
+        `https://api.twitch.tv/helix/streams/followed?user_id=${id}`,
+        {
+            headers: {
+                'Client-ID': TWITCH_CLIENT_ID,
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+    if (!response.data) {
+        return null;
+    }
+    return response.data || null;
 }
 
 module.exports = (app: Express, passport: any) => {
+    app.use(
+        session({
+            secret: process.env.SESSION_SECRET || 'default_secret',
+            resave: false,
+            saveUninitialized: true,
+        })
+    );
+
     passport.use(
         'twitch',
         new OAuth2Strategy(
@@ -35,15 +57,21 @@ module.exports = (app: Express, passport: any) => {
                 clientID: TWITCH_CLIENT_ID,
                 clientSecret: TWITCH_CLIENT_SECRET,
                 callbackURL: TWITCH_REDIRECT_URI,
+                state: true,
                 scope: TWITCH_OAUTH_SCOPE,
             },
             function (
-                accessToken: string,
-                refreshToken: string,
-                profile: any,
+                accessTokenTwitch: string,
+                refreshTokenTwitch: string,
+                profileTwitch: any,
                 done: any
             ) {
-                done(null, { accessToken });
+                const user = {
+                    profileTwitch,
+                    accessTokenTwitch,
+                    refreshTokenTwitch,
+                };
+                done(null, user);
             }
         )
     );
@@ -52,31 +80,39 @@ module.exports = (app: Express, passport: any) => {
         done(null, user);
     });
 
-    passport.deserializeUser((user: any, done: any) => {
-        done(null, user);
+    passport.deserializeUser((obj: any, done: any) => {
+        done(null, obj);
     });
 
-    app.get('/auth/twitch', passport.authenticate('twitch'));
+    app.get(
+        '/auth/twitch',
+        passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE })
+    );
 
     app.get(
         '/auth/twitch/callback',
-        passport.authenticate('twitch'),
+        passport.authenticate('twitch', { failureRedirect: '/auth/twitch' }),
         (req: any, res: Response) => {
-            req.session.twitchToken = req.user.accessToken;
+            res.redirect('/api/get_followings');
         }
     );
 
-    app.get('/api/check-kamet0-live', async (req: any, res: Response) => {
-        console.log('token ' + req.session.twitchToken);
-        if (!req.session.twitchToken) {
-            return res.redirect('/auth/twitch');
+    app.get(
+        '/api/get_followings',
+        isAuthenticatedTwitch,
+        async (req: any, res: Response) => {
+            if (!req.user || !req.user.accessTokenTwitch) {
+                return res.redirect('/auth/twitch');
+            }
+
+            try {
+                const token = req.user.accessTokenTwitch;
+                const live = await getFollowedStreams(token);
+                return res.json({ live });
+            } catch (error) {
+                console.error('Error getting followed streams', error);
+                return res.status(500).send('Error getting followed streams');
+            }
         }
-        try {
-            const token = req.session.twitchToken;
-            const live = await isUserLive('Kamet0', token);
-            return res.json({ live });
-        } catch (error) {
-            return res.status(500).send('Error checking live status');
-        }
-    });
+    );
 };
