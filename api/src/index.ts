@@ -32,6 +32,8 @@ app.use(function (req, res, next) {
 
 require('./routes/auth/auth')(app);
 require('./routes/twitch/twitch')(app);
+require('./routes/actions/actions')(app);
+require('./routes/reactions/reactions')(app);
 
 dbConnect.then(() => {
     app.listen(port, () => {
