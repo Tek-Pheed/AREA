@@ -39,6 +39,30 @@ export async function getFollowedStreams(token: string): Promise<any> {
     return response.data || null;
 }
 
+async function refreshTwitchToken(refreshToken: string): Promise<string> {
+    if (!TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET) {
+        throw new Error('Missing Twitch Client ID or Client Secret');
+    }
+
+    const response = await axios.post(
+        'https://id.twitch.tv/oauth2/token',
+        new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+            client_id: TWITCH_CLIENT_ID,
+            client_secret: TWITCH_CLIENT_SECRET,
+        }).toString(),
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        }
+    );
+
+    const newAccessToken = response.data.access_token;
+    return newAccessToken;
+}
+
 module.exports = (app: Express, passport: any) => {
     app.use(
         session({
@@ -106,9 +130,16 @@ module.exports = (app: Express, passport: any) => {
             }
 
             try {
-                const token = req.user.accessTokenTwitch;
-                const live = await getFollowedStreams(token);
-                return res.json({ live });
+                let accessToken = req.user.accessTokenTwitch;
+                const refreshToken = req.user.refreshTokenTwitch;
+                let followed = await getFollowedStreams(accessToken);
+
+                if (!followed && refreshToken) {
+                    accessToken = await refreshTwitchToken(refreshToken);
+                    req.user.accessTokenTwitch = accessToken;
+                    followed = await getFollowedStreams(accessToken);
+                }
+                return res.json({ followed });
             } catch (error) {
                 console.error('Error getting followed streams', error);
                 return res.status(500).send('Error getting followed streams');
