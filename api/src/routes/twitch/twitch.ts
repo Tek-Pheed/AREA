@@ -1,106 +1,149 @@
-import axios from 'axios';
 import { Request, Response, NextFunction, Express } from 'express';
-import * as querystring from 'querystring';
-import { ensureAuthenticated } from '../../middlewares/oauth';
+import { Passport } from 'passport';
+import { isAuthenticatedTwitch } from '../../middlewares/oauth';
+
+const OAuth2Strategy = require('passport-oauth2').Strategy;
+const axios = require('axios');
+const session = require('express-session');
 
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
-const TWITCH_OAUTH_SCOPE = 'user:read:email';
+const TWITCH_OAUTH_SCOPE = 'user:read:follows';
 
-async function getOAuthToken(code: string): Promise<string> {
-    const response = await axios.post(
-        'https://id.twitch.tv/oauth2/token',
-        null,
+export async function getUserId(token: string): Promise<string> {
+    const resp = await axios.get('https://api.twitch.tv/helix/users/', {
+        headers: {
+            'Client-ID': TWITCH_CLIENT_ID,
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return resp.data.data[0].id || null;
+}
+
+export async function getFollowedStreams(token: string): Promise<any> {
+    const id = await getUserId(token);
+    if (id === null) return null;
+    const response = await axios.get(
+        `https://api.twitch.tv/helix/streams/followed?user_id=${id}`,
         {
-            params: {
-                client_id: TWITCH_CLIENT_ID,
-                client_secret: TWITCH_CLIENT_SECRET,
-                code,
-                grant_type: 'authorization_code',
-                redirect_uri: TWITCH_REDIRECT_URI,
+            headers: {
+                'Client-ID': TWITCH_CLIENT_ID,
+                Authorization: `Bearer ${token}`,
             },
         }
     );
-    return response.data.access_token;
+    if (!response.data) {
+        return null;
+    }
+    return response.data || null;
 }
 
-async function getUserInfo(token: string) {
-    const response = await axios.get('https://api.twitch.tv/helix/users', {
-        headers: {
-            'Client-ID': TWITCH_CLIENT_ID,
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    return response.data.data[0];
-}
+async function refreshTwitchToken(refreshToken: string): Promise<string> {
+    if (!TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET) {
+        throw new Error('Missing Twitch Client ID or Client Secret');
+    }
 
-export async function isUserLive(
-    userName: string,
-    token: string
-): Promise<boolean> {
-    const response = await axios.get('https://api.twitch.tv/helix/streams', {
-        headers: {
-            'Client-ID': TWITCH_CLIENT_ID,
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            user_login: userName,
-        },
-    });
-    return response.data.data.length > 0;
-}
-
-export function redirectToTwitch(req: Request, res: Response) {
-    const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?${querystring.stringify(
-        {
+    const response = await axios.post(
+        'https://id.twitch.tv/oauth2/token',
+        new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
             client_id: TWITCH_CLIENT_ID,
-            redirect_uri: TWITCH_REDIRECT_URI,
-            response_type: 'code',
-            scope: TWITCH_OAUTH_SCOPE,
+            client_secret: TWITCH_CLIENT_SECRET,
+        }).toString(),
+        {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
         }
-    )}`;
-    res.redirect(twitchAuthUrl);
+    );
+
+    const newAccessToken = response.data.access_token;
+    return newAccessToken;
 }
 
-export async function handleTwitchCallback(
-    req: Request,
-    res: Response,
-    next: NextFunction
-) {
-    const { code } = req.query;
-    if (!code || typeof code !== 'string') {
-        return res.status(400).send('Invalid code');
-    }
+module.exports = (app: Express, passport: any) => {
+    app.use(
+        session({
+            secret: process.env.SESSION_SECRET || 'default_secret',
+            resave: false,
+            saveUninitialized: true,
+        })
+    );
 
-    try {
-        const token = await getOAuthToken(code);
-        const userInfo = await getUserInfo(token);
-
-        req.session.twitchToken = token;
-        req.session.userInfo = userInfo;
-
-        res.redirect('/api/check-kamet0-live');
-    } catch (error) {
-        next(error);
-    }
-    return;
-}
-
-module.exports = (app: Express) => {
-    app.get('/auth/twitch', redirectToTwitch);
-    app.get('/auth/twitch/callback', handleTwitchCallback);
-
-    app.get('/api/check-kamet0-live', ensureAuthenticated, async (req, res) => {
-        try {
-            const token = req.session?.twitchToken;
-            if (!token) {
-                return res.status(500).send('No token found');
+    passport.use(
+        'twitch',
+        new OAuth2Strategy(
+            {
+                authorizationURL: 'https://id.twitch.tv/oauth2/authorize',
+                tokenURL: 'https://id.twitch.tv/oauth2/token',
+                clientID: TWITCH_CLIENT_ID,
+                clientSecret: TWITCH_CLIENT_SECRET,
+                callbackURL: TWITCH_REDIRECT_URI,
+                state: true,
+                scope: TWITCH_OAUTH_SCOPE,
+            },
+            function (
+                accessTokenTwitch: string,
+                refreshTokenTwitch: string,
+                profileTwitch: any,
+                done: any
+            ) {
+                const user = {
+                    profileTwitch,
+                    accessTokenTwitch,
+                    refreshTokenTwitch,
+                };
+                done(null, user);
             }
-            const live = await isUserLive('Kamet0', token);
-            return res.json({ live });
-        } catch (error) {
-            return res.status(500).send('Error checking live status');
-        }
+        )
+    );
+
+    passport.serializeUser((user: any, done: any) => {
+        done(null, user);
     });
+
+    passport.deserializeUser((obj: any, done: any) => {
+        done(null, obj);
+    });
+
+    app.get(
+        '/auth/twitch',
+        passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE })
+    );
+
+    app.get(
+        '/auth/twitch/callback',
+        passport.authenticate('twitch', { failureRedirect: '/auth/twitch' }),
+        (req: any, res: Response) => {
+            res.redirect('/api/get_followings');
+        }
+    );
+
+    app.get(
+        '/api/get_followings',
+        isAuthenticatedTwitch,
+        async (req: any, res: Response) => {
+            if (!req.user || !req.user.accessTokenTwitch) {
+                return res.redirect('/auth/twitch');
+            }
+
+            try {
+                let accessToken = req.user.accessTokenTwitch;
+                const refreshToken = req.user.refreshTokenTwitch;
+                let followed = await getFollowedStreams(accessToken);
+
+                if (!followed && refreshToken) {
+                    accessToken = await refreshTwitchToken(refreshToken);
+                    req.user.accessTokenTwitch = accessToken;
+                    followed = await getFollowedStreams(accessToken);
+                }
+                return res.json({ followed });
+            } catch (error) {
+                console.error('Error getting followed streams', error);
+                return res.status(500).send('Error getting followed streams');
+            }
+        }
+    );
 };

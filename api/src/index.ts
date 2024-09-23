@@ -4,9 +4,12 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import dbConnect from './database/db';
 
+const LocalStrategy = require('passport-local');
 const app: Express = require('express')();
 const port: number = 3000;
 const pjson = require('../package.json');
+const passport: any = require('passport');
+require('https').globalAgent.options.rejectUnauthorized = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -18,6 +21,9 @@ app.use(
         saveUninitialized: true,
     })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,7 +37,8 @@ app.use(function (req, res, next) {
 });
 
 require('./routes/auth/auth')(app);
-require('./routes/twitch/twitch')(app);
+require('./routes/twitch/twitch')(app, passport);
+require('./routes/spotify/spotify')(app, passport);
 require('./routes/actions/actions')(app);
 require('./routes/reactions/reactions')(app);
 
