@@ -18,9 +18,9 @@ interface ActionReaction {
 export class IntegrationsPage {
     integrations: Integrations[] = [
         {
-            name: 'X',
+            name: 'Coinbase',
             iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdB-EbJVMxRYtNz1i4dn7jOVSfHq-002oe4w&s',
+            'https://seeklogo.com/images/C/coinbase-coin-logo-C86F46D7B8-seeklogo.com.png',
         },
         {
             name: 'Twitch',
@@ -30,7 +30,22 @@ export class IntegrationsPage {
         {
             name: 'Spotify',
             iconUrl:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/768px-Spotify_logo_without_text.svg.png',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRslcO84eWfXP_4Ucd4Yfz6B8uqJmHaTo0iTw&s',
+        },
+        {
+            name: 'Discord',
+            iconUrl:
+            'https://cdn.iconscout.com/icon/free/png-256/free-discord-logo-icon-download-in-svg-png-gif-file-formats--social-network-media-pack-logos-icons-3357697.png?f=webp&w=256',
+        },
+        {
+            name: 'Github',
+            iconUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Ex7v1n8Y3ahwni4F268cY8gUcV30yO5uCA&s',
+        },
+        {
+            name: 'Google Calandar',
+            iconUrl:
+            'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-03-512.png',
         },
     ];
 
