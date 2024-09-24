@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="chooseActionContent">
+<div class="chooseClass">
     <p>Choose a service</p>
     <div class="integrationList">
         <app-actions-cards-compact *ngFor="let i of integrations" action_name="{{i.name}}"
@@ -7,11 +7,11 @@
     </div>
 </div>
 
-<div class="chooseAction">
+<div class="chooseClass">
     <p>Choose an action</p>
-    <div class="integrationList">
-        <app-actions-cards title="Integration Name" description="Action description"
-            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdB-EbJVMxRYtNz1i4dn7jOVSfHq-002oe4w&s">
+    <div class="integrationListSmall">
+        <app-actions-cards *ngFor="let a of actions" title="{{a.apiName}}" description="{{a.description}}"
+            image={{getIconUrl(a.apiName)}}>
         </app-actions-cards>
     </div>
 </div>
