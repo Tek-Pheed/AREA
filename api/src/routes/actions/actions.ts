@@ -1,10 +1,11 @@
 import { Express, Request, Response, Router } from 'express';
 import { getAllActions } from './action.query';
 import API from '../../middlewares/api';
+import { auth } from '../../middlewares/auth';
 
 export const actionsRouter = Router();
 
-actionsRouter.get('/', async (req: Request, res: Response) => {
+actionsRouter.get('/', auth, async (req: Request, res: Response) => {
     res.header('Content-Type', 'application/json');
     const data = await getAllActions();
     if (data !== null) {
