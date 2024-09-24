@@ -43,13 +43,19 @@ export class IntegrationsPage {
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Ex7v1n8Y3ahwni4F268cY8gUcV30yO5uCA&s',
         },
         {
-            name: 'Google Calandar',
+            name: 'Google Calendar',
             iconUrl:
             'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-03-512.png',
         },
     ];
 
-    actions: ActionReaction[] = [{apiName: 'X', description: "On tweet"}];
+    actions: ActionReaction[] = [{apiName: 'Google Calendar', description: "On new event"},
+        {apiName: 'Discord', description: "On new message"},
+        {apiName: 'Github', description: "On new commit"},
+        {apiName: 'Spotify', description: "On new music played"},
+        {apiName: 'Twitch', description: "On new stream"},
+        {apiName: 'Coinbase', description: "Something"}
+    ];
 
     getIconUrl(apiname: string) {
         let res = this.integrations.find(({ name }) => name === apiname)?.iconUrl;
