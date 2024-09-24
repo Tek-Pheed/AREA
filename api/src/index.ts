@@ -9,6 +9,7 @@ import swaggerUi from 'swagger-ui-express';
 import { authRouter } from './routes/auth/auth';
 import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
+import { userRouter } from './routes/user/user';
 
 const LocalStrategy = require('passport-local');
 const app: Express = require('express')();
@@ -47,6 +48,7 @@ app.use(function (req, res, next) {
 app.use('/api/auth', authRouter);
 app.use('/api/actions', actionsRouter);
 app.use('/api/reactions', reactionRouter);
+app.use('/api/users', userRouter);
 
 require('./routes/twitch/twitch')(app, passport);
 require('./routes/spotify/spotify')(app, passport);

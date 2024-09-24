@@ -24,6 +24,10 @@ export const options = {
             name: 'Reactions',
             description: '',
         },
+        {
+            name: 'Users',
+            description: '',
+        },
     ],
     components: {
         securitySchemes: {
@@ -72,6 +76,17 @@ export const options = {
                     description: 'string',
                     api_name: 'string',
                     ask_url: 'string',
+                },
+            },
+            users: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: {
+                    id: 0,
+                    email: 'string',
+                    username: 'string',
+                    create_at: new Date(),
                 },
             },
         },
