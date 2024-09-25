@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "lib": ["es2015", "dom"],
+
+        "rootDir": "./src",
+        "outDir": "./build",
+
+        "strict": true,
+        "alwaysStrict": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "downlevelIteration": true,
+        "declaration": true,
+
+        "pretty": true,
+    },
+    "include": ["typings/**/*", "src/**/*"]
+}

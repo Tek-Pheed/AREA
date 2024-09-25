@@ -1,0 +1,7 @@
+<div class="container">
+    <img [src]="app_icon" alt="profile" class="profile-img" />
+    <p class="title">{{ app_name }}</p>
+    <button class="connect-btn {{connected ? 'red' : 'green'}}">
+        {{ connected ? "X" : "Connect"}}
+    </button>
+</div>

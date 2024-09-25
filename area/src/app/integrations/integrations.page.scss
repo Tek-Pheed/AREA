@@ -1,0 +1,29 @@
+.chooseClass {
+    align-content: center;
+    align-self: center;
+    text-align: center;
+    width: 85%;
+    overflow-y: scroll;
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
+.integrationList,
+.integrationListSmall {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+    align-items: center;
+}
+
+.integrationListSmall {
+    grid-template-columns: repeat(auto-fit, minmax(385px, 1fr));
+}
+
+@media screen and (max-width: 1100px) {
+    .chooseActionContent {
+        width: 100%;
+    }
+}
