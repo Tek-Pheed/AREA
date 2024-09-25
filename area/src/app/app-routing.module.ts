@@ -33,6 +33,10 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
+  {
+    path: 'navigation',
+    loadChildren: () => import('./mobile_navigation/navigation.module').then( m => m.NavigationPageModule)
+  },
 ];
 
 @NgModule({
