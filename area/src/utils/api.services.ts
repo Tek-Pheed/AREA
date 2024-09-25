@@ -78,7 +78,7 @@ export class ApiService {
             'Content-Type': 'application/json',
         });
         try {
-            return this.http.get<any>(`${this.API_URL}api/oauth/spotify/login`);
+            return this.http.get<any>(`${this.API_URL}api/actions/api` , {headers});
         } catch (error) {
             console.error('Error:', error);
             return of({
@@ -172,7 +172,7 @@ export class ApiService {
         }
     }
 
-    getSpotifyLogin(token: string): Observable<any> {
+    getOAuthCallback(token: string, name: string): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
@@ -180,31 +180,7 @@ export class ApiService {
 
         try {
             return this.http.get<any>(
-                `${this.API_URL}/api/oauth/spotify/login`,
-                {
-                    headers: headers,
-                }
-            );
-        } catch (error) {
-            console.error('Error :', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Error',
-                data: {},
-            });
-        }
-    }
-
-    getSpotifyCallback(token: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        });
-
-        try {
-            return this.http.get<any>(
-                `${this.API_URL}/api/oauth/spotify/callback`,
+                `${this.API_URL}/api/oauth/${name}/callback`,
                 {
                     headers: headers,
                 }
@@ -244,53 +220,6 @@ export class ApiService {
         }
     }
 
-    getTwitchLogin(token: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        });
-
-        try {
-            return this.http.get<any>(
-                `${this.API_URL}/api/oauth/twitch/login`,
-                {
-                    headers: headers,
-                }
-            );
-        } catch (error) {
-            console.error('Error :', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Error',
-                data: {},
-            });
-        }
-    }
-
-    getTwitchCallback(token: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        });
-
-        try {
-            return this.http.get<any>(
-                `${this.API_URL}/api/oauth/twitch/callback`,
-                {
-                    headers: headers,
-                }
-            );
-        } catch (error) {
-            console.error('Error :', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Error',
-                data: {},
-            });
-        }
-    }
 
     getTwitchFollowings(token: string): Observable<any> {
         const headers = new HttpHeaders({
@@ -316,7 +245,7 @@ export class ApiService {
         }
     }
 
-    getDiscordLogin(token: string): Observable<any> {
+    getOauthLogin(token: string, name: string): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
@@ -324,31 +253,7 @@ export class ApiService {
 
         try {
             return this.http.get<any>(
-                `${this.API_URL}/api/oauth/discord/login`,
-                {
-                    headers: headers,
-                }
-            );
-        } catch (error) {
-            console.error('Error :', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Error',
-                data: {},
-            });
-        }
-    }
-
-    getDiscordCallback(token: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        });
-
-        try {
-            return this.http.get<any>(
-                `${this.API_URL}/api/oauth/discord/callback`,
+                `${this.API_URL}/api/oauth/${name}/login`,
                 {
                     headers: headers,
                 }
@@ -373,54 +278,6 @@ export class ApiService {
         try {
             return this.http.get<any>(
                 `${this.API_URL}/api/oauth/discord/get_discord_info`,
-                {
-                    headers: headers,
-                }
-            );
-        } catch (error) {
-            console.error('Error :', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Error',
-                data: {},
-            });
-        }
-    }
-
-    getGithubLogin(token: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        });
-
-        try {
-            return this.http.get<any>(
-                `${this.API_URL}/api/oauth/github/login`,
-                {
-                    headers: headers,
-                }
-            );
-        } catch (error) {
-            console.error('Error :', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Error',
-                data: {},
-            });
-        }
-    }
-
-    getGithubCallback(token: string): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + token,
-        });
-
-        try {
-            return this.http.get<any>(
-                `${this.API_URL}/api/oauth/github/callback`,
                 {
                     headers: headers,
                 }
