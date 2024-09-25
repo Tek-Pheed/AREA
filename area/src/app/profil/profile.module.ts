@@ -4,7 +4,6 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { ProfilePage } from './profile.page';
 import { ProfilePageRoutingModule } from './profile-routing.module';
-import { NavbarComponent } from '../components/navbar/navbar.components';
 import { AppConnectedCardComponent } from '../components/application_connection/app-connection.components';
 
 @NgModule({
@@ -12,8 +11,8 @@ import { AppConnectedCardComponent } from '../components/application_connection/
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule
+    ProfilePageRoutingModule,
   ],
-  declarations: [ProfilePage, NavbarComponent, AppConnectedCardComponent]
+  declarations: [ProfilePage, AppConnectedCardComponent]
 })
 export class ProfilePageModule {}

@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="chooseClass">
+    <p>Choose a service</p>
+    <div class="integrationList">
+        <app-actions-cards-compact *ngFor="let i of integrations" action_name="{{i.name}}"
+            iconUrl="{{i.iconUrl}}"></app-actions-cards-compact>
+    </div>
+</div>
+<div class="chooseClass">
+    <p>Choose an action</p>
+    <div class="integrationListSmall">
+        <app-actions-cards *ngFor="let a of actions" title="{{a.apiName}}" description="{{a.description}}"
+            image={{getIconUrl(a.apiName)}}>
+        </app-actions-cards>
+    </div>
+</div>

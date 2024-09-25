@@ -1,12 +1,21 @@
+import { options } from './docs/swagger';
+
 require('dotenv').config();
 import { Express } from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import dbConnect from './database/db';
+import swaggerUi from 'swagger-ui-express';
+import { authRouter } from './routes/auth/auth';
+import { actionsRouter } from './routes/actions/actions';
+import { reactionRouter } from './routes/reactions/reactions';
+import { userRouter } from './routes/user/user';
 
 const app: Express = require('express')();
 const port: number = 3000;
 const pjson = require('../package.json');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');
 require('https').globalAgent.options.rejectUnauthorized = false;
 
@@ -35,13 +44,25 @@ app.use(function (req, res, next) {
     next();
 });
 
-require('./routes/auth/auth')(app);
+app.use('/api/auth', authRouter);
+app.use('/api/actions', actionsRouter);
+app.use('/api/reactions', reactionRouter);
+app.use('/api/users', userRouter);
+
 require('./routes/twitch/twitch')(app, passport);
 require('./routes/spotify/spotify')(app, passport);
 require('./routes/discord/discord')(app, passport);
 require('./routes/github/github')(app, passport);
 require('./routes/actions/actions')(app);
 require('./routes/reactions/reactions')(app);
+
+app.use(
+    '/docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerOutput, {
+        customCss: '.swagger-ui .topbar { display: none }',
+    })
+);
 
 dbConnect.then(() => {
     app.listen(port, () => {

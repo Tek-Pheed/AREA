@@ -6,9 +6,10 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { ActionsCardsComponent } from '../components/action_cards/actions_cards.components';
+import { AppConnectedCardComponent } from '../components/application_connection/app-connection.components';
+
 import { DashboardCardsComponent } from '../components/dashboard_cards/dashboard_cards.components';
 import { ProfilCardComponent } from '../components/profil_card/profil_card.components';
-
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { ProfilCardComponent } from '../components/profil_card/profil_card.compo
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, ActionsCardsComponent, DashboardCardsComponent, ProfilCardComponent]
+  declarations: [HomePage, DashboardCardsComponent]
 })
 export class HomePageModule {}

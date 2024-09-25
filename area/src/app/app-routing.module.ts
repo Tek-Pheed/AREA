@@ -14,6 +14,13 @@ const routes: Routes = [
           ).then((m) => m.ProfilePageModule),
   },
   {
+    path: 'integrations',
+    loadChildren: () =>
+        import(
+            './integrations/integrations.module'
+        ).then((m) => m.IntegrationsPageModule),
+},
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
@@ -21,6 +28,10 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
 ];
 
