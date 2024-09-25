@@ -111,7 +111,22 @@ passport.deserializeUser((obj: any, done: any) => {
 
 twitchRouter.get(
     '/login',
-    passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE })
+    passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE }),
+    function (req, res) {
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Twitch OAuth']
+            */
+    }
 );
 
 twitchRouter.get(
@@ -121,6 +136,19 @@ twitchRouter.get(
     }),
     (req: any, res: Response) => {
         res.redirect('/api/oauth/twitch/get_followings');
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Twitch OAuth']
+            */
     }
 );
 
@@ -131,6 +159,19 @@ twitchRouter.get(
         if (!req.user || !req.user.accessTokenTwitch) {
             return res.redirect('/api/oauth/twitch/login');
         }
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Twitch OAuth']
+            */
 
         try {
             let accessToken = req.user.accessTokenTwitch;

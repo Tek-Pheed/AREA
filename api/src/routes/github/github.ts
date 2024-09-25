@@ -90,7 +90,22 @@ passport.deserializeUser((obj: any, done: any) => {
 
 githubRouter.get(
     '/login',
-    passport.authenticate('github', { scope: ['user, repo'] })
+    passport.authenticate('github', { scope: ['user, repo'] }),
+    function (req, res) {
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Github OAuth']
+            */
+    }
 );
 
 githubRouter.get(
@@ -100,6 +115,19 @@ githubRouter.get(
     }),
     function (req, res) {
         res.redirect('/api/oauth/github/get_issues');
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Github OAuth']
+            */
     }
 );
 
@@ -110,6 +138,19 @@ githubRouter.get(
         if (!req.user || !req.user.accessTokenGithub) {
             return res.redirect('/api/oauth/github/login');
         }
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Github OAuth']
+            */
 
         try {
             let accessToken = req.user.accessTokenGithub;
