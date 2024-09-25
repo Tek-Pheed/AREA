@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import dbConnect from './database/db';
 import swaggerUi from 'swagger-ui-express';
 import { authRouter } from './routes/auth/auth';
+import { oauthRouter } from './routes/oauth/oauth';
 import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
@@ -48,11 +49,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/actions', actionsRouter);
 app.use('/api/reactions', reactionRouter);
 app.use('/api/users', userRouter);
-
-require('./routes/twitch/twitch')(app, passport);
-require('./routes/spotify/spotify')(app, passport);
-require('./routes/discord/discord')(app, passport);
-require('./routes/github/github')(app, passport);
+app.use('/api/oauth', oauthRouter);
 
 app.use(
     '/docs',
