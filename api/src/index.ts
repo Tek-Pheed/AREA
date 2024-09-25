@@ -4,7 +4,6 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import dbConnect from './database/db';
 
-const LocalStrategy = require('passport-local');
 const app: Express = require('express')();
 const port: number = 3000;
 const pjson = require('../package.json');
@@ -40,6 +39,7 @@ require('./routes/auth/auth')(app);
 require('./routes/twitch/twitch')(app, passport);
 require('./routes/spotify/spotify')(app, passport);
 require('./routes/discord/discord')(app, passport);
+require('./routes/github/github')(app, passport);
 require('./routes/actions/actions')(app);
 require('./routes/reactions/reactions')(app);
 

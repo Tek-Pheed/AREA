@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, Express } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 // Middleware to ensure user is authenticated
 export function isAuthenticatedTwitch(
@@ -32,4 +32,15 @@ export function isAuthenticatedDiscord(
         return next();
     }
     res.redirect('/auth/discord');
+}
+
+export function isAuthenticatedGithub(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/auth/github');
 }
