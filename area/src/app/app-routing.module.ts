@@ -34,7 +34,7 @@ const routes: Routes = [
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'navigation',
+    path: 'mobile',
     loadChildren: () => import('./mobile_navigation/navigation.module').then( m => m.NavigationPageModule)
   },
 ];
