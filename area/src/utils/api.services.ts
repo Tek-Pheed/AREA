@@ -73,14 +73,31 @@ export class ApiService {
         }
     }
 
-    getOAuthService_SPOTIFYTEST(): Observable<any> {
+    getAllServices(): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
         try {
-            return this.http.get<any>(
-                `${this.API_URL}api/oauth/spotify/login`,
-            );
+            return this.http.get<any>(`${this.API_URL}api/oauth/spotify/login`);
+        } catch (error) {
+            console.error('Error:', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Internal Server Error',
+                data: {},
+            });
+        }
+    }
+
+    getSelfProfile(): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+        try {
+            return this.http.get<any>(`${this.API_URL}/api/users/me`, {
+                headers: headers,
+            });
         } catch (error) {
             console.error('Error:', error);
             return of({

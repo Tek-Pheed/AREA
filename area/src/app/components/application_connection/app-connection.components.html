@@ -1,7 +1,7 @@
 <div class="container">
     <img [src]="app_icon" alt="profile" class="profile-img" />
     <p class="title">{{ app_name }}</p>
-    <button class="connect-btn {{connected ? 'red' : 'green'}}" (click)="OAuthLogin()">
-        {{ connected ? "X" : "Connect"}}
+    <button class="connect-btn {{connected ? 'red' : 'green'}}" (click)="OAuthLogin(app_name)">
+        {{ connected ? "✖️" : "Connect"}}
     </button>
 </div>

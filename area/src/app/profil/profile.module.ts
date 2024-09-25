@@ -14,6 +14,9 @@ import { ApiService } from 'src/utils/api.services';
     IonicModule,
     ProfilePageRoutingModule,
   ],
+  providers: [
+    ApiService
+  ],
   declarations: [ProfilePage, AppConnectedCardComponent]
 })
 export class ProfilePageModule {}

@@ -20,7 +20,7 @@ interface APIServices {
     styleUrls: ['profile.page.scss'],
 })
 export class ProfilePage {
-    constructor() {}
+    constructor(private service: ApiService) {}
 
     data: ProfileData = {
         Name: 'Samy Nasset',
@@ -41,4 +41,8 @@ export class ProfilePage {
           ImgSrc: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png',
       },
     ];
+
+    getAllServices() {
+        return;
+    }
 }
