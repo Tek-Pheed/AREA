@@ -1,5 +1,5 @@
 import { Express, Request, Response, Router } from 'express';
-import { getAllActions, getAllActionsAPI } from './action.query';
+import { getActionsAPI, getAllActions } from './action.query';
 import API from '../../middlewares/api';
 import { auth } from '../../middlewares/auth';
 
@@ -30,9 +30,9 @@ actionsRouter.get('/', auth, async (req: Request, res: Response) => {
     }
 });
 
-actionsRouter.get('/list', auth, async (req: Request, res: Response) => {
+actionsRouter.get('/api', auth, async (req: Request, res: Response) => {
     res.header('Content-Type', 'application/json');
-    const data = await getAllActionsAPI();
+    const data = await getActionsAPI();
     if (data !== null) {
         /*
             #swagger.responses[200] = {
@@ -40,7 +40,7 @@ actionsRouter.get('/list', auth, async (req: Request, res: Response) => {
                 content: {
                     "application/json": {
                         schema:{
-                            $ref: "#/components/schemas/actions"
+                            $ref: "#/components/schemas/actions_api"
                         }
                     }
                 }
