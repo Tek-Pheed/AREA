@@ -10,4 +10,4 @@ import { RegisterPage } from './register.page';
     imports: [CommonModule, FormsModule, IonicModule, RegisterPageRoutingModule],
     declarations: [RegisterPage],
 })
-export class LoginPageModule {}
+export class RegisterPageModule {}
