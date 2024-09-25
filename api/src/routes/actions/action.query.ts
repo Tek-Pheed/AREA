@@ -14,7 +14,7 @@ export async function getAllActions(): Promise<any> {
     }
 }
 
-export async function getAllActionsAPI(): Promise<any> {
+export async function getActionsAPI(): Promise<any> {
     try {
         const result = await db.promise().query('SELECT * FROM actions_api');
         if (result.length > 0) {
