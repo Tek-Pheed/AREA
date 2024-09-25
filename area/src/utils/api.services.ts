@@ -78,7 +78,7 @@ export class ApiService {
             'Content-Type': 'application/json',
         });
         try {
-            return this.http.get<any>(`${this.API_URL}api/actions/api` , {headers});
+            return this.http.get<any>(`${this.API_URL}/api/actions/api` , {headers});
         } catch (error) {
             console.error('Error:', error);
             return of({
