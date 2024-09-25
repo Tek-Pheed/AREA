@@ -57,15 +57,46 @@ passport.deserializeUser((obj: any, done: any) => {
     done(null, obj);
 });
 
-discordRouter.get('/login', passport.authenticate('discord'));
+discordRouter.get(
+    '/login',
+    passport.authenticate('discord'),
+    async (req: any, res: Response) => {
+        /*
+            #swagger.responses[200] = {
+                description: "Some description...",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/actions"
+                        }
+                    }
+                }
+            }
+            #swagger.tags = ['Discord OAuth']
+        */
+    }
+);
 
 discordRouter.get(
     '/callback',
     passport.authenticate('discord', {
         failureRedirect: '/api/oauth/discord/login',
     }),
-    function (req: any, res: Response) {
-        res.redirect('/api/oauth/discord/get_discord_info');
+    async function (req: any, res: Response) {
+        res.redirect('http://localhost:4200/profile');
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Discord OAuth']
+            */
     }
 );
 
@@ -76,6 +107,19 @@ discordRouter.get(
         if (!req.user || !req.user.accessTokenDiscord) {
             return res.redirect('/api/oauth/discord/login');
         }
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Discord OAuth']
+            */
         try {
             let accessToken = req.user.accessTokenDiscord;
             let infos = await getInfoDiscord(accessToken);

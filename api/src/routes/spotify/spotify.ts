@@ -97,7 +97,25 @@ passport.deserializeUser((obj: any, done: any) => {
 });
 
 // Spotify authentication routes
-spotifyRouter.get('/login', passport.authenticate('spotify'));
+spotifyRouter.get(
+    '/login',
+    passport.authenticate('spotify'),
+    function (req, res) {
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Spotify OAuth']
+            */
+    }
+);
 
 spotifyRouter.get(
     '/callback',
@@ -105,7 +123,20 @@ spotifyRouter.get(
         failureRedirect: '/api/oauth/spotify/login',
     }),
     (req: any, res: Response) => {
-        res.redirect('/api/oauth/spotify/get_current_song');
+        res.redirect('http://localhost:4200/profile');
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Spotify OAuth']
+            */
     }
 );
 
@@ -116,6 +147,19 @@ spotifyRouter.get(
         if (!req.user || !req.user.accessTokenSpotify) {
             return res.redirect('/api/oauth/spotify/login');
         }
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Spotify OAuth']
+            */
         try {
             let accessToken = req.user.accessTokenSpotify;
             const refreshToken = req.user.refreshTokenSpotify;
