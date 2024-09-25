@@ -14,6 +14,13 @@ const routes: Routes = [
           ).then((m) => m.ProfilePageModule),
   },
   {
+    path: 'dashboard',
+    loadChildren: () =>
+        import(
+            './dashboard/dashboard.module'
+        ).then((m) => m.DashboardPageModule),
+},
+  {
     path: 'integrations',
     loadChildren: () =>
         import(
