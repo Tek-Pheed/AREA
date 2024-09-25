@@ -9,9 +9,9 @@ interface ProfileData {
 }
 
 interface APIServices {
-    Name: string;
-    Connected: boolean;
-    ImgSrc: string;
+    name: string;
+    connected: boolean;
+    imgsrc: string;
 }
 
 @Component({
@@ -24,6 +24,7 @@ export class ProfilePage implements OnInit {
 
     ngOnInit(): void {
         this.getAllServices();
+        this.getProfileData();
     }
 
     data: ProfileData = {
@@ -35,19 +36,44 @@ export class ProfilePage implements OnInit {
 
     servicesData: APIServices[] = [
         {
-            Name: 'Instagram',
-            Connected: true,
-            ImgSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png',
+            name: 'Instagram',
+            connected: true,
+            imgsrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png',
         },
         {
-            Name: 'Discord',
-            Connected: false,
-            ImgSrc: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png',
+            name: 'Discord',
+            connected: false,
+            imgsrc: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png',
         },
     ];
 
+    getProfileData() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getUserData(token).subscribe(
+            (res) => {
+                this.data.Email = res.data[0].email;
+                this.data.Name = res.data[0].username;
+                console.warn(res.data);
+                this.servicesData = res.data;
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+
+    }
+
+    setProfileData() {
+
+    }
+
     getAllServices() {
-        this.service.getAllServices().subscribe(
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getAllServices(token).subscribe(
             (res) => {
                 console.warn(res.data);
                 this.servicesData = res.data;

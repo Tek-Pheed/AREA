@@ -2,9 +2,8 @@
     <div class="leftSide">
         <div class="topProfile">
             <img src="{{data.ImgSrc}}" class="profileImg">
-            <div>
+            <div class="text">
                 <h1>{{data.Name}}</h1>
-                <h4>{{data.Tag}}</h4>
             </div>
         </div>
         <div class="inputBlock">
@@ -18,6 +17,6 @@
     </div>
     <div class="rightSide">
         <app-connection-card *ngFor="let s of servicesData" class="serviceCard"
-        app_name="{{s.Name}}" app_icon="{{s.ImgSrc}}" [connected]=s.Connected></app-connection-card>
+        app_name="{{s.name}}" app_icon="{{s.imgsrc}}" [connected]=s.connected></app-connection-card>
     </div>
 </div>
