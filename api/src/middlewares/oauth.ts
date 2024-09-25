@@ -22,3 +22,14 @@ export function isAuthenticatedSpotify(
     }
     res.redirect('/auth/spotify');
 }
+
+export function isAuthenticatedDiscord(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/auth/discord');
+}
