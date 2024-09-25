@@ -66,6 +66,15 @@ export const options = {
                     ask_url: 'string',
                 },
             },
+            actions_api: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: {
+                    id: 0,
+                    name: 'string',
+                },
+            },
             reactions: {
                 status: 200,
                 error: false,
@@ -76,6 +85,15 @@ export const options = {
                     description: 'string',
                     api_name: 'string',
                     ask_url: 'string',
+                },
+            },
+            reactions_api: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: {
+                    id: 0,
+                    name: 'string',
                 },
             },
             users: {
