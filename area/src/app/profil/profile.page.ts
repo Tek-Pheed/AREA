@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from 'src/utils/api.services';
 
 interface ProfileData {
     Name: string;

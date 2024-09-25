@@ -1,4 +1,5 @@
 import { Component, Input } from "@angular/core";
+import { ApiService } from "src/utils/api.services";
 
 @Component({
     selector: "app-connection-card",
@@ -11,5 +12,10 @@ export class AppConnectedCardComponent {
     @Input() app_name: string = "";
     @Input() app_icon: string = "";
 
-    constructor() {}
+    constructor(private service: ApiService) {}
+
+    OAuthLogin() {
+        console.log("Truc")
+        location.href = "http://localhost:3000/api/oauth/spotify/login"
+    }
 }

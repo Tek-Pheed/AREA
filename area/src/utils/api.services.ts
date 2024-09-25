@@ -39,7 +39,11 @@ export class ApiService {
         }
     }
 
-    postAuthRegister(username: string, email: string, password: string): Observable<any> {
+    postAuthRegister(
+        username: string,
+        email: string,
+        password: string
+    ): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
@@ -64,6 +68,25 @@ export class ApiService {
                 status: 500,
                 error: true,
                 message: 'Internal Server Error during registration',
+                data: {},
+            });
+        }
+    }
+
+    getOAuthService_SPOTIFYTEST(): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+        try {
+            return this.http.get<any>(
+                `${this.API_URL}api/oauth/spotify/login`,
+            );
+        } catch (error) {
+            console.error('Error:', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Internal Server Error',
                 data: {},
             });
         }
