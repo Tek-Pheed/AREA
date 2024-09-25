@@ -123,7 +123,7 @@ spotifyRouter.get(
         failureRedirect: '/api/oauth/spotify/login',
     }),
     (req: any, res: Response) => {
-        res.redirect('/api/oauth/spotify/get_current_song');
+        res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
