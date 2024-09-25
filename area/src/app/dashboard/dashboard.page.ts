@@ -20,20 +20,5 @@ export class DashboardPage {
             actionAPILogoUrl: 'assets/samy.jpeg',
             reactionAPILogoUrl: 'assets/samy.jpeg',
         },
-        {
-            name: 'When commit send message on discord channel',
-            actionAPILogoUrl: 'assets/samy.jpeg',
-            reactionAPILogoUrl: 'assets/samy.jpeg',
-        },
-        {
-            name: 'When commit send message on discord channel',
-            actionAPILogoUrl: 'assets/samy.jpeg',
-            reactionAPILogoUrl: 'assets/samy.jpeg',
-        },
-        {
-            name: 'When commit send message on discord channel',
-            actionAPILogoUrl: 'assets/samy.jpeg',
-            reactionAPILogoUrl: 'assets/samy.jpeg',
-        },
     ];
 }
