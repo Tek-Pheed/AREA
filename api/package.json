@@ -9,7 +9,7 @@
         "lint": "tslint -c tslint.json src/**/*.ts",
         "clean": "rm -rf ./build/",
         "start": "node build/index.js",
-        "dev": "tsc && node build/index.js",
+        "dev": "tsc && ts-node src/docs/swagger.ts && node build/index.js",
         "doc": "ts-node src/docs/swagger.ts"
     },
     "repository": {
