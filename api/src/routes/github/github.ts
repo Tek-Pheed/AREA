@@ -114,7 +114,7 @@ githubRouter.get(
         failureRedirect: '/api/oauth/github/login',
     }),
     function (req, res) {
-        res.redirect('/api/oauth/github/get_issues');
+        res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",

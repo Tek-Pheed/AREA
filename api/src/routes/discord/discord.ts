@@ -83,7 +83,7 @@ discordRouter.get(
         failureRedirect: '/api/oauth/discord/login',
     }),
     async function (req: any, res: Response) {
-        res.redirect('/api/oauth/discord/get_discord_info');
+        res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",

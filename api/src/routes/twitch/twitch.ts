@@ -135,7 +135,7 @@ twitchRouter.get(
         failureRedirect: '/api/oauth/twitch/login',
     }),
     (req: any, res: Response) => {
-        res.redirect('/api/oauth/twitch/get_followings');
+        res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
