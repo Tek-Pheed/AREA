@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction, Express } from 'express';
-import { Passport } from 'passport';
+import { Response, Express } from 'express';
 import { isAuthenticatedTwitch } from '../../middlewares/oauth';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;

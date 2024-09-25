@@ -11,7 +11,6 @@ import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
 
-const LocalStrategy = require('passport-local');
 const app: Express = require('express')();
 const port: number = 3000;
 const pjson = require('../package.json');
@@ -53,6 +52,7 @@ app.use('/api/users', userRouter);
 require('./routes/twitch/twitch')(app, passport);
 require('./routes/spotify/spotify')(app, passport);
 require('./routes/discord/discord')(app, passport);
+require('./routes/github/github')(app, passport);
 
 app.use(
     '/docs',

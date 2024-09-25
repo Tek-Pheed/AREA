@@ -1,9 +1,7 @@
-import { Request, Response, NextFunction, Express } from 'express';
-import { Passport } from 'passport';
+import { Response, Express } from 'express';
 import { isAuthenticatedDiscord } from '../../middlewares/oauth';
 
 const axios = require('axios');
-const session = require('express-session');
 
 const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID;
 const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
