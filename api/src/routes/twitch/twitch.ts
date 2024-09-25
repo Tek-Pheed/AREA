@@ -1,14 +1,17 @@
-import { Response, Express } from 'express';
+import { Response, Express, Router } from 'express';
 import { isAuthenticatedTwitch } from '../../middlewares/oauth';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
 const session = require('express-session');
+const passport: any = require('passport');
 
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
 const TWITCH_OAUTH_SCOPE = 'user:read:follows';
+
+export const twitchRouter = Router();
 
 export async function getUserId(token: string): Promise<string> {
     const resp = await axios.get('https://api.twitch.tv/helix/users/', {
@@ -62,87 +65,87 @@ async function refreshTwitchToken(refreshToken: string): Promise<string> {
     return newAccessToken;
 }
 
-module.exports = (app: Express, passport: any) => {
-    app.use(
-        session({
-            secret: process.env.SESSION_SECRET || 'default_secret',
-            resave: false,
-            saveUninitialized: true,
-        })
-    );
+twitchRouter.use(
+    session({
+        secret: process.env.SESSION_SECRET || 'default_secret',
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 
-    passport.use(
-        'twitch',
-        new OAuth2Strategy(
-            {
-                authorizationURL: 'https://id.twitch.tv/oauth2/authorize',
-                tokenURL: 'https://id.twitch.tv/oauth2/token',
-                clientID: TWITCH_CLIENT_ID,
-                clientSecret: TWITCH_CLIENT_SECRET,
-                callbackURL: TWITCH_REDIRECT_URI,
-                state: true,
-                scope: TWITCH_OAUTH_SCOPE,
-            },
-            function (
-                accessTokenTwitch: string,
-                refreshTokenTwitch: string,
-                profileTwitch: any,
-                done: any
-            ) {
-                const user = {
-                    profileTwitch,
-                    accessTokenTwitch,
-                    refreshTokenTwitch,
-                };
-                done(null, user);
-            }
-        )
-    );
-
-    passport.serializeUser((user: any, done: any) => {
-        done(null, user);
-    });
-
-    passport.deserializeUser((obj: any, done: any) => {
-        done(null, obj);
-    });
-
-    app.get(
-        '/auth/twitch',
-        passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE })
-    );
-
-    app.get(
-        '/auth/twitch/callback',
-        passport.authenticate('twitch', { failureRedirect: '/auth/twitch' }),
-        (req: any, res: Response) => {
-            res.redirect('/api/get_followings');
+passport.use(
+    'twitch',
+    new OAuth2Strategy(
+        {
+            authorizationURL: 'https://id.twitch.tv/oauth2/authorize',
+            tokenURL: 'https://id.twitch.tv/oauth2/token',
+            clientID: TWITCH_CLIENT_ID,
+            clientSecret: TWITCH_CLIENT_SECRET,
+            callbackURL: TWITCH_REDIRECT_URI,
+            state: true,
+            scope: TWITCH_OAUTH_SCOPE,
+        },
+        function (
+            accessTokenTwitch: string,
+            refreshTokenTwitch: string,
+            profileTwitch: any,
+            done: any
+        ) {
+            const user = {
+                profileTwitch,
+                accessTokenTwitch,
+                refreshTokenTwitch,
+            };
+            done(null, user);
         }
-    );
+    )
+);
 
-    app.get(
-        '/api/get_followings',
-        isAuthenticatedTwitch,
-        async (req: any, res: Response) => {
-            if (!req.user || !req.user.accessTokenTwitch) {
-                return res.redirect('/auth/twitch');
-            }
+passport.serializeUser((user: any, done: any) => {
+    done(null, user);
+});
 
-            try {
-                let accessToken = req.user.accessTokenTwitch;
-                const refreshToken = req.user.refreshTokenTwitch;
-                let followed = await getFollowedStreams(accessToken);
+passport.deserializeUser((obj: any, done: any) => {
+    done(null, obj);
+});
 
-                if (!followed && refreshToken) {
-                    accessToken = await refreshTwitchToken(refreshToken);
-                    req.user.accessTokenTwitch = accessToken;
-                    followed = await getFollowedStreams(accessToken);
-                }
-                return res.json({ followed });
-            } catch (error) {
-                console.error('Error getting followed streams', error);
-                return res.status(500).send('Error getting followed streams');
-            }
+twitchRouter.get(
+    '/login',
+    passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE })
+);
+
+twitchRouter.get(
+    '/callback',
+    passport.authenticate('twitch', {
+        failureRedirect: '/api/oauth/twitch/login',
+    }),
+    (req: any, res: Response) => {
+        res.redirect('/api/oauth/twitch/get_followings');
+    }
+);
+
+twitchRouter.get(
+    '/get_followings',
+    isAuthenticatedTwitch,
+    async (req: any, res: Response) => {
+        if (!req.user || !req.user.accessTokenTwitch) {
+            return res.redirect('/api/oauth/twitch/login');
         }
-    );
-};
+
+        try {
+            let accessToken = req.user.accessTokenTwitch;
+            const refreshToken = req.user.refreshTokenTwitch;
+            let followed = await getFollowedStreams(accessToken);
+
+            if (!followed && refreshToken) {
+                accessToken = await refreshTwitchToken(refreshToken);
+                req.user.accessTokenTwitch = accessToken;
+                followed = await getFollowedStreams(accessToken);
+            }
+            return res.json({ followed });
+        } catch (error) {
+            console.error('Error getting followed streams', error);
+            return res.status(500).send('Error getting followed streams');
+        }
+    }
+);
