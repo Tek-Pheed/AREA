@@ -73,30 +73,14 @@ export class ApiService {
         }
     }
 
-    getAllServices(): Observable<any> {
+    getAllServices(token: string): Observable<any> {
         const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
         });
         try {
-            return this.http.get<any>(`${this.API_URL}api/actions/api` , {headers});
-        } catch (error) {
-            console.error('Error:', error);
-            return of({
-                status: 500,
-                error: true,
-                message: 'Internal Server Error',
-                data: {},
-            });
-        }
-    }
-
-    getSelfProfile(): Observable<any> {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-        });
-        try {
-            return this.http.get<any>(`${this.API_URL}/api/users/me`, {
-                headers: headers,
+            return this.http.get<any>(`${this.API_URL}/api/actions/api`, {
+                headers,
             });
         } catch (error) {
             console.error('Error:', error);
@@ -219,7 +203,6 @@ export class ApiService {
             });
         }
     }
-
 
     getTwitchFollowings(token: string): Observable<any> {
         const headers = new HttpHeaders({
