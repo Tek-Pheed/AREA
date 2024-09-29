@@ -26,7 +26,7 @@ reactionRouter.get('/', auth, async (req: Request, res: Response) => {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
-            API(500, true, 'Error when fetching actions', null)
+            API(500, true, 'Error when fetching reactions', null)
         );
     }
 });
@@ -51,7 +51,7 @@ reactionRouter.get('/api', auth, async (req: Request, res: Response) => {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
-            API(500, true, 'Error when fetching actions', null)
+            API(500, true, 'Error when fetching reactions', null)
         );
     }
 });

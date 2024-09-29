@@ -1,6 +1,7 @@
 import { options } from './docs/swagger';
 
 require('dotenv').config();
+import express from 'express';
 import { Express } from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
@@ -12,10 +13,9 @@ import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
 
-const app: Express = require('express')();
+export const app: Express = express();
 const port: number = 3000;
 const pjson = require('../package.json');
-const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');
 require('https').globalAgent.options.rejectUnauthorized = false;

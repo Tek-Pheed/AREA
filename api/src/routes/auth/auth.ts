@@ -4,7 +4,7 @@ import { login, register } from './auth.query';
 import { IUsers } from '../../utils/data.model';
 const jwt = require('jsonwebtoken');
 
-function generateToken(email: string): string {
+export function generateToken(email: string): string {
     return jwt.sign({ email: email }, process.env.SECRET);
 }
 
@@ -30,6 +30,7 @@ authRouter.post('/login', async (req: Request, res: Response) => {
         res.status(400).json(
             API(400, true, 'Email or password is required', null)
         );
+        return;
     }
 
     if (await login(email, password)) {
@@ -73,6 +74,7 @@ authRouter.post('/register', async (req: Request, res: Response) => {
         res.status(400).json(
             API(400, true, 'Email, password or username is required', null)
         );
+        return;
     }
     const user: IUsers = req.body;
     if (await register(user)) {
