@@ -1,22 +1,9 @@
-<div class="content">
+<div class="container">
     <div class="leftSide">
-        <div class="topProfile">
-            <img src="{{data.ImgSrc}}" class="profileImg">
-            <div class="text">
-                <h1>{{data.Name}}</h1>
-            </div>
-        </div>
-        <div class="inputBlock">
-            <input value="{{data.Name}}" placeholder="Name" type="text">
-            <input value="{{data.Email}}" placeholder="Email" type="email">
-            <input placeholder="Password" type="password">
-        </div>
-        <div class="bottomBlock">
-            <button>Apply Changes</button>
-        </div>
+        <app-profil-card name="{{data.Name}}" [image]="data.ImgSrc"></app-profil-card>
     </div>
-    <div class="rightSide" *ngIf="loaded == true">
+    <div class="rightSide" *ngIf="loaded">
         <app-connection-card *ngFor="let s of servicesData" class="serviceCard"
-        email="{{this.data.Email}}" app_name="{{s.name}}" app_icon="{{s.icon_url}}" [connected]=s.connected></app-connection-card>
+        email="{{this.data.Email}}" app_name="{{s.name}}" app_icon="{{s.icon_url}}" [connected]="s.connected"></app-connection-card>
     </div>
 </div>

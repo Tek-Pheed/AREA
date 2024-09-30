@@ -76,7 +76,7 @@ export class ApiService {
 
     getAllServices(token: string): Observable<any> {
         const headers = new HttpHeaders({
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         });
         try {
@@ -322,17 +322,15 @@ export class ApiService {
         }
     }
 
-    updateAPILoginTokens(token: string, email: string): Observable<any> {
+    getAllConnections(token: string): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
         });
-        const options = {
-            headers: headers,
-            params: new HttpParams().append('withCredentials', 'true')
-          }
-          try {
-            return this.http.get<any>(`${this.API_URL}/api/oauth/update/${email}`, options);
+        try {
+            return this.http.get<any>(`${this.API_URL}/api/oauth/connections`, {
+                headers,
+            });
         } catch (error) {
             console.error('Error :', error);
             return of({
@@ -344,6 +342,31 @@ export class ApiService {
         }
     }
 
+    updateAPILoginTokens(
+        token: string,
+        email: string,
+        body: any
+    ): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.post<any>(
+                `${this.API_URL}/api/oauth/update/${email}`,
+                JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 }
 
 // user/config
