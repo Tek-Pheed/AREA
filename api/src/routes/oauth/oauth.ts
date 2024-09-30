@@ -3,7 +3,7 @@ import { spotifyRouter } from '../spotify/spotify';
 import { twitchRouter } from '../twitch/twitch';
 import { discordRouter } from '../discord/discord';
 import { githubRouter } from '../github/github';
-import { insertTokeninDb } from './oauth.query';
+import { getAllConnections, insertTokeninDb } from './oauth.query';
 import API from '../../middlewares/api';
 import { auth } from '../../middlewares/auth';
 
@@ -14,53 +14,72 @@ oauthRouter.use('/twitch', twitchRouter);
 oauthRouter.use('/discord', discordRouter);
 oauthRouter.use('/github', githubRouter);
 
-oauthRouter.get('/update/:email', auth, async (req: Request, res: Response) => {
-    const email = req.params.email;
+oauthRouter.post(
+    '/update/:email',
+    auth,
+    async (req: Request, res: Response) => {
+        const email = req.params.email;
+        const { twitch, spotify, github, discord } = req.body;
 
-    const twitchAccessToken = req.cookies.accessTokenTwitch;
-    const spotifyAccessToken = req.cookies.accessTokenSpotify;
-    const githubAccessToken = req.cookies.accessTokenGithub;
-    const discordAccessToken = req.cookies.accessTokenDiscord;
+        if (
+            twitch.access_token != undefined &&
+            twitch.refresh_token != undefined
+        ) {
+            await insertTokeninDb(
+                'twitch',
+                twitch.access_token,
+                twitch.refresh_token,
+                email
+            );
+        }
 
-    const twitchRefreshToken = req.cookies.refreshTokenTwitch;
-    const spotifyRefreshToken = req.cookies.refreshTokenSpotify;
-    const discordRefreshToken = req.cookies.refreshTokenDiscord;
+        if (
+            discord.access_token != undefined &&
+            discord.refresh_token != undefined
+        ) {
+            await insertTokeninDb(
+                'discord',
+                twitch.access_token,
+                twitch.refresh_token,
+                email
+            );
+        }
 
-    console.log(req.cookies);
+        if (
+            github.access_token != undefined &&
+            github.refresh_token != undefined
+        ) {
+            await insertTokeninDb(
+                'github',
+                github.access_token,
+                github.refresh_token,
+                email
+            );
+        }
 
-    console.log('email', email);
-    console.log('twitchAccessToken', twitchAccessToken);
-    console.log('spotifyAccessToken', spotifyAccessToken);
-    console.log('githubAccessToken', githubAccessToken);
-    console.log('discordAccessToken', discordAccessToken);
+        if (
+            spotify.access_token != undefined &&
+            spotify.refresh_token != undefined
+        ) {
+            await insertTokeninDb(
+                'spotify',
+                spotify.access_token,
+                spotify.refresh_token,
+                email
+            );
+        }
 
-    if (twitchAccessToken != undefined) {
-        await insertTokeninDb(
-            'twitch',
-            email,
-            twitchAccessToken,
-            twitchRefreshToken
+        res.status(200).json(API(200, false, 'Tokens updated', null));
+    }
+);
+
+oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
+    const result = await getAllConnections(`${req.headers.authorization}`);
+    if (result != null) {
+        res.status(200).json(API(200, false, '', result));
+    } else {
+        res.status(500).json(
+            API(500, true, 'Error when fetching connections', null)
         );
     }
-    if (spotifyAccessToken != undefined) {
-        await insertTokeninDb(
-            'spotify',
-            email,
-            spotifyAccessToken,
-            spotifyRefreshToken
-        );
-    }
-    if (githubAccessToken != undefined) {
-        await insertTokeninDb('github', email, githubAccessToken, '');
-    }
-    if (discordAccessToken != undefined) {
-        await insertTokeninDb(
-            'discord',
-            email,
-            discordAccessToken,
-            discordRefreshToken
-        );
-    }
-
-    res.status(200).json(API(200, false, 'Tokens updated', null));
 });

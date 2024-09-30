@@ -86,11 +86,9 @@ discordRouter.get(
         failureRedirect: '/api/oauth/discord/login',
     }),
     async function (req: any, res: Response) {
-        const accessTokenDiscord = req.user.accessTokenDiscord;
-        const refreshTokenDiscord = req.user.refreshTokenDiscord;
-        res.cookie('accessTokenDiscord', accessTokenDiscord);
-        res.cookie('refreshTokenDiscord', refreshTokenDiscord);
-        res.redirect('http://localhost:4200/profile');
+        res.redirect(
+            `http://localhost:4200/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
+        );
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
