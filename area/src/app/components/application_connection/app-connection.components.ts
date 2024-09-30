@@ -17,6 +17,6 @@ export class AppConnectedCardComponent {
     constructor() {}
 
     OAuthLogin(name: string, email: string) {
-        location.href = `http://localhost:3000/api/oauth/${name.toLowerCase()}/login/${email}`
+        location.href = `http://localhost:3000/api/oauth/${name.toLowerCase()}/login`
     }
 }

@@ -321,6 +321,27 @@ export class ApiService {
         }
     }
 
+    updateAPILoginTokens(token: string, email: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+
+        try {
+            return this.http.post<any>(`${this.API_URL}/api/oauth/update/${email}`, {
+                headers: headers,
+            });
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
 }
 
 // user/config

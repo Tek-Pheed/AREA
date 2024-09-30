@@ -39,6 +39,7 @@ export class ProfilePage implements OnInit {
                 console.warn(res.data);
                 this.servicesData = res.data;
                 this.loaded = true;
+                this.updateAPIBackend();
             },
             (err) => {
                 console.error(err);
@@ -47,8 +48,11 @@ export class ProfilePage implements OnInit {
 
     }
 
-    setProfileData() {
-
+    updateAPIBackend() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.updateAPILoginTokens(token, this.data.Email);
     }
 
     getAllServices() {
