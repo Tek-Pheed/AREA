@@ -1,5 +1,6 @@
 import { Response, Express, Router } from 'express';
 import { isAuthenticatedTwitch } from '../../middlewares/oauth';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -113,6 +114,8 @@ twitchRouter.get(
     '/login',
     passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE }),
     function (req, res) {
+        //const email = req.params.email;
+        //res.cookie('email', email);
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
@@ -134,7 +137,16 @@ twitchRouter.get(
     passport.authenticate('twitch', {
         failureRedirect: '/api/oauth/twitch/login',
     }),
-    (req: any, res: Response) => {
+    async (req: any, res: Response) => {
+        const email = req.cookies.email;
+        const accessTokenTwitch = req.user.accessTokenTwitch;
+        const refreshTokenTwitch = req.user.refreshTokenTwitch;
+        await insertTokeninDb(
+            'twitch',
+            accessTokenTwitch,
+            refreshTokenTwitch,
+            email
+        );
         res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
