@@ -49,6 +49,7 @@ export class RegisterPage implements OnInit {
             this.service.postAuthRegister(name, email, password).subscribe(
                 (res) => {
                     this.registerUserCallback(res);
+                    window.location.href = '/profile';
                 },
                 (err) => {
                     console.error(err);

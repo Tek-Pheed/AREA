@@ -6,20 +6,35 @@
     overflow-y: scroll;
     font-size: xx-large;
     font-weight: bolder;
+    height: 100%;
+}
+
+.bottomContent {
+    height: 7vh;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3vh;
+}
+
+button {
+    height: auto;
+    border-radius: 10px;
+    width: 20%;
+    padding: 10px;
+    justify-self: center;
 }
 
 .integrationList,
 .integrationListSmall {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
-    align-items: center;
-    justify-items: center;
     align-items: center;
 }
 
 .integrationListSmall {
-    grid-template-columns: repeat(auto-fit, minmax(385px, 1fr));
+    justify-content: center;
 }
 
 @media screen and (max-width: 1100px) {
