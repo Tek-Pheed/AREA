@@ -307,7 +307,7 @@ export class ApiService {
         });
 
         try {
-            return this.http.get<any>(`${this.API_URL}/api/users/config`, {
+            return this.http.get<any>(`${this.API_URL}/api/users/configs`, {
                 headers: headers,
             });
         } catch (error) {
