@@ -1,5 +1,6 @@
 import { Response, Express, Router } from 'express';
 import { isAuthenticatedGithub } from '../../middlewares/oauth';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const GitHubStrategy = require('passport-github2').Strategy;
 const axios = require('axios');
@@ -89,9 +90,11 @@ passport.deserializeUser((obj: any, done: any) => {
 });
 
 githubRouter.get(
-    '/login',
+    '/login/:email',
     passport.authenticate('github', { scope: ['user, repo'] }),
     function (req, res) {
+        //const email = req.params.email;
+        //res.cookie('email', email);
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
@@ -113,7 +116,17 @@ githubRouter.get(
     passport.authenticate('github', {
         failureRedirect: '/api/oauth/github/login',
     }),
-    function (req, res) {
+    async function (req: any, res) {
+        const email = req.cookies.email;
+        const accessTokenGithub = req.user.accessTokenGithub;
+        const refreshTokenGithub = req.user.refreshTokenGithub;
+        await insertTokeninDb(
+            'github',
+            accessTokenGithub,
+            refreshTokenGithub,
+            email
+        );
+
         res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {

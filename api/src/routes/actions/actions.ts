@@ -1,5 +1,9 @@
-import { Express, Request, Response, Router } from 'express';
-import { getActionsAPI, getAllActions } from './action.query';
+import e, { Express, Request, Response, Router } from 'express';
+import {
+    getActionsAPI,
+    getAllActions,
+    getStatusConnection,
+} from './action.query';
 import API from '../../middlewares/api';
 import { auth } from '../../middlewares/auth';
 
@@ -51,6 +55,32 @@ actionsRouter.get('/api', auth, async (req: Request, res: Response) => {
     } else {
         res.status(500).json(
             API(500, true, 'Error when fetching actions', null)
+        );
+    }
+});
+
+actionsRouter.get('/status', auth, async (req: Request, res: Response) => {
+    res.header('Content-Type', 'application/json');
+    const email = req.cookies.email;
+    const data = await getStatusConnection(email);
+    if (data !== null) {
+        /*
+            #swagger.responses[200] = {
+                description: "Some description...",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/actions_api"
+                        }
+                    }
+                }
+            }
+            #swagger.tags = ['Actions']
+        */
+        res.status(200).json(API(200, false, '', data));
+    } else {
+        res.status(500).json(
+            API(500, true, 'Error when fetching status', null)
         );
     }
 });
