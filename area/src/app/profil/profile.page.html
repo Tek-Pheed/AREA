@@ -15,8 +15,8 @@
             <button>Apply Changes</button>
         </div>
     </div>
-    <div class="rightSide">
+    <div class="rightSide" *ngIf="loaded == true">
         <app-connection-card *ngFor="let s of servicesData" class="serviceCard"
-        app_name="{{s.name}}" app_icon="{{s.imgsrc}}" [connected]=s.connected></app-connection-card>
+        email="{{this.data.Email}}" app_name="{{s.name}}" app_icon="{{s.icon_url}}" [connected]=s.connected></app-connection-card>
     </div>
 </div>
