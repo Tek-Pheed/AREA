@@ -3,7 +3,6 @@ import { ApiService } from 'src/utils/api.services';
 import { APIServices } from '../utils/data.models';
 import { ProfileData } from '../utils/data.models';
 
-
 @Component({
     selector: 'app-profil',
     templateUrl: 'profile.page.html',
@@ -23,8 +22,7 @@ export class ProfilePage implements OnInit {
         ImgSrc: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
     };
 
-    servicesData: APIServices[] = [
-    ];
+    servicesData: APIServices[] = [];
 
     loaded: boolean = false;
 
@@ -36,7 +34,7 @@ export class ProfilePage implements OnInit {
             (res) => {
                 this.data.Email = res.data[0].email;
                 this.data.Name = res.data[0].username;
-                console.warn(res.data);
+                console.error(res.data);
                 this.servicesData = res.data;
                 this.loaded = true;
                 this.updateAPIBackend();
@@ -45,14 +43,20 @@ export class ProfilePage implements OnInit {
                 console.error(err);
             }
         );
-
     }
 
     updateAPIBackend() {
         let token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string
         );
-        this.service.updateAPILoginTokens(token, this.data.Email);
+        this.service.updateAPILoginTokens(token, this.data.Email).subscribe(
+            (res) => {
+                console.warn(res.data);
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
     }
 
     getAllServices() {

@@ -328,7 +328,7 @@ export class ApiService {
         });
 
         try {
-            return this.http.post<any>(`${this.API_URL}/api/oauth/update/${email}`, {
+            return this.http.get<any>(`${this.API_URL}/api/oauth/update/${email}`, {
                 headers: headers,
             });
         } catch (error) {
