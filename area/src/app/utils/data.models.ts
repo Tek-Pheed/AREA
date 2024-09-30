@@ -30,3 +30,22 @@ export interface IUsers {
     email: string;
     create_at: Date;
 }
+
+export interface APIServices {
+    name: string;
+    connected: boolean;
+    icon_url: string;
+}
+
+export interface ProfileData {
+    Name: string;
+    Email: string;
+    ImgSrc: string;
+}
+
+export interface IAreaPair {
+    actions_id: 0;
+    email: string;
+    id: string;
+    reaction_id: 0;
+}

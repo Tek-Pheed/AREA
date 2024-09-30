@@ -1,17 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
-
-interface APIServices {
-    name: string;
-    connected: boolean;
-    icon_url: string;
-}
-
-interface ActionReaction {
-    title: string;
-    description: string;
-    api_name: string;
-}
+import { APIServices, IActions } from '../utils/data.models';
 
 @Component({
     selector: 'app-integration',
@@ -21,7 +10,7 @@ interface ActionReaction {
 export class IntegrationsPage implements OnInit {
     integrations: APIServices[] = [];
     selectedIntegration: string = '';
-    actions: ActionReaction[] = [];
+    actions: IActions[] = [];
 
     getimgsrc(title: string) {
         let res = this.integrations.find(

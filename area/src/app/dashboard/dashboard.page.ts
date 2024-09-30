@@ -1,39 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
+import { IActions, IApi, IAreaPair, IReactions } from '../utils/data.models';
 
 interface activeArea {
     name: string;
     actionAPILogoUrl: string;
     reactionAPILogoUrl: string;
-}
-
-interface AreaAPIs {
-    id: 0;
-    name: string;
-    icon_url: string;
-}
-
-interface Reaction {
-    id: 0;
-    title: string;
-    description: string;
-    api_name: string;
-    ask_url: string;
-}
-
-interface Action {
-    id: 0;
-    title: string;
-    description: string;
-    api_name: string;
-    ask_url: string;
-}
-
-interface ActionsReactionPair {
-    actions_id: 0;
-    email: string;
-    id: string;
-    reaction_id: 0;
 }
 
 @Component({
@@ -44,10 +16,10 @@ interface ActionsReactionPair {
 export class DashboardPage implements OnInit {
     constructor(private service: ApiService) {}
 
-    userConfigs: ActionsReactionPair[] = [];
-    actions: Action[] = [];
-    reactions: Reaction[] = [];
-    apis: AreaAPIs[] = [];
+    userConfigs: IAreaPair[] = [];
+    actions: IActions[] = [];
+    reactions: IReactions[] = [];
+    apis: IApi[] = [];
     datas: activeArea[] = [];
 
     getApis() {
