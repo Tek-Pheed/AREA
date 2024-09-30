@@ -1,12 +1,8 @@
-export interface Authentification {
+export interface IAuthentification {
     acces_token: string;
-};
-
-export interface Actions {
-    data: any 
 }
 
-export interface Data {
+export interface IActions {
     id: number;
     title: string;
     description: string;
@@ -14,9 +10,23 @@ export interface Data {
     ask_url: string;
 }
 
-export interface UserData {
+export interface IReactions {
     id: number;
-    email: string;
+    title: string;
+    description: string;
+    api_name: string;
+    ask_url: string;
+}
+
+export interface IApi {
+    id: number;
+    name: string;
+    icon_url: string;
+}
+
+export interface IUsers {
+    id: number;
     username: string;
-    create_at: any;
+    email: string;
+    create_at: Date;
 }
