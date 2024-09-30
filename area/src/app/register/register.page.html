@@ -2,11 +2,11 @@
     <div class="register-container">
         <h1>AREA</h1>
         <form>
-            <input type="email" placeholder="name" required>
-            <input type="password" placeholder="email" required>
-            <input type="password" placeholder="password" required>
-            <input type="password" placeholder="confirm password" required>
-            <button type="submit">Sign up</button>
+            <input #inputName type="text" placeholder="Name" required>
+            <input #inputEmail type="email" placeholder="Email" required>
+            <input #inputPassword type="password" placeholder="Password" required>
+            <input #inputPassword2 type="password" placeholder="Confirm password" required>
+            <button type="submit" (click)="registerUser()">Sign up</button>
         </form>
         <hr>
     </div>

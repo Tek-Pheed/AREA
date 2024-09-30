@@ -28,6 +28,10 @@ export const options = {
             name: 'Users',
             description: '',
         },
+        {
+            name: 'Configs',
+            description: '',
+        },
     ],
     components: {
         securitySchemes: {
@@ -66,6 +70,15 @@ export const options = {
                     ask_url: 'string',
                 },
             },
+            actions_api: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: {
+                    id: 0,
+                    name: 'string',
+                },
+            },
             reactions: {
                 status: 200,
                 error: false,
@@ -78,6 +91,15 @@ export const options = {
                     ask_url: 'string',
                 },
             },
+            reactions_api: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: {
+                    id: 0,
+                    name: 'string',
+                },
+            },
             users: {
                 status: 200,
                 error: false,
@@ -86,8 +108,31 @@ export const options = {
                     id: 0,
                     email: 'string',
                     username: 'string',
-                    create_at: new Date(),
+                    create_at: Date.now(),
                 },
+            },
+            configs: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: [
+                    {
+                        id: 0,
+                        email: 'string',
+                        action_id: 0,
+                        method: ['GET', 'POST', 'PUT', 'DELETE'],
+                        headers: 'json',
+                        body: 'json',
+                        reaction_id: 0,
+                    },
+                ],
+            },
+            configs_body: {
+                action_id: 0,
+                method: ['GET', 'POST', 'PUT', 'DELETE'],
+                headers: 'json',
+                body: 'json',
+                reaction_id: 0,
             },
         },
     },
