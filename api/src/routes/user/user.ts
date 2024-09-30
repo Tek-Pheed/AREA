@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { getCurrentUser } from './user.query';
 import API from '../../middlewares/api';
+import { userConfigRouter } from './configs/configs';
 
 export const userRouter = Router();
 
@@ -28,3 +29,5 @@ userRouter.get('/me', async (req: Request, res: Response) => {
         );
     }
 });
+
+userRouter.use('/configs', userConfigRouter);
