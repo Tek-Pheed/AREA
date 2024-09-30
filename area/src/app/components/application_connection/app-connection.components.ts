@@ -12,10 +12,11 @@ export class AppConnectedCardComponent {
 
     @Input() app_name: string = "";
     @Input() app_icon: string = "";
+    @Input() email: string = "";
 
     constructor() {}
 
-    OAuthLogin(name: string) {
-        location.href = `http://localhost:3000/api/oauth/${name.toLowerCase()}/login`
+    OAuthLogin(name: string, email: string) {
+        location.href = `http://localhost:3000/api/oauth/${name.toLowerCase()}/login/${email}`
     }
 }
