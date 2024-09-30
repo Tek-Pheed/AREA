@@ -14,49 +14,45 @@ oauthRouter.use('/twitch', twitchRouter);
 oauthRouter.use('/discord', discordRouter);
 oauthRouter.use('/github', githubRouter);
 
-oauthRouter.post(
-    '/update/:email',
-    auth,
-    async (req: Request, res: Response) => {
-        const email = req.params.email;
+oauthRouter.get('/update/:email', auth, async (req: Request, res: Response) => {
+    const email = req.params.email;
 
-        const twitchAccessToken = req.cookies.accessTokenTwitch;
-        const spotifyAccessToken = req.cookies.accessTokenSpotify;
-        const githubAccessToken = req.cookies.accessTokenGithub;
-        const discordAccessToken = req.cookies.accessTokenDiscord;
+    const twitchAccessToken = req.cookies.accessTokenTwitch;
+    const spotifyAccessToken = req.cookies.accessTokenSpotify;
+    const githubAccessToken = req.cookies.accessTokenGithub;
+    const discordAccessToken = req.cookies.accessTokenDiscord;
 
-        const twitchRefreshToken = req.cookies.refreshTokenTwitch;
-        const spotifyRefreshToken = req.cookies.refreshTokenSpotify;
-        const discordRefreshToken = req.cookies.refreshTokenDiscord;
+    const twitchRefreshToken = req.cookies.refreshTokenTwitch;
+    const spotifyRefreshToken = req.cookies.refreshTokenSpotify;
+    const discordRefreshToken = req.cookies.refreshTokenDiscord;
 
-        if (twitchAccessToken != undefined) {
-            await insertTokeninDb(
-                'twitch',
-                email,
-                twitchAccessToken,
-                twitchRefreshToken
-            );
-        }
-        if (spotifyAccessToken != undefined) {
-            await insertTokeninDb(
-                'spotify',
-                email,
-                spotifyAccessToken,
-                spotifyRefreshToken
-            );
-        }
-        if (githubAccessToken != undefined) {
-            await insertTokeninDb('github', email, githubAccessToken, '');
-        }
-        if (discordAccessToken != undefined) {
-            await insertTokeninDb(
-                'discord',
-                email,
-                discordAccessToken,
-                discordRefreshToken
-            );
-        }
-
-        res.status(200).json(API(200, false, 'Tokens updated', null));
+    if (twitchAccessToken != undefined) {
+        await insertTokeninDb(
+            'twitch',
+            email,
+            twitchAccessToken,
+            twitchRefreshToken
+        );
     }
-);
+    if (spotifyAccessToken != undefined) {
+        await insertTokeninDb(
+            'spotify',
+            email,
+            spotifyAccessToken,
+            spotifyRefreshToken
+        );
+    }
+    if (githubAccessToken != undefined) {
+        await insertTokeninDb('github', email, githubAccessToken, '');
+    }
+    if (discordAccessToken != undefined) {
+        await insertTokeninDb(
+            'discord',
+            email,
+            discordAccessToken,
+            discordRefreshToken
+        );
+    }
+
+    res.status(200).json(API(200, false, 'Tokens updated', null));
+});
