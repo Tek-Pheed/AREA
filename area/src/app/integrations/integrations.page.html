@@ -1,7 +1,4 @@
 <app-navbar></app-navbar>
-<div class="topContent">
-<button *ngIf="this.selectedIntegration != ''" (click)="selectIntegration('')">Back</button>
-</div>
 <div class="chooseClass" *ngIf="this.selectedIntegration == ''">
     <p>Choose a service</p>
     <div class="integrationList">
@@ -18,4 +15,7 @@
             </app-actions-cards>
         </div>
     </div>
+</div>
+<div class="bottomContent">
+    <button *ngIf="this.selectedIntegration != ''" (click)="selectIntegration('')">Back</button>
 </div>
