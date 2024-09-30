@@ -33,17 +33,9 @@ export class ProfilePage implements OnInit {
     };
 
     servicesData: APIServices[] = [
-        {
-            name: 'Instagram',
-            connected: true,
-            icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png',
-        },
-        {
-            name: 'Discord',
-            connected: false,
-            icon_url: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png',
-        },
     ];
+
+    loaded: boolean = false;
 
     getProfileData() {
         let token = JSON.parse(
@@ -55,6 +47,7 @@ export class ProfilePage implements OnInit {
                 this.data.Name = res.data[0].username;
                 console.warn(res.data);
                 this.servicesData = res.data;
+                this.loaded = true;
             },
             (err) => {
                 console.error(err);
