@@ -1,5 +1,6 @@
 import { Response, Express, Router } from 'express';
 import { isAuthenticatedDiscord } from '../../middlewares/oauth';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const axios = require('axios');
 const passport: any = require('passport');
@@ -58,9 +59,11 @@ passport.deserializeUser((obj: any, done: any) => {
 });
 
 discordRouter.get(
-    '/login',
+    '/login/:email',
     passport.authenticate('discord'),
     async (req: any, res: Response) => {
+        //const email = req.params.email;
+        //res.cookie('email', email);
         /*
             #swagger.responses[200] = {
                 description: "Some description...",
@@ -83,6 +86,15 @@ discordRouter.get(
         failureRedirect: '/api/oauth/discord/login',
     }),
     async function (req: any, res: Response) {
+        const email = req.cookies.email;
+        const accessTokenDiscord = req.user.accessTokenDiscord;
+        const refreshTokenDiscord = req.user.refreshTokenDiscord;
+        await insertTokeninDb(
+            'discord',
+            accessTokenDiscord,
+            refreshTokenDiscord,
+            email
+        );
         res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {

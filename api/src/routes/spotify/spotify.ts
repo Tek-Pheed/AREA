@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, Express, Router } from 'express';
 import { isAuthenticatedSpotify } from '../../middlewares/oauth';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -98,9 +99,11 @@ passport.deserializeUser((obj: any, done: any) => {
 
 // Spotify authentication routes
 spotifyRouter.get(
-    '/login',
+    '/login/:email',
     passport.authenticate('spotify'),
     function (req, res) {
+        //const email = req.params.email;
+        //res.cookie('email', email);
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
@@ -122,7 +125,16 @@ spotifyRouter.get(
     passport.authenticate('spotify', {
         failureRedirect: '/api/oauth/spotify/login',
     }),
-    (req: any, res: Response) => {
+    async (req: any, res: Response) => {
+        const email = req.cookies.email;
+        const accessTokenSpotify = req.user.accessTokenSpotify;
+        const refreshTokenSpotify = req.user.refreshTokenSpotify;
+        await insertTokeninDb(
+            'spotify',
+            accessTokenSpotify,
+            refreshTokenSpotify,
+            email
+        );
         res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
