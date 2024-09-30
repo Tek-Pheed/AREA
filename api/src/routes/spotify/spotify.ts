@@ -99,7 +99,7 @@ passport.deserializeUser((obj: any, done: any) => {
 
 // Spotify authentication routes
 spotifyRouter.get(
-    '/login/:email',
+    '/login',
     passport.authenticate('spotify'),
     function (req, res) {
         //const email = req.params.email;

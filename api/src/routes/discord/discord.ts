@@ -59,7 +59,7 @@ passport.deserializeUser((obj: any, done: any) => {
 });
 
 discordRouter.get(
-    '/login/:email',
+    '/login',
     passport.authenticate('discord'),
     async (req: any, res: Response) => {
         //const email = req.params.email;

@@ -90,7 +90,7 @@ passport.deserializeUser((obj: any, done: any) => {
 });
 
 githubRouter.get(
-    '/login/:email',
+    '/login',
     passport.authenticate('github', { scope: ['user, repo'] }),
     function (req, res) {
         //const email = req.params.email;

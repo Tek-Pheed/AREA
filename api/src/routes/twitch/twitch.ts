@@ -111,7 +111,7 @@ passport.deserializeUser((obj: any, done: any) => {
 });
 
 twitchRouter.get(
-    '/login/:email',
+    '/login',
     passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE }),
     function (req, res) {
         //const email = req.params.email;
