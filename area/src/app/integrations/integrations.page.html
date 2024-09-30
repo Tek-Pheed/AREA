@@ -1,16 +1,21 @@
 <app-navbar></app-navbar>
-<div class="chooseClass">
+<div class="topContent">
+<button *ngIf="this.selectedIntegration != ''" (click)="selectIntegration('')">Back</button>
+</div>
+<div class="chooseClass" *ngIf="this.selectedIntegration == ''">
     <p>Choose a service</p>
     <div class="integrationList">
-        <app-actions-cards-compact *ngFor="let i of integrations" action_name="{{i.name}}"
-            iconUrl="{{i.imgsrc}}"></app-actions-cards-compact>
+        <app-actions-cards-compact *ngFor="let i of integrations" action_name="{{i.name}}" iconUrl="{{i.icon_url}}"
+            (click)="selectIntegration(i.name)"></app-actions-cards-compact>
     </div>
 </div>
-<div class="chooseClass">
+<div class="chooseClass" *ngIf="this.selectedIntegration != ''">
     <p>Choose an action</p>
     <div class="integrationListSmall">
-        <app-actions-cards *ngFor="let a of actions" title="{{a.title}}" description="{{a.description}}"
-            image={{getimgsrc(a.title)}}>
-        </app-actions-cards>
+        <div *ngFor="let a of actions">
+            <app-actions-cards *ngIf="a.api_name == this.selectedIntegration" title="{{a.title}}"
+                description="{{a.description}}" image={{getimgsrc(a.api_name)}}>
+            </app-actions-cards>
+        </div>
     </div>
 </div>

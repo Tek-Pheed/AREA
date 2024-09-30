@@ -3,7 +3,6 @@ import { ApiService } from 'src/utils/api.services';
 
 interface ProfileData {
     Name: string;
-    Tag: string;
     Email: string;
     ImgSrc: string;
 }
@@ -11,7 +10,7 @@ interface ProfileData {
 interface APIServices {
     name: string;
     connected: boolean;
-    imgsrc: string;
+    icon_url: string;
 }
 
 @Component({
@@ -28,22 +27,21 @@ export class ProfilePage implements OnInit {
     }
 
     data: ProfileData = {
-        Name: 'Samy Nasset',
-        Tag: '@itachi84',
-        Email: 'samy.nasset@epitech.eu',
-        ImgSrc: 'assets/samy.jpeg',
+        Name: 'Name',
+        Email: 'email@example.com',
+        ImgSrc: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
     };
 
     servicesData: APIServices[] = [
         {
             name: 'Instagram',
             connected: true,
-            imgsrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png',
+            icon_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/768px-Instagram_icon.png',
         },
         {
             name: 'Discord',
             connected: false,
-            imgsrc: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png',
+            icon_url: 'https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Discord_Logo_sans_texte.svg/213px-Discord_Logo_sans_texte.svg.png',
         },
     ];
 

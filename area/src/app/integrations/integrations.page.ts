@@ -4,12 +4,13 @@ import { ApiService } from 'src/utils/api.services';
 interface APIServices {
     name: string;
     connected: boolean;
-    imgsrc: string;
+    icon_url: string;
 }
 
 interface ActionReaction {
     title: string;
     description: string;
+    api_name: string;
 }
 
 @Component({
@@ -19,19 +20,22 @@ interface ActionReaction {
 })
 export class IntegrationsPage implements OnInit {
     integrations: APIServices[] = [];
-
+    selectedIntegration: string = '';
     actions: ActionReaction[] = [];
 
     getimgsrc(title: string) {
-        let res = this.integrations.find(({ name }) => name === title)?.imgsrc;
-
-        console.warn(res);
-
+        let res = this.integrations.find(
+            ({ name }) => name === title
+        )?.icon_url;
         if (res == undefined) return 'assets/favicon.png';
         return res;
     }
 
     constructor(private service: ApiService) {}
+
+    selectIntegration(str: string) {
+        this.selectedIntegration = str;
+    }
 
     getAllServices() {
         let token = JSON.parse(
