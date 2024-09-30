@@ -37,6 +37,10 @@ const routes: Routes = [
     path: 'mobile',
     loadChildren: () => import('./mobile_navigation/navigation.module').then( m => m.NavigationPageModule)
   },
+  {
+    path: 'editeur',
+    loadChildren: () => import('./editeur/editeur.module').then( m => m.EditeurPageModule)
+  }
 ];
 
 @NgModule({
