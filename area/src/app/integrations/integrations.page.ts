@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { APIServices, IActions } from '../utils/data.models';
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-integration',
@@ -20,7 +21,10 @@ export class IntegrationsPage implements OnInit {
         return res;
     }
 
-    constructor(private service: ApiService) {}
+    constructor(
+        private service: ApiService,
+        protected platform: Platform
+    ) {}
 
     selectIntegration(str: string) {
         this.selectedIntegration = str;
