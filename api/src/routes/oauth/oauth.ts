@@ -26,6 +26,8 @@ oauthRouter.get('/update/:email', auth, async (req: Request, res: Response) => {
     const spotifyRefreshToken = req.cookies.refreshTokenSpotify;
     const discordRefreshToken = req.cookies.refreshTokenDiscord;
 
+    console.log(req.cookies);
+
     console.log('email', email);
     console.log('twitchAccessToken', twitchAccessToken);
     console.log('spotifyAccessToken', spotifyAccessToken);

@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpRequest } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -326,11 +327,12 @@ export class ApiService {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
         });
-
-        try {
-            return this.http.get<any>(`${this.API_URL}/api/oauth/update/${email}`, {
-                headers: headers,
-            });
+        const options = {
+            headers: headers,
+            params: new HttpParams().append('withCredentials', 'true')
+          }
+          try {
+            return this.http.get<any>(`${this.API_URL}/api/oauth/update/${email}`, options);
         } catch (error) {
             console.error('Error :', error);
             return of({
