@@ -117,16 +117,10 @@ githubRouter.get(
         failureRedirect: '/api/oauth/github/login',
     }),
     async function (req: any, res) {
-        const email = req.cookies.email;
         const accessTokenGithub = req.user.accessTokenGithub;
         const refreshTokenGithub = req.user.refreshTokenGithub;
-        await insertTokeninDb(
-            'github',
-            accessTokenGithub,
-            refreshTokenGithub,
-            email
-        );
-
+        res.cookie('accessTokenGithub', accessTokenGithub);
+        res.cookie('refreshTokenGithub', refreshTokenGithub);
         res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {

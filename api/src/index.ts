@@ -13,15 +13,26 @@ import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
 
 const app: Express = require('express')();
+const cookieParser = require('cookie-parser');
 const port: number = 3000;
 const pjson = require('../package.json');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');
+const cors = require('cors');
+const cookieSession = require('cookie-session');
 require('https').globalAgent.options.rejectUnauthorized = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+app.use(
+    cors({
+        origin: 'http://localhost:4200', // Your Angular app's URL
+        credentials: true,
+    })
+);
 
 app.use(
     session({

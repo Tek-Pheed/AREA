@@ -10,7 +10,7 @@ function generateToken(email: string): string {
 
 export const authRouter = Router();
 
-authRouter.post('/login', async (req: Request, res: Response) => {
+authRouter.post('/login', async (req: any, res: Response) => {
     /*
         #swagger.requestBody = {
             required: true,
@@ -45,7 +45,6 @@ authRouter.post('/login', async (req: Request, res: Response) => {
                 }
             }
         */
-        res.cookie('email', email);
         res.status(200).json(
             API(200, false, '', { token: generateToken(email) })
         );
@@ -89,7 +88,6 @@ authRouter.post('/register', async (req: Request, res: Response) => {
                 }
             }
         */
-        res.cookie('email', email);
         res.status(200).json(
             API(200, false, '', { token: generateToken(email) })
         );

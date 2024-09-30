@@ -59,12 +59,14 @@ actionsRouter.get('/api', auth, async (req: Request, res: Response) => {
     }
 });
 
-actionsRouter.get('/status', auth, async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    const email = req.cookies.email;
-    const data = await getStatusConnection(email);
-    if (data !== null) {
-        /*
+actionsRouter.get(
+    '/status/:email',
+    /*auth,*/ async (req: Request, res: Response) => {
+        res.header('Content-Type', 'application/json');
+        const email = req.params.email;
+        const data = await getStatusConnection(email);
+        if (data !== null) {
+            /*
             #swagger.responses[200] = {
                 description: "Some description...",
                 content: {
@@ -77,10 +79,11 @@ actionsRouter.get('/status', auth, async (req: Request, res: Response) => {
             }
             #swagger.tags = ['Actions']
         */
-        res.status(200).json(API(200, false, '', data));
-    } else {
-        res.status(500).json(
-            API(500, true, 'Error when fetching status', null)
-        );
+            res.status(200).json(API(200, false, '', data));
+        } else {
+            res.status(500).json(
+                API(500, true, 'Error when fetching status', null)
+            );
+        }
     }
-});
+);
