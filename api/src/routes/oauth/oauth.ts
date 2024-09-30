@@ -13,7 +13,7 @@ oauthRouter.use('/twitch', twitchRouter);
 oauthRouter.use('/discord', discordRouter);
 oauthRouter.use('/github', githubRouter);
 
-oauthRouter.get('/update/:email', async (req: Request, res: Response) => {
+oauthRouter.post('/update/:email', async (req: Request, res: Response) => {
     const email = req.params.email;
 
     const twitchAccessToken = req.cookies.accessTokenTwitch;
