@@ -127,6 +127,13 @@ export const options = {
                     },
                 ],
             },
+            configs_body: {
+                action_id: 0,
+                method: ['GET', 'POST', 'PUT', 'DELETE'],
+                headers: 'json',
+                body: 'json',
+                reaction_id: 0,
+            },
         },
     },
 };

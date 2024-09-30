@@ -49,3 +49,43 @@ export async function createUserConfig(body: any, token: string): Promise<any> {
     }
     return null;
 }
+
+export async function updateUserConfig(body: any, id: string): Promise<any> {
+    try {
+        body = [
+            body.method,
+            JSON.stringify(body.headers),
+            JSON.stringify(body.body),
+        ];
+        await db
+            .promise()
+            .query(
+                `UPDATE users_configs SET method=?,headers=?,body=? WHERE id=${id}`,
+                body
+            );
+        return true;
+    } catch (e) {
+        console.error(e);
+    }
+    return null;
+}
+
+export async function removeUserConfig(
+    id: string,
+    token: string
+): Promise<any> {
+    if (!token) return null;
+    try {
+        let webToken = token.toString().split(' ')[1];
+        let decoded: any = jwt.verify(webToken, process.env.SECRET);
+        await db
+            .promise()
+            .query('DELETE FROM users_configs WHERE email=? AND id=?', [
+                decoded.email,
+                id,
+            ]);
+    } catch (e) {
+        console.error(e);
+    }
+    return null;
+}
