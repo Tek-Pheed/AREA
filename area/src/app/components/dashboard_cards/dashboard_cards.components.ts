@@ -7,7 +7,7 @@ import { Component, Input } from "@angular/core";
 })
 export class DashboardCardsComponent {
     @Input() title: string = "";
-    @Input() background_color: string = "";
+    @Input() background_color: string = "transparent";
     @Input() image_1: string = "";
     @Input() image_2: string = "";
 
