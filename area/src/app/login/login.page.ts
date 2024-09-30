@@ -45,7 +45,12 @@ export class LoginPage implements OnInit {
     }
 
     loginCallback(result: any) {
+        let email: string;
+
+        if (this.emailInput?.nativeElement != undefined) {
+            email = this.emailInput.nativeElement.value;
+            localStorage.setItem('Email', email);
+        }
         localStorage.setItem('Token', result.data.token);
-        //JSON.parse(localStorage.getItem('Token') as string);
     }
 }

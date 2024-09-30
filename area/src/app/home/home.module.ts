@@ -18,6 +18,6 @@ import { ProfilCardComponent } from '../components/profil_card/profil_card.compo
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, DashboardCardsComponent]
+  declarations: [HomePage]
 })
 export class HomePageModule {}

@@ -34,7 +34,11 @@ export async function register(body: IUsers): Promise<boolean> {
                 'INSERT INTO users (email, password, username) values (?, ?, ?)',
                 [email, bcrypt.hashSync(password, 10), username]
             );
-        return result.length > 0;
+
+        const result_token = await db
+            .promise()
+            .query('INSERT INTO usersToken (email) values (?)', [email]);
+        return result.length > 0 && result_token.length > 0;
     } catch (err) {
         console.error(err);
         return false;
