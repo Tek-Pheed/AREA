@@ -1,17 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
+import { APIServices } from '../utils/data.models';
+import { ProfileData } from '../utils/data.models';
 
-interface ProfileData {
-    Name: string;
-    Email: string;
-    ImgSrc: string;
-}
-
-interface APIServices {
-    name: string;
-    connected: boolean;
-    icon_url: string;
-}
 
 @Component({
     selector: 'app-profil',
