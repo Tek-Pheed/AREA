@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { EditeurPage } from './editeur.page';
 import { EditeurPageRoutingModule } from './editeur-routing.module';
+import { EditorSettingsComponent } from '../components/editorSettings/editorSettings.components';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { EditeurPageRoutingModule } from './editeur-routing.module';
     IonicModule,
     EditeurPageRoutingModule,
   ],
-  declarations: [EditeurPage]
+  declarations: [EditeurPage, EditorSettingsComponent]
 })
 export class EditeurPageModule {}
