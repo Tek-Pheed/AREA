@@ -2,6 +2,11 @@ import supertest from 'supertest';
 import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import { generateToken } from '../routes/auth/auth';
+import { getActionsAPI, getAllActions } from '../routes/actions/action.query';
+import {
+    getAllReactions,
+    getReactionAPI,
+} from '../routes/reactions/reactions.query';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
 );
@@ -68,7 +73,21 @@ describe('actions', () => {
         });
     });
 
-    describe('return 500', () => {});
+    describe('return 500', () => {
+        beforeEach(async () => {
+            db.end();
+        });
+
+        it('Error when call action function', async () => {
+            const result = await getAllActions();
+            expect(result).toBe(null);
+        });
+
+        it('Error when call action function api', async () => {
+            const result = await getActionsAPI();
+            expect(result).toBe(null);
+        });
+    });
 
     afterAll(async () => {
         pool.end((err) => {

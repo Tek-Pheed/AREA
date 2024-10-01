@@ -3,6 +3,11 @@ import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import { generateToken } from '../routes/auth/auth';
 import { beforeEach } from 'node:test';
+import { getAllActions } from '../routes/actions/action.query';
+import {
+    getAllReactions,
+    getReactionAPI,
+} from '../routes/reactions/reactions.query';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
 );
@@ -59,7 +64,19 @@ describe('reactions', () => {
         });
     });
 
-    describe('return 500', () => {});
+    describe('return 500', () => {
+        it('Error when call reactions function', async () => {
+            db.end();
+            const result = await getAllReactions();
+            expect(result).toBe(null);
+        });
+
+        it('Error when call reactions function api', async () => {
+            db.end();
+            const result = await getReactionAPI();
+            expect(result).toBe(null);
+        });
+    });
 
     afterAll(async () => {
         pool.end((err) => {
