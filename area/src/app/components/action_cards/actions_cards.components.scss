@@ -11,6 +11,15 @@
     transition: 0.2s;
 }
 
+.editImg {
+    position: absolute;
+  width: 9%;
+  right: 1.5%;
+  border-radius: 50%;
+  top: 2.5%;
+  background-color: white;
+}
+
 .top-row {
     display: flex;
     align-items: center;

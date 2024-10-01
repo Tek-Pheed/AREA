@@ -76,6 +76,14 @@ export class EditeurPage implements OnInit {
         console.log(data);
     }
 
+    swapAction(id: string) {
+        console.log("swapAction");
+    }
+
+    swapReactions(id: string) {
+        console.log("swapReaction");
+    }
+
     getAllData() {
         let token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string
