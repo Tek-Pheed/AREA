@@ -14,11 +14,33 @@ export async function getUserSpotifyID(token: string): Promise<string> {
     return response.data.id;
 }
 
+export async function getSongID(
+    name: string,
+    access_token: string
+): Promise<any> {
+    const response = await axios.get(
+        `https://api.spotify.com/v1/search?q=${name}&type=track`,
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        }
+    );
+    if (!response.data) {
+        return false;
+    }
+    return response.data.tracks.items[0].id;
+}
+
 export async function startPlaybackSong(
     email: string,
     track: string
 ): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    const song_id = await getSongID(track, sAccessToken);
+    if (!song_id) {
+        return false;
+    }
     const response = await axios.put(
         'https://api.spotify.com/v1/me/player/play',
         {},
@@ -28,7 +50,7 @@ export async function startPlaybackSong(
                 'Content-Type': 'application/json',
             },
             data: {
-                uris: [`spotify:track:${track}`],
+                uris: [`spotify:track:${song_id}`],
             },
         }
     );
