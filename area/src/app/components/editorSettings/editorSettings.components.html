@@ -1,0 +1,36 @@
+<ion-content class="ion-padding">
+    <ion-button id="open-modal" expand="block">Open</ion-button>
+    <ion-modal trigger="open-modal">
+        <ng-template>
+            <img src="{{properties.img_src}}" class="bgImg">
+            <div class="topContent">
+                <img class="topImg" src="{{properties.img_src}}">
+                <p>{{properties.name}}</p>
+            </div>
+            <ion-content class="ion-padding">
+                <ion-item *ngFor="let f of fields">
+                    <ion-input label="{{f.fieldDescription}}" labelPlacement="stacked" type="text"
+                        placeholder="{{f.fieldValue}}" value="{{f.fieldValue}}"
+                        (click)="setFocusElement($event)"></ion-input>
+                </ion-item>
+                <div class="chipsContainer">
+                    <h4>Available Variables:</h4>
+                    <ion-chip [outline]="true" *ngFor="let v of this.variables" (click)="addVariableToField(v.value)">
+                        <ion-avatar>
+                            <img src="{{v.img_src}}" />
+                        </ion-avatar>
+                        <ion-label>{{v.name}}</ion-label>
+                    </ion-chip>
+                </div>
+            </ion-content>
+            <div>
+                <ion-toolbar>
+                    <ion-buttons slot="end">
+                        <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
+                        <ion-button (click)="cancel()">Cancel</ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </div>
+        </ng-template>
+    </ion-modal>
+</ion-content>
