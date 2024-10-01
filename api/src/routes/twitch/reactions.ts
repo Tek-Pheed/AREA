@@ -46,15 +46,14 @@ export async function createClip(email: string, broadcasterUsername: string): Pr
         );
 
         if (response.status === 202) {
-            const clipData = response.data.data[0];
-            return clipData;
+            return true;
         } else {
             console.error(`Failed to create clip. Status code : ${response.status}`);
-            return null;
+            return false;
         }
     } catch (error) {
         console.error(`Error creating clip : ${error}`);
-        return null;
+        return false;
     }
 }
 
@@ -85,14 +84,13 @@ export async function sendChatMessage(email: string, broadcasterUsername: string
         );
 
         if (response.status === 200) {
-            const responseData = response.data.data[0];
-            return responseData;
+            return true;
         } else {
             console.error(`Failed to send message. Status code : ${response.status}`);
-            return null;
+            return false;
         }
     } catch (error) {
         console.error(`Error sending chat message : ${error}`);
-        return null;
+        return false;
     }
 }
