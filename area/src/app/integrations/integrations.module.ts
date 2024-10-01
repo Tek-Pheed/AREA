@@ -14,12 +14,12 @@ import { ActionsCardsComponent } from '../components/action_cards/actions_cards.
         FormsModule,
         IonicModule,
         IntegrationsPageRoutingModule,
+        ActionsCardsCompactComponent,
         ActionsCardsComponent,
     ],
     exports: [NavbarComponent],
     declarations: [
         IntegrationsPage,
-        ActionsCardsCompactComponent,
         NavbarComponent,
     ],
 })

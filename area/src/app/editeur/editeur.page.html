@@ -1,10 +1,22 @@
 <h1>Editor</h1>
-<editor-settings #actionModal [headerProperties]="actionProperties" [fields]="actionFields"
+<editor-settings [headerProperties]="actionProperties" [fields]="actionFields"
     [variables]="actionVariables" (onModalClose)="actionModalClosed($event)"
     [isOpen]="actionModalShow"></editor-settings>
-<editor-settings #reactionModal [headerProperties]="reactionProperties" [fields]="reactionFields"
+<editor-settings [headerProperties]="reactionProperties" [fields]="reactionFields"
     [variables]="reactionVariables" (onModalClose)="reactionModalClose($event)"
     [isOpen]="reactionModalShow"></editor-settings>
+<editor-swap-settings
+    [services]="this.integrations"
+    [areas]="this.actions"
+    [isOpen]="actionSwapModalOpen"
+    (onModalClose)="reactionModalClose($event)"
+></editor-swap-settings>
+<editor-swap-settings
+    [services]="this.integrations"
+    [areas]="this.reactions"
+    [isOpen]="reactionSwapModalOpen"
+    (onModalClose)="reactionModalClose($event)"
+></editor-swap-settings>
 <div class="container">
     <div class="container">
         <app-actions-cards title="{{selectedAction?.title}}" description="{{selectedAction?.description}}"

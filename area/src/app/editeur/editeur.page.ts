@@ -46,6 +46,9 @@ export class EditeurPage implements OnInit {
     reactionFields: IModalFields[] = [];
     reactionVariables: IModalVariables[] = [];
 
+    actionSwapModalOpen: boolean = false;
+    reactionSwapModalOpen: boolean = false;
+
     openActionModal() {
         if (this.selectedAction != undefined) {
             this.actionProperties.img_src = this.getimgsrc(
@@ -78,10 +81,22 @@ export class EditeurPage implements OnInit {
 
     swapAction(id: string) {
         console.log("swapAction");
+        this.actionSwapModalOpen = true;
+    }
+
+    swapActionSave(object: any) {
+        this.actionSwapModalOpen = false;
+        console.log(object);
+    }
+
+    swapReactionSave(object: any) {
+        this.reactionSwapModalOpen = false;
+        console.log(object);
     }
 
     swapReactions(id: string) {
         console.log("swapReaction");
+        this.reactionSwapModalOpen = true;
     }
 
     getAllData() {
