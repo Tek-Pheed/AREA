@@ -1,11 +1,17 @@
 <h1>Editor</h1>
-<editor-settings></editor-settings>
+<editor-settings #actionModal [headerProperties]="actionProperties" [fields]="actionFields"
+    [variables]="actionVariables" (onModalClose)="actionModalClosed($event)" [isOpen]="actionModalShow"></editor-settings>
+<editor-settings #reactionModal [headerProperties]="reactionProperties" [fields]="reactionFields"
+    [variables]="reactionVariables" (onModalClose)="reactionModalClose($event)" [isOpen]="reactionModalShow"></editor-settings>
 <div class="container">
     <div class="container">
-    <app-actions-cards title="{{selectedAction?.title}}" description="{{selectedAction?.description}}"
-        image="{{getimgsrc(selectedAction?.api_name)}}"></app-actions-cards>
-    <img src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
-    <app-actions-cards title="{{selectedReaction?.title}}" description="{{selectedReaction?.description}}"
-        image="{{getimgsrc(selectedReaction?.api_name)}}"></app-actions-cards>
+        <app-actions-cards title="{{selectedAction?.title}}" description="{{selectedAction?.description}}"
+            image="{{getimgsrc(selectedAction?.api_name)}}" (click)="openActionModal()"></app-actions-cards>
+        <img src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
+        <app-actions-cards title="{{selectedReaction?.title}}" description="{{selectedReaction?.description}}"
+            image="{{getimgsrc(selectedReaction?.api_name)}}" (click)="openReactionModal()"></app-actions-cards>
     </div>
+</div>
+<div class="bottomContainer">
+    <button class="buttonLight">Save</button>
 </div>

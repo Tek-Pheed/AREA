@@ -1,41 +1,20 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
-
-interface modalFields {
-    fieldID: string;
-    fieldDescription: string;
-    fieldType: string;
-    fieldValue: string;
-}
-
-interface headerProperties {
-    name: string;
-    img_src: string;
-}
-
-interface modalVariables {
-    name: string;
-    img_src: string;
-    value: string;
-}
+import { IHeaderProperties, IModalFields, IModalVariables } from 'src/app/utils/data.models';
 
 @Component({
     selector: 'editor-settings',
     templateUrl: 'editor_settings.components.html',
     styleUrls: ['editor_settings.components.scss'],
 })
-export class EditorSettingsComponent {
+export class EditorSettingsComponent{
     @ViewChild(IonModal) modal: IonModal | undefined;
 
     focusedElement: any;
 
-    @Input('headerProperties') properties: headerProperties = {
-        name: 'Spotify',
-        img_src:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRslcO84eWfXP_4Ucd4Yfz6B8uqJmHaTo0iTw&s',
-    };
+    @Input('headerProperties') properties: IHeaderProperties = {img_src:'', name:''};
 
-    @Input('fields') fields: modalFields[] = [
+    @Input('fields') fields: IModalFields[] = [
         {
             fieldID: '0',
             fieldDescription: 'Name of the track to play',
@@ -50,7 +29,7 @@ export class EditorSettingsComponent {
         },
     ];
 
-    @Input('variables') variables: modalVariables[] = [
+    @Input('variables') variables: IModalVariables[] = [
         {
             name: 'Name of the commit',
             value: '{{github.commitName}}',
@@ -71,7 +50,12 @@ export class EditorSettingsComponent {
         },
     ];
 
+    @Input('isOpen') isOpen: boolean = false;
+    @Output('onModalClose') onModalClose = new EventEmitter<IModalFields[]>();
+
     cancel() {
+        this.onModalClose.emit([]);
+        this.isOpen = false;
         this.modal?.dismiss(null, 'cancel');
     }
 
@@ -85,6 +69,8 @@ export class EditorSettingsComponent {
     }
 
     confirm() {
+        this.onModalClose.emit(this.fields);
+        this.isOpen = false;
         this.modal?.dismiss(this.fields, 'confirm');
     }
 

@@ -49,3 +49,21 @@ export interface IAreaPair {
     id: string;
     reaction_id: 0;
 }
+
+export interface IModalFields {
+    fieldID: string;
+    fieldDescription: string;
+    fieldType: string;
+    fieldValue: string;
+}
+
+export interface IHeaderProperties {
+    name: string;
+    img_src: string;
+}
+
+export interface IModalVariables {
+    name: string;
+    img_src: string;
+    value: string;
+}

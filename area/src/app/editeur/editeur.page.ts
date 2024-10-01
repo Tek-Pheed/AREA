@@ -1,8 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/utils/api.services';
 import { ActivatedRoute } from '@angular/router';
-import { APIServices, IActions, IReactions } from '../utils/data.models';
+import {
+    APIServices,
+    IActions,
+    IHeaderProperties,
+    IModalFields,
+    IModalVariables,
+    IReactions,
+} from '../utils/data.models';
 
 interface UserConfig {
     action_id: number;
@@ -28,6 +35,46 @@ export class EditeurPage implements OnInit {
 
     selectedAction: IActions | undefined = undefined;
     selectedReaction: IReactions | undefined = undefined;
+
+    actionModalShow: boolean = false;
+    actionProperties: IHeaderProperties = { name: '', img_src: '' };
+    actionFields: IModalFields[] = [];
+    actionVariables: IModalVariables[] = [];
+
+    reactionModalShow: boolean = false;
+    reactionProperties: IHeaderProperties = { name: '', img_src: '' };
+    reactionFields: IModalFields[] = [];
+    reactionVariables: IModalVariables[] = [];
+
+    openActionModal() {
+        if (this.selectedAction != undefined) {
+            this.actionProperties.img_src = this.getimgsrc(
+                this.selectedAction.api_name
+            );
+            this.actionProperties.name = this.selectedAction.api_name;
+            this.actionModalShow = true;
+        }
+    }
+
+    openReactionModal() {
+        if (this.selectedReaction != undefined) {
+            this.reactionProperties.img_src = this.getimgsrc(
+                this.selectedReaction.api_name
+            );
+            this.reactionProperties.name = this.selectedReaction.api_name;
+            this.reactionModalShow = true;
+        }
+    }
+
+    actionModalClosed(data: any) {
+        this.actionModalShow = false;
+        console.log(data);
+    }
+
+    reactionModalClose(data: any) {
+        this.reactionModalShow = false;
+        console.log(data);
+    }
 
     getAllData() {
         let token = JSON.parse(
@@ -81,11 +128,12 @@ export class EditeurPage implements OnInit {
                 if (this.configID != null && this.configID != undefined) {
                     let config: any = res.data.filter(
                         (obj: any) => obj.id == this.configID
-                    )[0];
-                    this.actionID = config.actions_id;
-                    this.reactionID = config.reaction_id;
-                    console.log(this.actionID);
-                    console.log(this.reactionID);
+                    );
+                    if (config != undefined && config[0] != undefined) {
+                        config = config[0];
+                        this.actionID = config.actions_id;
+                        this.reactionID = config.reaction_id;
+                    }
                 }
                 this.getAllDatas();
             },
