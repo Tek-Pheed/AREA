@@ -12,16 +12,18 @@ ion-modal {
     border-style: solid;
     border-width: 2px;
     border-color: white;
+    background-color: white;
 }
 
 .topContent {
     padding: 3%;
     display: flex;
+    background-color: rgba(0, 0, 0, 0.207);
 }
 
 .bgImg {
-    filter: blur(15px) saturate(3);
-    transform: scale(4);
+    filter: blur(35px) saturate(2);
+    transform: scale(2.5);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -29,12 +31,24 @@ ion-modal {
     opacity: 0.85;
 }
 
+.topText {
+    display: block;
+    width: 75%;
+    align-content: center;
+}
+
 p {
+    padding: 0px;
     align-self: center;
     padding-left: 10px;
     font-size: xx-large;
     color: white;
     font-weight: bolder;
+    margin: 0px;
+}
+
+.littleText {
+    font-size:  medium;
 }
 
 .chipsContainer {

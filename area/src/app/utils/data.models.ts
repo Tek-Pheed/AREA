@@ -59,6 +59,7 @@ export interface IModalFields {
 
 export interface IHeaderProperties {
     name: string;
+    description: string,
     img_src: string;
 }
 

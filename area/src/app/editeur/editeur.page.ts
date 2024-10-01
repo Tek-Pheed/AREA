@@ -37,12 +37,12 @@ export class EditeurPage implements OnInit {
     selectedReaction: IReactions | undefined = undefined;
 
     actionModalShow: boolean = false;
-    actionProperties: IHeaderProperties = { name: '', img_src: '' };
+    actionProperties: IHeaderProperties = { name: '', img_src: '', description: '' };
     actionFields: IModalFields[] = [];
     actionVariables: IModalVariables[] = [];
 
     reactionModalShow: boolean = false;
-    reactionProperties: IHeaderProperties = { name: '', img_src: '' };
+    reactionProperties: IHeaderProperties = { name: '', img_src: '', description: '' };
     reactionFields: IModalFields[] = [];
     reactionVariables: IModalVariables[] = [];
 
@@ -55,6 +55,7 @@ export class EditeurPage implements OnInit {
                 this.selectedAction.api_name
             );
             this.actionProperties.name = this.selectedAction.api_name;
+            this.actionProperties.description = this.selectedAction.description;
             this.actionModalShow = true;
         }
     }
@@ -65,6 +66,7 @@ export class EditeurPage implements OnInit {
                 this.selectedReaction.api_name
             );
             this.reactionProperties.name = this.selectedReaction.api_name;
+            this.reactionProperties.description = this.selectedReaction.description;
             this.reactionModalShow = true;
         }
     }
@@ -79,23 +81,32 @@ export class EditeurPage implements OnInit {
         console.log(data);
     }
 
-    swapAction(id: string) {
+    swapAction() {
         console.log("swapAction");
         this.actionSwapModalOpen = true;
     }
 
-    swapActionSave(object: any) {
+    swapActionSave(id: any) {
         this.actionSwapModalOpen = false;
-        console.log(object);
+        if (id != undefined && id != '' && !isNaN(Number(id))) {
+            this.actionID = id;
+            this.selectedAction = this.actions.filter(
+                (a) => a.id == Number(this.actionID)
+            )[0];
+        }
     }
 
-    swapReactionSave(object: any) {
+    swapReactionSave(id: any) {
         this.reactionSwapModalOpen = false;
-        console.log(object);
+        if (id != undefined && id != '' && !isNaN(Number(id))) {
+            this.reactionID = id;
+            this.selectedReaction = this.reactions.filter(
+                (a) => a.id == Number(this.reactionID)
+            )[0];
+        }
     }
 
-    swapReactions(id: string) {
-        console.log("swapReaction");
+    swapReactions() {
         this.reactionSwapModalOpen = true;
     }
 

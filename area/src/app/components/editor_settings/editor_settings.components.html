@@ -4,7 +4,10 @@
             <img src="{{properties.img_src}}" class="bgImg">
             <div class="topContent">
                 <img class="topImg" src="{{properties.img_src}}">
+                <div class="topText">
                 <p>{{properties.name}}</p>
+                <p class="littleText">{{properties.description}}</p>
+            </div>
             </div>
             <ion-content class="ion-padding">
                 <ion-item *ngFor="let f of fields">

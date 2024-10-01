@@ -12,7 +12,7 @@ export class EditorSettingsComponent{
 
     focusedElement: any;
 
-    @Input('headerProperties') properties: IHeaderProperties = {img_src:'', name:''};
+    @Input('headerProperties') properties: IHeaderProperties = {img_src:'', name:'', description: ''};
 
     @Input('fields') fields: IModalFields[] = [
         {
