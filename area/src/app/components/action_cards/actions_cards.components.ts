@@ -4,6 +4,7 @@ import { Component, Input } from "@angular/core";
     selector: "app-actions-cards",
     templateUrl: "actions_cards.components.html",
     styleUrls: ["actions_cards.components.scss"],
+    standalone: true
 })
 export class ActionsCardsComponent {
     @Input() title: string = "";

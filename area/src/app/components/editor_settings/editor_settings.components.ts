@@ -21,8 +21,8 @@ interface modalVariables {
 
 @Component({
     selector: 'editor-settings',
-    templateUrl: 'editorSettings.components.html',
-    styleUrls: ['editorSettings.components.scss'],
+    templateUrl: 'editor_settings.components.html',
+    styleUrls: ['editor_settings.components.scss'],
 })
 export class EditorSettingsComponent {
     @ViewChild(IonModal) modal: IonModal | undefined;
