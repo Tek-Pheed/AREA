@@ -6,17 +6,18 @@ import { ProfilePage } from './profile.page';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { AppConnectedCardComponent } from '../components/application_connection/app-connection.components';
 import { ApiService } from 'src/utils/api.services';
+import { ProfilCardComponent } from '../components/profil_card/profil_card.components';
+import { IntegrationsPageModule } from '../integrations/integrations.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ProfilePageRoutingModule,
-  ],
-  providers: [
-    ApiService
-  ],
-  declarations: [ProfilePage, AppConnectedCardComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ProfilePageRoutingModule,
+        IntegrationsPageModule,
+    ],
+    providers: [ApiService],
+    declarations: [ProfilePage, AppConnectedCardComponent, ProfilCardComponent],
 })
 export class ProfilePageModule {}

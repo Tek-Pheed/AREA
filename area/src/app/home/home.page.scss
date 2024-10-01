@@ -94,13 +94,20 @@ a {
   border-radius: 10px;
 }
 
-button:hover {
+.button {
+  background: white;
+  text-decoration: none;
+  height: 100%;
+}
+
+.button:hover {
   background: gainsboro;
 }
 
 .buttonLight {
   background: none;
   color: white;
+  text-decoration: none;
 }
 
 .buttonLight:hover {

@@ -1,5 +1,5 @@
 .card-container {
-    width: 60%;
+    width: 100%;
     height: 100%;
     border-radius: 30px;
     padding: 30px;
@@ -33,7 +33,6 @@
     font-size: 24px;
     font-weight: bold;
     margin: 0;
-    color: black;
     font-family:
         system-ui,
         -apple-system,
@@ -75,13 +74,13 @@
 }
 
 .profil-input {
+    width: 100%;
     margin-bottom: 30px;
     padding: 0 20px;
     font-size: 16px;
     border-radius: 25px;
     border: 1px solid #ccc;
     background-color: white;
-    width: 500px;
     height: 60px;
     color: black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -89,7 +88,7 @@
 
 .password-input-container {
     position: relative;
-    width: 500px;
+    width: 100%;
 }
 
 .password-input-container i {
@@ -119,4 +118,28 @@
 .apply-button:hover {
     background-color: #f0f0f0;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+    .profil-input {
+        width: 100%;
+        margin-bottom: 30px;
+        padding: 0 20px;
+        font-size: 16px;
+        border-radius: 25px;
+        border: 1px solid #ccc;
+        background-color: black;
+        height: 60px;
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .password-input-container i {
+        position: absolute;
+        right: 15px;
+        top: 35%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: white;
+    }
 }
