@@ -3,7 +3,11 @@ import { spotifyRouter } from '../spotify/spotify';
 import { twitchRouter } from '../twitch/twitch';
 import { discordRouter } from '../discord/discord';
 import { githubRouter } from '../github/github';
-import { getAllConnections, insertTokeninDb } from './oauth.query';
+import {
+    getAllConnections,
+    insertTokeninDb,
+    logoutService,
+} from './oauth.query';
 import API from '../../middlewares/api';
 import { auth } from '../../middlewares/auth';
 
@@ -83,3 +87,21 @@ oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
         );
     }
 });
+
+oauthRouter.delete(
+    '/logout/:service/:email',
+    auth,
+    async (req: Request, res: Response) => {
+        const email = req.params.email;
+        const service = req.params.service;
+
+        const result = await logoutService(email, service);
+        if (result != null) {
+            res.status(200).json(API(200, false, '', result));
+        } else {
+            res.status(500).json(
+                API(500, true, 'Error loggint out of ' + service, null)
+            );
+        }
+    }
+);

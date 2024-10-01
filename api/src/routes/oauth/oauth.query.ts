@@ -39,3 +39,15 @@ export async function getAllConnections(token: string): Promise<any> {
     }
     return null;
 }
+
+export async function logoutService(email: string, service: string) {
+    try {
+        await db
+            .promise()
+            .query(
+                `UPDATE usersToken SET ${service}AccessToken=NULL, ${service}RefreshToken=NULL WHERE email='${email}'`
+            );
+    } catch (e) {
+        console.error(e);
+    }
+}
