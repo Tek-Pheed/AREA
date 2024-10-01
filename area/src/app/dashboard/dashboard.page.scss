@@ -46,15 +46,22 @@ input {
     margin-bottom: 5%;
 }
 
-.integrationList,
+.integrationList{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+
+    app-dashboard-cards {
+        margin: 20px;
+    }
+}
+
 .integrationListSmall {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 10px;
+    display: flex;
     align-items: center;
-    justify-items: center;
-    align-items: center;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    height: 70vh;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
 }
