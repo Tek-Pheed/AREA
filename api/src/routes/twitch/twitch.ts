@@ -138,16 +138,9 @@ twitchRouter.get(
         failureRedirect: '/api/oauth/twitch/login',
     }),
     async (req: any, res: Response) => {
-        const email = req.cookies.email;
-        const accessTokenTwitch = req.user.accessTokenTwitch;
-        const refreshTokenTwitch = req.user.refreshTokenTwitch;
-        await insertTokeninDb(
-            'twitch',
-            accessTokenTwitch,
-            refreshTokenTwitch,
-            email
+        res.redirect(
+            `http://localhost:4200/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
         );
-        res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",

@@ -126,16 +126,9 @@ spotifyRouter.get(
         failureRedirect: '/api/oauth/spotify/login',
     }),
     async (req: any, res: Response) => {
-        const email = req.cookies.email;
-        const accessTokenSpotify = req.user.accessTokenSpotify;
-        const refreshTokenSpotify = req.user.refreshTokenSpotify;
-        await insertTokeninDb(
-            'spotify',
-            accessTokenSpotify,
-            refreshTokenSpotify,
-            email
+        res.redirect(
+            `http://localhost:4200/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
         );
-        res.redirect('http://localhost:4200/profile');
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",

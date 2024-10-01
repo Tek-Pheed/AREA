@@ -21,7 +21,6 @@
         flex-grow: 1;
         margin-left: 10px;
         font-weight: bold;
-        color: black;
     }
 
     .connect-btn {
@@ -43,5 +42,15 @@
 
     .green {
         background-color: green;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .container {
+        background: black;
+    }
+
+    .profile-img {
+        background: white;
     }
 }

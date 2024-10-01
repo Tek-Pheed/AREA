@@ -47,7 +47,7 @@ END AS google
 FROM
     usersToken
 WHERE
-    usersToken.email = ${email}`);
+    usersToken.email = '${email}'`);
         if (result.length > 0) {
             return result[0];
         } else {

@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpRequest } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -75,7 +76,7 @@ export class ApiService {
 
     getAllServices(token: string): Observable<any> {
         const headers = new HttpHeaders({
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         });
         try {
@@ -321,6 +322,98 @@ export class ApiService {
         }
     }
 
+    getAllConnections(token: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.get<any>(`${this.API_URL}/api/oauth/connections`, {
+                headers,
+            });
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    updateAPILoginTokens(
+        token: string,
+        email: string,
+        body: any
+    ): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.post<any>(
+                `${this.API_URL}/api/oauth/update/${email}`,
+                JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    updateCurrentUser(token: string, info: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.put<any>(
+                `${this.API_URL}/api/users/me`,
+                JSON.stringify(info),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    logoutService(
+        token: string,
+        email: string,
+        service: string
+    ): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.delete<any>(
+                `${this.API_URL}/api/oauth/logout/${service}/${email}`,
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 }
 
 // user/config

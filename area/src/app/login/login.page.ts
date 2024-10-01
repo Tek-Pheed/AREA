@@ -52,5 +52,6 @@ export class LoginPage implements OnInit {
             localStorage.setItem('Email', email);
         }
         localStorage.setItem('Token', result.data.token);
+        window.location.href = '/profile';
     }
 }

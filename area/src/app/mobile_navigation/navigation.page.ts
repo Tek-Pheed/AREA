@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-mobile_navigation',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
     styleUrls: ['navigation.page.scss'],
 })
 export class NavigationPage {
-
-    constructor() {}
-
+    constructor(private platform: Platform) {
+        if (this.platform.is('desktop')) {
+            window.location.href = '/';
+        }
+    }
 }
