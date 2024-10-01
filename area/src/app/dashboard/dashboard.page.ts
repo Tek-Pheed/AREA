@@ -21,6 +21,17 @@ export class DashboardPage implements OnInit {
     reactions: IReactions[] = [];
     apis: IApi[] = [];
     datas: activeArea[] = [];
+    showActiveArea: activeArea[] = [];
+    searchText: string = '';
+
+    handleInput(event: any) {
+        const query = event.target.value.toLowerCase();
+
+        this.showActiveArea = this.datas.filter(
+            (integration) =>
+                integration.name.toLowerCase().indexOf(query.toLowerCase()) > -1
+        );
+    }
 
     getApis() {
         let token = JSON.parse(
@@ -116,7 +127,7 @@ export class DashboardPage implements OnInit {
                 reactionAPILogoUrl: apiB.icon_url,
             });
         }
-        console.warn(this.datas);
+        this.showActiveArea = this.datas;
     }
 
     ngOnInit(): void {
