@@ -1,5 +1,5 @@
 .card-container {
-    width: 400px;
+    width: 40vh;
     height: 200px;
     border-radius: 30px;
     padding: 16px;
@@ -62,4 +62,10 @@
     border-radius: 50%;
     object-fit: cover;
     background-color: #fff;
+}
+
+@media screen and (max-width: 500px) {
+    .card-container {
+        width: 50vh;
+    }
 }
