@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 export async function insertTokeninDb(
     provider: string,
     accessToken: string,
-    refreshToken: string,
+    refreshToken: any,
     email: string
 ) {
     try {

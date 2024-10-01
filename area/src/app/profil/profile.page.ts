@@ -3,6 +3,7 @@ import { ApiService } from 'src/utils/api.services';
 import { APIServices } from '../utils/data.models';
 import { ProfileData } from '../utils/data.models';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-profil',
@@ -19,7 +20,7 @@ export class ProfilePage implements OnInit {
 
     constructor(
         private service: ApiService,
-        private route: ActivatedRoute
+        protected platform: Platform
     ) {}
 
     ngOnInit(): void {
@@ -56,7 +57,9 @@ export class ProfilePage implements OnInit {
                 console.error(res.data);
                 this.servicesData = res.data;
                 this.loaded = true;
-                this.updateAPIBackend();
+                if (this.current_oauth_api.length > 0) {
+                    this.updateAPIBackend();
+                }
             },
             (err) => {
                 console.error(err);
@@ -113,6 +116,7 @@ export class ProfilePage implements OnInit {
             .subscribe(
                 (res) => {
                     console.log(res);
+                    this.getAllServices();
                 },
                 (err) => {
                     console.error(err);

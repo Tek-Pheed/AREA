@@ -43,22 +43,14 @@ oauthRouter.post(
         ) {
             await insertTokeninDb(
                 'discord',
-                twitch.access_token,
-                twitch.refresh_token,
+                discord.access_token,
+                discord.refresh_token,
                 email
             );
         }
 
-        if (
-            github.access_token != undefined &&
-            github.refresh_token != undefined
-        ) {
-            await insertTokeninDb(
-                'github',
-                github.access_token,
-                github.refresh_token,
-                email
-            );
+        if (github.access_token != undefined) {
+            await insertTokeninDb('github', github.access_token, null, email);
         }
 
         if (
