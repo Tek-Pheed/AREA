@@ -25,6 +25,10 @@ const routes: Routes = [
         pathMatch: 'full',
     },
     {
+      path: 'dashboard',
+      loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    },
+    {
         path: 'login',
         loadChildren: () =>
             import('./login/login.module').then((m) => m.LoginPageModule),
