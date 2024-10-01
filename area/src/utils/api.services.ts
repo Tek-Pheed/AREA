@@ -367,7 +367,8 @@ export class ApiService {
             });
         }
     }
-  updateCurrentUser(token: string, info: any): Observable<any> {
+
+    updateCurrentUser(token: string, info: any): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + token,
@@ -413,7 +414,6 @@ export class ApiService {
             });
         }
     }
-    
 }
 
 // user/config
