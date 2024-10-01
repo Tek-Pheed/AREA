@@ -60,6 +60,7 @@
         "passport-twitch": "^1.0.3",
         "passport-twitchtv": "^0.1.4",
         "passport-twitter": "^1.0.4",
+        "passport-spotify": "^2.0.0",
         "swagger-autogen": "^2.23.7",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
