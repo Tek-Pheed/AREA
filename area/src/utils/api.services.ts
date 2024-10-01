@@ -367,6 +367,27 @@ export class ApiService {
             });
         }
     }
+  updateCurrentUser(token: string, info: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.put<any>(
+                `${this.API_URL}/api/users/me`,
+                JSON.stringify(info),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 
     logoutService(
         token: string,
@@ -392,6 +413,7 @@ export class ApiService {
             });
         }
     }
+    
 }
 
 // user/config

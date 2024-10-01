@@ -61,7 +61,7 @@ actionsRouter.get('/api', auth, async (req: Request, res: Response) => {
 
 actionsRouter.get(
     '/status/:email',
-    /*auth,*/
+    auth,
     async (req: Request, res: Response) => {
         res.header('Content-Type', 'application/json');
         const email = req.params.email;

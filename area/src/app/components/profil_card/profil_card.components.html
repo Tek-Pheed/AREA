@@ -10,18 +10,23 @@
         <input
             type="text"
             placeholder="Name"
+            value="{{inputName}}"
             class="profil-input"
+            (input)="updateName($event)"
         />
         <input
             type="text"
             placeholder="Email"
+            value="{{inputEmail}}"
             class="profil-input"
+            (input)="updateEmail($event)"
         />
         <div class="password-input-container">
             <input
                 [type]="showPassword ? 'text' : 'password'"
                 placeholder="Password"
                 class="profil-input password-input"
+                (input)="updatePassword($event)"
             />
             <i
                 [class]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"
