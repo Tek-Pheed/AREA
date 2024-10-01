@@ -32,6 +32,10 @@ export const options = {
             name: 'Configs',
             description: '',
         },
+        {
+            name: 'OAuth',
+            description: '',
+        },
     ],
     components: {
         securitySchemes: {
