@@ -60,6 +60,7 @@ export class EditorSawpSettingsComponent {
 
     cancel() {
         this.isOpen = false;
+        this.onModalClose.emit(undefined);
         this.modal?.dismiss(null, 'cancel');
     }
 

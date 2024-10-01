@@ -73,16 +73,13 @@ export class EditeurPage implements OnInit {
 
     actionModalClosed(data: any) {
         this.actionModalShow = false;
-        console.log(data);
     }
 
     reactionModalClose(data: any) {
         this.reactionModalShow = false;
-        console.log(data);
     }
 
     swapAction() {
-        console.log("swapAction");
         this.actionSwapModalOpen = true;
     }
 
