@@ -1,72 +1,90 @@
-import { Component } from '@angular/core';
-
-interface Integrations {
-    name: String;
-    iconUrl: String;
-}
-
-interface ActionReaction {
-    apiName: string,
-    description: string,
-}
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/utils/api.services';
+import { APIServices, IActions } from '../utils/data.models';
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-integration',
     templateUrl: 'integrations.page.html',
     styleUrls: ['integrations.page.scss'],
 })
-export class IntegrationsPage {
-    integrations: Integrations[] = [
-        {
-            name: 'Coinbase',
-            iconUrl:
-            'https://seeklogo.com/images/C/coinbase-coin-logo-C86F46D7B8-seeklogo.com.png',
-        },
-        {
-            name: 'Twitch',
-            iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1vkwHVqqCQ1sF1odRzV_qFB3dGjEaQ_D3zg&s',
-        },
-        {
-            name: 'Spotify',
-            iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRslcO84eWfXP_4Ucd4Yfz6B8uqJmHaTo0iTw&s',
-        },
-        {
-            name: 'Discord',
-            iconUrl:
-            'https://cdn.iconscout.com/icon/free/png-256/free-discord-logo-icon-download-in-svg-png-gif-file-formats--social-network-media-pack-logos-icons-3357697.png?f=webp&w=256',
-        },
-        {
-            name: 'Github',
-            iconUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Ex7v1n8Y3ahwni4F268cY8gUcV30yO5uCA&s',
-        },
-        {
-            name: 'Google Calendar',
-            iconUrl:
-            'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-03-512.png',
-        },
-    ];
+export class IntegrationsPage implements OnInit {
+    integrations: APIServices[] = [];
+    selectedIntegration: string = '';
+    actions: IActions[] = [];
+    actionResults: IActions[] = [];
+    inSearch: boolean = false;
+    searchText: string = '';
 
-    actions: ActionReaction[] = [{apiName: 'Google Calendar', description: "On new event"},
-        {apiName: 'Discord', description: "On new message"},
-        {apiName: 'Github', description: "On new commit"},
-        {apiName: 'Spotify', description: "On new music played"},
-        {apiName: 'Twitch', description: "On new stream"},
-        {apiName: 'Coinbase', description: "Something"}
-    ];
-
-    getIconUrl(apiname: string) {
-        let res = this.integrations.find(({ name }) => name === apiname)?.iconUrl;
-
-        console.warn(res);
-
-        if (res == undefined)
-            return ("assets/favicon.png");
-        return (res);
+    getimgsrc(title: string) {
+        let res = this.integrations.find(
+            ({ name }) => name === title
+        )?.icon_url;
+        if (res == undefined) return 'assets/favicon.png';
+        return res;
     }
 
-    constructor() {
+    constructor(
+        private service: ApiService,
+        protected platform: Platform
+    ) {}
+
+    selectIntegration(str: string) {
+        this.inSearch = true;
+        this.searchText = str.toLowerCase();
+        this.actionResults = this.actions.filter(
+            (d) => d.api_name.toLowerCase().indexOf(str.toLowerCase()) > -1
+        );
+    }
+
+    handleInput(event: any) {
+        const query = event.target.value.toLowerCase();
+        this.searchText = query;
+        if (query.length > 0) {
+            this.inSearch = true;
+        } else {
+            this.inSearch = false;
+        }
+        this.actionResults = this.actions.filter(
+            (d) =>
+                d.title.toLowerCase().indexOf(query) > -1 ||
+                d.api_name.toLowerCase().indexOf(query) > -1
+        );
+    }
+
+    getAllServices() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getAllServices(token).subscribe(
+            (res) => {
+                console.warn(res.data);
+                this.integrations = res.data;
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    getAllActions() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getActions(token).subscribe(
+            (res) => {
+                console.warn(res.data);
+                this.actions = res.data;
+                this.actionResults = res.data;
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    ngOnInit(): void {
+        this.getAllServices();
+        this.getAllActions();
     }
 }

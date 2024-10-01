@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, Express } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 // Middleware to ensure user is authenticated
 export function isAuthenticatedTwitch(
@@ -9,7 +9,7 @@ export function isAuthenticatedTwitch(
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/auth/twitch');
+    res.redirect('/api/oauth/twitch/login');
 }
 
 export function isAuthenticatedSpotify(
@@ -20,7 +20,7 @@ export function isAuthenticatedSpotify(
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/auth/spotify');
+    res.redirect('/api/oauth/spotify/login');
 }
 
 export function isAuthenticatedDiscord(
@@ -31,5 +31,16 @@ export function isAuthenticatedDiscord(
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/auth/discord');
+    res.redirect('/api/oauth/discord/login');
+}
+
+export function isAuthenticatedGithub(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/api/oauth/discord/login');
 }

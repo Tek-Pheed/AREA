@@ -1,0 +1,12 @@
+<script src="../integrations/integrations.page.ts"></script>
+<app-navbar></app-navbar>
+<div class="content">
+    <div class="topWrappedContent">
+        <h1>Start creating your automations</h1>
+        <ion-searchbar animated="true" placeholder="Search" value="{{searchText}}" [debounce]="500" (ionInput)="handleInput($event)"></ion-searchbar>
+    </div>
+    <div class="integrationList">
+        <app-dashboard-cards *ngFor="let d of showActiveArea" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}" image_2="{{d.reactionAPILogoUrl}}">
+        </app-dashboard-cards>
+    </div>
+</div>

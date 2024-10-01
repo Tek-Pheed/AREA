@@ -4,13 +4,13 @@ import { login, register } from './auth.query';
 import { IUsers } from '../../utils/data.model';
 const jwt = require('jsonwebtoken');
 
-function generateToken(email: string): string {
+export function generateToken(email: string): string {
     return jwt.sign({ email: email }, process.env.SECRET);
 }
 
 export const authRouter = Router();
 
-authRouter.post('/login', async (req: Request, res: Response) => {
+authRouter.post('/login', async (req: any, res: Response) => {
     /*
         #swagger.requestBody = {
             required: true,

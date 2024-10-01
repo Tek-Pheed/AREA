@@ -47,6 +47,25 @@ CREATE TABLE `reactions`
     FOREIGN KEY (api_name) REFERENCES reactions_api (name)
 )CHARSET=utf8;
 
+CREATE TABLE `usersToken`
+(
+    email       varchar(255)                                        NOT NULL,
+    githubAccessToken varchar(255)                                  ,
+    githubRefreshToken varchar(255)                                 ,
+    twitchAccessToken varchar(255)                                  ,
+    twitchRefreshToken varchar(255)                                 ,
+    spotifyAccessToken varchar(255)                                 ,
+    spotifyRefreshToken varchar(255)                                ,
+    discordAccessToken varchar(255)                                 ,
+    discordRefreshToken varchar(255)                                ,
+    coinbaseAccessToken varchar(255)                                ,
+    coinbaseRefreshToken varchar(255)                               ,
+    googleAccessToken varchar(255)                                  ,
+    googleRefreshToken varchar(255)                                 ,
+    PRIMARY KEY (email),
+    FOREIGN KEY (email) REFERENCES users (email)
+)CHARSET=utf8;
+
 create table `users_configs`
 (
     id              int(11) NOT NULL AUTO_INCREMENT,

@@ -9,12 +9,18 @@ import { ActionsCardsCompactComponent } from '../components/action_cards_compact
 import { ActionsCardsComponent } from '../components/action_cards/actions_cards.components';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    IntegrationsPageRoutingModule
-  ],
-  declarations: [IntegrationsPage, ActionsCardsCompactComponent, NavbarComponent, ActionsCardsComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        IntegrationsPageRoutingModule,
+    ],
+    exports: [NavbarComponent],
+    declarations: [
+        IntegrationsPage,
+        ActionsCardsCompactComponent,
+        NavbarComponent,
+        ActionsCardsComponent,
+    ],
 })
 export class IntegrationsPageModule {}

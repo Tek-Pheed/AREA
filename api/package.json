@@ -9,7 +9,7 @@
         "lint": "tslint -c tslint.json src/**/*.ts",
         "clean": "rm -rf ./build/",
         "start": "node build/index.js",
-        "dev": "tsc && node build/index.js",
+        "dev": "tsc && ts-node src/docs/swagger.ts && node build/index.js",
         "doc": "ts-node src/docs/swagger.ts"
     },
     "repository": {
@@ -46,19 +46,25 @@
         "@types/bcryptjs": "^2.4.6",
         "@types/passport": "^1.0.16",
         "axios": "^1.7.7",
+        "consolidate": "^1.0.4",
+        "cookie-parser": "^1.4.6",
+        "cookie-session": "^2.1.0",
+        "cors": "^2.8.5",
         "express-session": "^1.18.0",
+        "passport": "^0.7.0",
+        "passport-discord": "^0.1.4",
+        "passport-github2": "^0.1.12",
+        "passport-instagram": "^1.0.0",
+        "passport-local": "^1.0.0",
+        "passport-oauth2": "^1.8.0",
+        "passport-twitch": "^1.0.3",
+        "passport-twitchtv": "^0.1.4",
+        "passport-twitter": "^1.0.4",
+        "passport-spotify": "^2.0.0",
         "swagger-autogen": "^2.23.7",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
         "ts-node": "^10.9.2",
-        "tsoa": "^6.4.0",
-        "consolidate": "^1.0.4",
-        "express-session": "^1.18.0",
-        "passport": "^0.7.0",
-        "passport-discord": "^0.1.4",
-        "passport-local": "^1.0.0",
-        "passport-oauth2": "^1.8.0",
-        "passport-twitch": "^1.0.3",
-        "passport-twitchtv": "^0.1.4"
+        "tsoa": "^6.4.0"
     }
 }
