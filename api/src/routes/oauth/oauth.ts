@@ -18,10 +18,25 @@ oauthRouter.use('/twitch', twitchRouter);
 oauthRouter.use('/discord', discordRouter);
 oauthRouter.use('/github', githubRouter);
 
+oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
+    //#swagger.tags = ['OAuth']
+    res.header('Content-Type', 'application/json');
+    const result = await getAllConnections(`${req.headers.authorization}`);
+    if (result != null) {
+        res.status(200).json(API(200, false, '', result));
+    } else {
+        res.status(500).json(
+            API(500, true, 'Error when fetching connections', null)
+        );
+    }
+});
+
 oauthRouter.post(
     '/update/:email',
     auth,
     async (req: Request, res: Response) => {
+        //#swagger.tags = ['OAuth']
+        res.header('Content-Type', 'application/json');
         const email = req.params.email;
         const { twitch, spotify, github, discord } = req.body;
 
@@ -69,21 +84,12 @@ oauthRouter.post(
     }
 );
 
-oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
-    const result = await getAllConnections(`${req.headers.authorization}`);
-    if (result != null) {
-        res.status(200).json(API(200, false, '', result));
-    } else {
-        res.status(500).json(
-            API(500, true, 'Error when fetching connections', null)
-        );
-    }
-});
-
 oauthRouter.delete(
     '/logout/:service/:email',
     auth,
     async (req: Request, res: Response) => {
+        //#swagger.tags = ['OAuth']
+        res.header('Content-Type', 'application/json');
         const email = req.params.email;
         const service = req.params.service;
 

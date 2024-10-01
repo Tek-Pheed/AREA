@@ -25,6 +25,7 @@ export async function auth(req: Request, res: Response, next: any) {
             res.status(401).json(
                 API(401, true, 'Bad credentials, authorization denied', null)
             );
+            return;
         }
         next();
         return;

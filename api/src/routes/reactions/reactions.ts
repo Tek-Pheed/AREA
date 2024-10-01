@@ -1,8 +1,13 @@
 import { Request, Response, Router } from 'express';
 import API from '../../middlewares/api';
-import { getAllReactions, getReactionAPI } from './reactions.query';
+import {
+    getAllReactions,
+    getReactionAPI,
+    getSpecificReaction,
+} from './reactions.query';
 import { auth } from '../../middlewares/auth';
 import { actionsRouter } from '../actions/actions';
+import { getSpecificAction } from '../actions/action.query';
 
 export const reactionRouter = Router();
 
@@ -27,6 +32,31 @@ reactionRouter.get('/', auth, async (req: Request, res: Response) => {
     } else {
         res.status(500).json(
             API(500, true, 'Error when fetching actions', null)
+        );
+    }
+});
+
+reactionRouter.get('/:id', auth, async (req: Request, res: Response) => {
+    /*
+            #swagger.responses[200] = {
+                description: "Some description...",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/reactions"
+                        }
+                    }
+                }
+            }
+            #swagger.tags = ['Reactions']
+        */
+    res.header('Content-Type', 'application/json');
+    const data = await getSpecificReaction(`${req.params.id}`);
+    if (data !== null) {
+        res.status(200).json(API(200, false, '', data));
+    } else {
+        res.status(500).json(
+            API(500, true, 'Error when fetching action', null)
         );
     }
 });
