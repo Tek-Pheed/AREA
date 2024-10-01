@@ -10,9 +10,9 @@ export async function getTwitchToken(email: string): Promise<any> {
             );
 
         if (result[0].length > 0) {
-            let sAccessToken = result[0][0].twitchAccessToken;
-            let sRefreshToken = result[0][0].twitchRefreshToken;
-            return { sAccessToken, sRefreshToken };
+            let tAccessToken = result[0][0].twitchAccessToken;
+            let tRefreshToken = result[0][0].twitchRefreshToken;
+            return { tAccessToken, tRefreshToken };
         } else {
             return false;
         }
