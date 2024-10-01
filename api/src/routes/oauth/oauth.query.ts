@@ -42,11 +42,16 @@ export async function getAllConnections(token: string): Promise<any> {
 
 export async function logoutService(email: string, service: string) {
     try {
-        await db
+        const result: any = await db
             .promise()
             .query(
                 `UPDATE usersToken SET ${service}AccessToken=NULL, ${service}RefreshToken=NULL WHERE email='${email}'`
             );
+        if (result[0].affectedRows >= 1) {
+            return result[0];
+        } else {
+            return null;
+        }
     } catch (e) {
         console.error(e);
     }

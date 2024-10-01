@@ -367,6 +367,31 @@ export class ApiService {
             });
         }
     }
+
+    logoutService(
+        token: string,
+        email: string,
+        service: string
+    ): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.delete<any>(
+                `${this.API_URL}/api/oauth/logout/${service}/${email}`,
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 }
 
 // user/config
