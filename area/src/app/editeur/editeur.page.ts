@@ -293,9 +293,9 @@ export class EditeurPage implements OnInit {
             reaction_id: this.selectedReaction.id,
             headers: { 'Content-Type': 'application/json' },
             method:
-                this.selectedAction.api_name.toLowerCase() == 'webhooks'
-                    ? 'GET'
-                    : 'POST',
+                this.selectedAction.api_name.toLowerCase() === 'webhooks'
+                    ? 'POST'
+                    : 'GET',
             body: {action: [], reaction: []},
         };
         for (const element of this.actionFields) {
