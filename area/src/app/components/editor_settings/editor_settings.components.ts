@@ -20,7 +20,7 @@ import {
 export class EditorSettingsComponent {
     @ViewChild(IonModal) modal: IonModal | undefined;
 
-    focusedElement: any;
+    focusedElementId: IModalFields | undefined;
 
     @Input('headerProperties') properties: IHeaderProperties = {
         img_src: '',
@@ -35,13 +35,14 @@ export class EditorSettingsComponent {
     @Input('isOpen') isOpen: boolean = false;
     @Output('onModalClose') onModalClose = new EventEmitter<IModalFields[]>();
 
-    setFocusElement(element: any) {
-        this.focusedElement = element.target;
+    setFocusElement(element: IModalFields) {
+        this.focusedElementId = element;
     }
 
     addVariableToField(variable: string) {
-        if (this.focusedElement != undefined)
-            this.focusedElement.value += `{{${variable}}}`;
+        if (this.focusedElementId != undefined) {
+            this.focusedElementId.fieldValue += `{{${variable}}}`;
+        }
     }
 
     confirm() {
