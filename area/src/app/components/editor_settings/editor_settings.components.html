@@ -5,18 +5,20 @@
             <div class="topContent">
                 <img class="topImg" src="{{properties.img_src}}">
                 <div class="topText">
-                <p>{{properties.name}}</p>
-                <p class="littleText">{{properties.description}}</p>
-            </div>
+                    <p>{{properties.name}}</p>
+                    <p class="littleText">{{properties.description}}</p>
+                </div>
             </div>
             <ion-content class="ion-padding">
                 <ion-item *ngFor="let f of fields">
-                    <ion-input label="{{f.fieldDescription}}" labelPlacement="stacked" type="text"
-                        placeholder="{{f.fieldValue}}" value="{{f.fieldValue}}"
+                    <ion-toggle *ngIf="f.fieldType == 'bool'"
+                        [checked]="f.fieldValue">{{f.fieldDescription}}</ion-toggle><br /><br />
+                    <ion-input *ngIf="f.fieldType != 'bool'" label="{{f.fieldDescription}}" labelPlacement="stacked"
+                        type="text" placeholder="{{f.fieldValue}}" value="{{f.fieldValue}}"
                         (click)="setFocusElement($event)"></ion-input>
                 </ion-item>
                 <div class="chipsContainer">
-                    <h4>Available Variables:</h4>
+                    <h4 *ngIf="this.variables.length != 0">Available Variables:</h4>
                     <ion-chip [outline]="true" *ngFor="let v of this.variables" (click)="addVariableToField(v.value)">
                         <ion-avatar>
                             <img src="{{v.img_src}}" />

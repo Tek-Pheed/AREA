@@ -14,41 +14,9 @@ export class EditorSettingsComponent{
 
     @Input('headerProperties') properties: IHeaderProperties = {img_src:'', name:'', description: ''};
 
-    @Input('fields') fields: IModalFields[] = [
-        {
-            fieldID: '0',
-            fieldDescription: 'Name of the track to play',
-            fieldType: 'text',
-            fieldValue: '',
-        },
-        {
-            fieldID: '0',
-            fieldDescription: 'Start play position',
-            fieldType: 'number',
-            fieldValue: '',
-        },
-    ];
+    @Input('fields') fields: IModalFields[] = [];
 
-    @Input('variables') variables: IModalVariables[] = [
-        {
-            name: 'Name of the commit',
-            value: '{{github.commitName}}',
-            img_src:
-                'https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_960_720.png',
-        },
-        {
-            name: 'Name of the user',
-            value: '{{github.commitUserName}}',
-            img_src:
-                'https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_960_720.png',
-        },
-        {
-            name: 'Commit message',
-            value: '{{github.commitMessage}}',
-            img_src:
-                'https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_960_720.png',
-        },
-    ];
+    @Input('variables') variables: IModalVariables[] = [];
 
     @Input('isOpen') isOpen: boolean = false;
     @Output('onModalClose') onModalClose = new EventEmitter<IModalFields[]>();
@@ -65,7 +33,7 @@ export class EditorSettingsComponent{
     }
 
     addVariableToField(variable: string) {
-        this.focusedElement.value += variable;
+        this.focusedElement.value += `{{${variable}}}`;
     }
 
     confirm() {
