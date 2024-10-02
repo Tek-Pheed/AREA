@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
-import { IActions, IApi, IAreaPair, IReactions } from '../utils/data.models';
+import { IActions, IApi, IAreaPair, IReactions, IUserConfig } from '../utils/data.models';
 
 interface activeArea {
     name: string;
@@ -16,7 +16,7 @@ interface activeArea {
 export class DashboardPage implements OnInit {
     constructor(private service: ApiService) {}
 
-    userConfigs: IAreaPair[] = [];
+    userConfigs: IUserConfig[] = [];
     actions: IActions[] = [];
     reactions: IReactions[] = [];
     apis: IApi[] = [];
@@ -40,7 +40,6 @@ export class DashboardPage implements OnInit {
 
         this.service.getAllServices(token).subscribe(
             (res) => {
-                console.log(res.data);
                 this.apis = res.data;
                 this.getActions();
             },
@@ -91,7 +90,7 @@ export class DashboardPage implements OnInit {
 
         this.service.getUserConfigs(token).subscribe(
             (res) => {
-                console.log(res.data);
+                console.warn(res.data);
                 this.userConfigs = res.data;
                 this.generateCards();
             },
@@ -103,9 +102,13 @@ export class DashboardPage implements OnInit {
 
     generateCards() {
         this.datas = [];
+        console.error(this.apis);
         for (let element of this.userConfigs) {
             let apiA = this.apis.find((elm) => elm.id == element.actions_id);
             let apiB = this.apis.find((elm) => elm.id == element.reaction_id);
+            console.log(element);
+            console.warn(apiA);
+            console.warn(apiB);
 
             let action = this.actions.find(
                 (elm) => elm.id === element.actions_id
@@ -127,7 +130,7 @@ export class DashboardPage implements OnInit {
                 reactionAPILogoUrl: apiB.icon_url,
             });
         }
-        this.showActiveArea = this.datas;
+        this.showActiveArea = this.datas.slice();
     }
 
     ngOnInit(): void {

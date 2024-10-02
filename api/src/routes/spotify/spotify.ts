@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, Express, Router } from 'express';
 import { isAuthenticatedSpotify } from '../../middlewares/oauth';
 import { insertTokeninDb } from '../oauth/oauth.query';
+import { getCurrentSong } from './actions';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -11,11 +12,16 @@ const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 const SpotifyStrategy = require('passport-spotify').Strategy;
 
-const SPOTIFY_SCOPES = ['user-read-currently-playing'];
+const SPOTIFY_SCOPES = [
+    'user-read-currently-playing',
+    'user-modify-playback-state',
+    'playlist-modify-public',
+    'playlist-modify-private',
+];
 
 export const spotifyRouter = Router();
 
-export async function getCurrentSong(token: string): Promise<any> {
+/*export async function getCurrentSong(token: string): Promise<any> {
     const response = await axios.get(
         'https://api.spotify.com/v1/me/player/currently-playing',
         {
@@ -29,9 +35,11 @@ export async function getCurrentSong(token: string): Promise<any> {
         return null;
     }
     return response.data.item.name || null;
-}
+}*/
 
-async function refreshSpotifyToken(refreshToken: string): Promise<string> {
+export async function refreshSpotifyToken(
+    refreshToken: string
+): Promise<string> {
     if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
         throw new Error('Missing Spotify Client ID or Client Secret');
     }
@@ -168,12 +176,18 @@ spotifyRouter.get(
         try {
             let accessToken = req.user.accessTokenSpotify;
             const refreshToken = req.user.refreshTokenSpotify;
-            let currentSong = await getCurrentSong(accessToken);
+            let currentSong = await getCurrentSong(
+                'raphael.scandella@epitech.eu',
+                'https://open.spotify.com/track/4Ws314Ylb27BVsvlZOy30C'
+            );
 
             if (!currentSong && refreshToken) {
                 accessToken = await refreshSpotifyToken(refreshToken);
                 req.user.accessTokenSpotify = accessToken;
-                currentSong = await getCurrentSong(accessToken);
+                currentSong = await getCurrentSong(
+                    accessToken,
+                    'https://open.spotify.com/track/4Ws314Ylb27BVsvlZOy30C'
+                );
             }
 
             return res.json({ currentSong });
