@@ -12,13 +12,13 @@ import {
 } from '../utils/data.models';
 
 interface configContent {
-    name: string,
-    value: string
+    name: string;
+    value: string;
 }
 
 interface configBody {
-    action: configContent[],
-    reaction: configContent[]
+    action: configContent[];
+    reaction: configContent[];
 }
 
 interface UserConfig {
@@ -191,7 +191,6 @@ export class EditeurPage implements OnInit {
                     }
                 }
                 this.getAllDatas();
-                console.log(this.configID);
                 if (this.configID == null) {
                     this.swapReactions();
                 }
@@ -300,7 +299,7 @@ export class EditeurPage implements OnInit {
                 this.selectedAction.api_name.toLowerCase() === 'webhooks'
                     ? 'POST'
                     : 'GET',
-            body: {action: [], reaction: []},
+            body: { action: [], reaction: [] },
         };
         for (const element of this.actionFields) {
             conf.body.action.push({
@@ -339,25 +338,21 @@ export class EditeurPage implements OnInit {
     }
 
     loadValuesFromConfig() {
-        if (this.loadedConfig == undefined )
-            return;
+        if (this.loadedConfig == undefined) return;
         for (const element of this.loadedConfig.body.action) {
             let field = this.actionFields.find(
                 (obj) => obj.fieldID == element.name
             );
-            if (field == undefined)
-                    continue;
+            if (field == undefined) continue;
             field.fieldValue = element.value;
         }
         for (const element of this.loadedConfig.body.reaction) {
             let field = this.reactionFields.find(
                 (obj) => obj.fieldID == element.name
             );
-            if (field == undefined)
-                    continue;
+            if (field == undefined) continue;
             field.fieldValue = element.value;
         }
-
     }
 
     constructor(
