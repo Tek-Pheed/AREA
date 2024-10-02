@@ -19,7 +19,7 @@ export async function getSongURL(
     return response.data.tracks.items[0].external_urls.spotify;
 }
 
-export async function getCurrentSong(
+export async function getSpecificSong(
     email: string,
     target_song: string
 ): Promise<any> {
@@ -41,9 +41,7 @@ export async function getCurrentSong(
     }
     if (response.data.item.external_urls.spotify.includes(song_url)) {
         return {
-            deviceName: response.data.device.name,
-            repeatState: response.data.repeat_state,
-            artistsName: response.data.item.artists.name,
+            artistsName: response.data.item.artists[0].name,
             itemName: response.data.item.name,
         };
     } else return false;
