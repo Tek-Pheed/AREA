@@ -6,6 +6,9 @@
         <ion-searchbar animated="true" placeholder="Search" value="{{searchText}}" [debounce]="500"
             (ionInput)="handleInput($event)"></ion-searchbar>
     </div>
+    <div class="buttonContent">
+        <a href="/integrations" class="lighButton">Create New</a>
+    </div>
     <div class="integrationList">
         <app-dashboard-cards *ngFor="let d of showActiveArea" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
             image_2="{{d.reactionAPILogoUrl}}" (click)="this.launchEditor(d.configID)">
