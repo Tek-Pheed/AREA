@@ -18,6 +18,11 @@ const routes: Routes = [
             import('./profil/profile.module').then((m) => m.ProfilePageModule),
     },
     {
+        path: 'dashboard',
+        loadChildren: () =>
+            import('./dashboard/dashboard.module').then((m) => m.DashboardPageModule),
+    },
+    {
         path: 'integrations',
         loadChildren: () =>
             import('./integrations/integrations.module').then(

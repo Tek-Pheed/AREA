@@ -2,12 +2,25 @@ export interface IAuthentification {
     acces_token: string;
 }
 
+interface IInput {
+    name: string,
+    description: string
+    type: string
+}
+
+interface ILabel{
+    name: string,
+    value: string
+}
+
 export interface IActions {
     id: number;
     title: string;
     description: string;
     api_name: string;
     ask_url: string;
+    labels: ILabel[];
+    input: IInput[];
 }
 
 export interface IReactions {
@@ -16,6 +29,8 @@ export interface IReactions {
     description: string;
     api_name: string;
     ask_url: string;
+    labels: ILabel[];
+    input: IInput[];
 }
 
 export interface IApi {
@@ -48,4 +63,23 @@ export interface IAreaPair {
     email: string;
     id: string;
     reaction_id: 0;
+}
+
+export interface IModalFields {
+    fieldID: string;
+    fieldDescription: string;
+    fieldType: string;
+    fieldValue: string;
+}
+
+export interface IHeaderProperties {
+    name: string;
+    description: string,
+    img_src: string;
+}
+
+export interface IModalVariables {
+    name: string;
+    img_src: string;
+    value: string;
 }

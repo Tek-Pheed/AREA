@@ -37,6 +37,10 @@ export class IntegrationsPage implements OnInit {
         );
     }
 
+    createConfigFromActionId(id: number) {
+        location.href = `/editeur?actionID=${id.toString()}`
+    }
+
     handleInput(event: any) {
         const query = event.target.value.toLowerCase();
         this.searchText = query;
