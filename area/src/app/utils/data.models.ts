@@ -83,3 +83,21 @@ export interface IModalVariables {
     img_src: string;
     value: string;
 }
+
+export interface IConfigContent {
+    name: string;
+    value: string;
+}
+
+export interface IConfigBody {
+    action: IConfigContent[];
+    reaction: IConfigContent[];
+}
+
+export interface IUserConfig {
+    actions_id: number;
+    method: string;
+    headers: { 'Content-Type': 'application/json' };
+    body: IConfigBody;
+    reaction_id: number;
+}

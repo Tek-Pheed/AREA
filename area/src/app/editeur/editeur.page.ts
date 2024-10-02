@@ -9,25 +9,8 @@ import {
     IModalFields,
     IModalVariables,
     IReactions,
+    IUserConfig,
 } from '../utils/data.models';
-
-interface configContent {
-    name: string;
-    value: string;
-}
-
-interface configBody {
-    action: configContent[];
-    reaction: configContent[];
-}
-
-interface UserConfig {
-    actions_id: number;
-    method: string;
-    headers: { 'Content-Type': 'application/json' };
-    body: configBody;
-    reaction_id: number;
-}
 
 @Component({
     selector: 'app-editeur',
@@ -43,7 +26,7 @@ export class EditeurPage implements OnInit {
     actions: IActions[] = [];
     reactions: IReactions[] = [];
 
-    loadedConfig: UserConfig | undefined;
+    loadedConfig: IUserConfig | undefined;
 
     selectedAction: IActions | undefined = undefined;
     selectedReaction: IReactions | undefined = undefined;
@@ -291,7 +274,7 @@ export class EditeurPage implements OnInit {
         const searchParams = new URLSearchParams(url.split('?')[1]);
         let URLconfigID = searchParams.get('configID');
 
-        let conf: UserConfig = {
+        let conf: IUserConfig = {
             actions_id: this.selectedAction?.id,
             reaction_id: this.selectedReaction.id,
             headers: { 'Content-Type': 'application/json' },
