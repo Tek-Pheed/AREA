@@ -43,6 +43,8 @@ export class EditeurPage implements OnInit {
     actions: IActions[] = [];
     reactions: IReactions[] = [];
 
+    loadedConfig: UserConfig | undefined;
+
     selectedAction: IActions | undefined = undefined;
     selectedReaction: IReactions | undefined = undefined;
 
@@ -180,6 +182,7 @@ export class EditeurPage implements OnInit {
                     const searchParams = new URLSearchParams(url.split('?')[1]);
                     if (config != undefined && config[0] != undefined) {
                         config = config[0];
+                        this.loadedConfig = config;
                         this.actionID = config.actions_id;
                         this.reactionID = config.reaction_id;
                     } else if (searchParams.get('configID') != null) {
@@ -265,6 +268,7 @@ export class EditeurPage implements OnInit {
                 }
             }
         }
+        this.loadValuesFromConfig();
     }
 
     saveConfiguration() {
@@ -332,6 +336,28 @@ export class EditeurPage implements OnInit {
                     }
                 );
         }
+    }
+
+    loadValuesFromConfig() {
+        if (this.loadedConfig == undefined )
+            return;
+        for (const element of this.loadedConfig.body.action) {
+            let field = this.actionFields.find(
+                (obj) => obj.fieldID == element.name
+            );
+            if (field == undefined)
+                    continue;
+            field.fieldValue = element.value;
+        }
+        for (const element of this.loadedConfig.body.reaction) {
+            let field = this.reactionFields.find(
+                (obj) => obj.fieldID == element.name
+            );
+            if (field == undefined)
+                    continue;
+            field.fieldValue = element.value;
+        }
+
     }
 
     constructor(
