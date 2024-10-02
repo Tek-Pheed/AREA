@@ -151,7 +151,6 @@ googleRouter.get(
         failureRedirect: '/api/oauth/google/login',
     }),
     async (req: any, res: Response) => {
-        //res.redirect('http://localhost:3000/api/oauth/google/getCalendars');
         res.redirect(
             `http://localhost:4200/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
         );
