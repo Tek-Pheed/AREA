@@ -11,6 +11,7 @@ import { oauthRouter } from './routes/oauth/oauth';
 import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
+import { serviceRouter } from './routes/services/services';
 
 const app: Express = require('express')();
 const cookieParser = require('cookie-parser');
@@ -61,6 +62,7 @@ app.use('/api/actions', actionsRouter);
 app.use('/api/reactions', reactionRouter);
 app.use('/api/users', userRouter);
 app.use('/api/oauth', oauthRouter);
+app.use('/api/services', serviceRouter);
 
 app.use(
     '/docs',
