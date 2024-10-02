@@ -80,7 +80,7 @@ export class ApiService {
             Authorization: `Bearer ${token}`,
         });
         try {
-            return this.http.get<any>(`${this.API_URL}/api/actions/api`, {
+            return this.http.get<any>(`${this.API_URL}/api/services`, {
                 headers,
             });
         } catch (error) {
