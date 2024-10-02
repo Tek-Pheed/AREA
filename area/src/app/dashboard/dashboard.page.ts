@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
-import { IActions, IApi, IAreaPair, IReactions, IUserConfig } from '../utils/data.models';
+import {
+    IActions,
+    IApi,
+    IAreaPair,
+    IReactions,
+    IUserConfig,
+} from '../utils/data.models';
 
 interface activeArea {
     name: string;
     actionAPILogoUrl: string;
     reactionAPILogoUrl: string;
+    configID: string | null;
 }
 
 @Component({
@@ -102,21 +109,15 @@ export class DashboardPage implements OnInit {
 
     generateCards() {
         this.datas = [];
-        console.error(this.apis);
         for (let element of this.userConfigs) {
-            let apiA = this.apis.find((elm) => elm.id == element.actions_id);
-            let apiB = this.apis.find((elm) => elm.id == element.reaction_id);
-            console.log(element);
-            console.warn(apiA);
-            console.warn(apiB);
-
             let action = this.actions.find(
                 (elm) => elm.id === element.actions_id
             );
             let reaction = this.reactions.find(
                 (elm) => elm.id === element.reaction_id
             );
-
+            let apiA = this.apis.find((elm) => elm.name == action?.api_name);
+            let apiB = this.apis.find((elm) => elm.name == reaction?.api_name);
             if (
                 apiA == undefined ||
                 apiB == undefined ||
@@ -128,9 +129,15 @@ export class DashboardPage implements OnInit {
                 name: `On ${action.title.toLowerCase()}, ${reaction.title.toLowerCase()}`,
                 actionAPILogoUrl: apiA.icon_url,
                 reactionAPILogoUrl: apiB.icon_url,
+                configID: element.id,
             });
         }
         this.showActiveArea = this.datas.slice();
+    }
+
+    launchEditor(id: string | null) {
+        if (id == null) return;
+        location.href = `/editeur?configID=${id}`;
     }
 
     ngOnInit(): void {

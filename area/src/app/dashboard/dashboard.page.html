@@ -8,7 +8,7 @@
     </div>
     <div class="integrationList">
         <app-dashboard-cards *ngFor="let d of showActiveArea" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
-            image_2="{{d.reactionAPILogoUrl}}">
+            image_2="{{d.reactionAPILogoUrl}}" (click)="this.launchEditor(d.configID)">
         </app-dashboard-cards>
     </div>
 </div>

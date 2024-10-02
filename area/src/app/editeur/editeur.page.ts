@@ -275,6 +275,7 @@ export class EditeurPage implements OnInit {
         let URLconfigID = searchParams.get('configID');
 
         let conf: IUserConfig = {
+            id: URLconfigID,
             actions_id: this.selectedAction?.id,
             reaction_id: this.selectedReaction.id,
             headers: { 'Content-Type': 'application/json' },

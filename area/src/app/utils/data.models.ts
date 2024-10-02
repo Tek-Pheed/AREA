@@ -95,6 +95,7 @@ export interface IConfigBody {
 }
 
 export interface IUserConfig {
+    id: string | null,
     actions_id: number;
     method: string;
     headers: { 'Content-Type': 'application/json' };
