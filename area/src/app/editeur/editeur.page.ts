@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/utils/api.services';
 import { ActivatedRoute } from '@angular/router';
@@ -11,11 +11,21 @@ import {
     IReactions,
 } from '../utils/data.models';
 
+interface configContent {
+    name: string,
+    value: string
+}
+
+interface configBody {
+    action: configContent[],
+    reaction: configContent[]
+}
+
 interface UserConfig {
-    action_id: number;
+    actions_id: number;
     method: string;
-    headers: any;
-    body: any;
+    headers: { 'Content-Type': 'application/json' };
+    body: configBody;
     reaction_id: number;
 }
 
@@ -258,23 +268,69 @@ export class EditeurPage implements OnInit {
     }
 
     saveConfiguration() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+
         if (
             this.selectedAction == undefined ||
             this.selectedAction == null ||
             this.selectedReaction == undefined ||
             this.selectedReaction == null
-        )
+        ) {
             alert(
                 'Unable to save configuration, please select the necessary items.'
             );
+            return;
+        }
 
         let url: string = window.location.href;
         const searchParams = new URLSearchParams(url.split('?')[1]);
         let URLconfigID = searchParams.get('configID');
 
+        let conf: UserConfig = {
+            actions_id: this.selectedAction?.id,
+            reaction_id: this.selectedReaction.id,
+            headers: { 'Content-Type': 'application/json' },
+            method:
+                this.selectedAction.api_name.toLowerCase() == 'webhooks'
+                    ? 'GET'
+                    : 'POST',
+            body: {action: [], reaction: []},
+        };
+        for (const element of this.actionFields) {
+            conf.body.action.push({
+                name: element.fieldID,
+                value: element.fieldValue,
+            });
+        }
+        for (const element of this.reactionFields) {
+            conf.body.reaction.push({
+                name: element.fieldID,
+                value: element.fieldValue,
+            });
+        }
+        console.warn(conf);
         if (URLconfigID == null || URLconfigID == undefined) {
-            // Config not present on bdd
+            this.service.createNewUserConfig(token, conf).subscribe(
+                (res) => {
+                    location.href = '/dashboard';
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
         } else {
+            this.service
+                .updateUserConfig(token, conf, Number(URLconfigID))
+                .subscribe(
+                    (res) => {
+                        location.href = '/dashboard';
+                    },
+                    (err) => {
+                        console.error(err);
+                    }
+                );
         }
     }
 

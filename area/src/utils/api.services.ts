@@ -414,4 +414,48 @@ export class ApiService {
             });
         }
     }
+
+    createNewUserConfig(token: string, body: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.post<any>(
+                `${this.API_URL}/api/users/configs`,
+                JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    updateUserConfig(token: string, body: any, id: number): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.put<any>(
+                `${this.API_URL}/api/users/configs/${id}`,
+                JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 }

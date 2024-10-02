@@ -12,7 +12,7 @@
             <ion-content class="ion-padding">
                 <ion-item *ngFor="let f of fields">
                     <ion-toggle *ngIf="f.fieldType == 'bool'" [(ngModel)]="f.fieldValue"
-                        [checked]="f.fieldValue">{{f.fieldDescription}}</ion-toggle><br /><br />
+                        checked="f.fieldValue">{{f.fieldDescription}}</ion-toggle><br /><br />
                     <ion-input *ngIf="f.fieldType != 'bool'" [(ngModel)]="f.fieldValue" label="{{f.fieldDescription}}" labelPlacement="stacked"
                         type="text" placeholder="{{f.fieldValue}}" value="f.fieldValue"
                         (click)="setFocusElement(f)"></ion-input>
