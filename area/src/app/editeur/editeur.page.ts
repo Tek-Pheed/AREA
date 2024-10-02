@@ -173,8 +173,8 @@ export class EditeurPage implements OnInit {
                         this.actionID = config.actions_id;
                         this.reactionID = config.reaction_id;
                     } else if (searchParams.get('configID') != null) {
-                        alert("Unable to find corresponding user config");
-                        location.href = "dashboard";
+                        alert('Unable to find corresponding user config');
+                        location.href = 'dashboard';
                     }
                 }
                 this.getAllDatas();
@@ -258,6 +258,16 @@ export class EditeurPage implements OnInit {
     }
 
     saveConfiguration() {
+        if (
+            this.selectedAction == undefined ||
+            this.selectedAction == null ||
+            this.selectedReaction == undefined ||
+            this.selectedReaction == null
+        )
+            alert(
+                'Unable to save configuration, please select the necessary items.'
+            );
+
         let url: string = window.location.href;
         const searchParams = new URLSearchParams(url.split('?')[1]);
         let URLconfigID = searchParams.get('configID');
@@ -265,7 +275,6 @@ export class EditeurPage implements OnInit {
         if (URLconfigID == null || URLconfigID == undefined) {
             // Config not present on bdd
         } else {
-
         }
     }
 
