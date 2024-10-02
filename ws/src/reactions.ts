@@ -38,19 +38,16 @@ export async function startPlaybackSong(
 ): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
     const song_id = await getSongID(track, sAccessToken);
+    console.log(song_id);
     if (!song_id) {
         return false;
     }
     const response = await axios.put(
         'https://api.spotify.com/v1/me/player/play',
-        {},
+        { uris: [`spotify:track:${song_id}`] },
         {
             headers: {
                 Authorization: `Bearer ${sAccessToken}`,
-                'Content-Type': 'application/json',
-            },
-            data: {
-                uris: [`spotify:track:${song_id}`],
             },
         }
     );

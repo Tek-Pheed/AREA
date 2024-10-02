@@ -32,7 +32,7 @@ export async function getUsersConfigs(): Promise<IUsersConfigs[]> {
             .query('SELECT * FROM users_configs');
         if (result[0].length > 0) configs = result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return configs;
 }

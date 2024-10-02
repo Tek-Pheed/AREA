@@ -1,14 +1,13 @@
-import { db } from '../../database/db';
+import { db } from '../../utils/database';
 
 export async function getTwitchToken(email: string): Promise<any> {
     try {
         const result: any = await db
             .promise()
             .query(
-                'SELECT usersToken.twitchAccessToken, usersToken.twitchRefreshToken FROM usersToken WHERE usersToken.email = ?',
+                'SELECT twitchAccessToken, twitchRefreshToken FROM usersToken WHERE email = ?',
                 email
             );
-
         if (result[0].length > 0) {
             let tAccessToken = result[0][0].twitchAccessToken;
             let tRefreshToken = result[0][0].twitchRefreshToken;
