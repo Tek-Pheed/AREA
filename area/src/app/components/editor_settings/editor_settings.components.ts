@@ -40,7 +40,8 @@ export class EditorSettingsComponent {
     }
 
     addVariableToField(variable: string) {
-        this.focusedElement.value += `{{${variable}}}`;
+        if (this.focusedElement != undefined)
+            this.focusedElement.value += `{{${variable}}}`;
     }
 
     confirm() {

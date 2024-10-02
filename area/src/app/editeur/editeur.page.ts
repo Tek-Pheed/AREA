@@ -166,13 +166,22 @@ export class EditeurPage implements OnInit {
                     let config: any = res.data.filter(
                         (obj: any) => obj.id == this.configID
                     );
+                    let url: string = window.location.href;
+                    const searchParams = new URLSearchParams(url.split('?')[1]);
                     if (config != undefined && config[0] != undefined) {
                         config = config[0];
                         this.actionID = config.actions_id;
                         this.reactionID = config.reaction_id;
+                    } else if (searchParams.get('configID') != null) {
+                        alert("Unable to find corresponding user config");
+                        location.href = "dashboard";
                     }
                 }
                 this.getAllDatas();
+                console.log(this.configID);
+                if (this.configID == null) {
+                    this.swapReactions();
+                }
             },
             (err) => {
                 console.error(err);
@@ -248,6 +257,18 @@ export class EditeurPage implements OnInit {
         }
     }
 
+    saveConfiguration() {
+        let url: string = window.location.href;
+        const searchParams = new URLSearchParams(url.split('?')[1]);
+        let URLconfigID = searchParams.get('configID');
+
+        if (URLconfigID == null || URLconfigID == undefined) {
+            // Config not present on bdd
+        } else {
+
+        }
+    }
+
     constructor(
         private router: Router,
         private service: ApiService,
@@ -257,8 +278,8 @@ export class EditeurPage implements OnInit {
     ngOnInit(): void {
         let url: string = window.location.href;
         const searchParams = new URLSearchParams(url.split('?')[1]);
-        this.configID = `${searchParams.get('configID')}`;
-        this.actionID = `${searchParams.get('actionID')}`;
+        this.configID = searchParams.get('configID');
+        this.actionID = searchParams.get('actionID');
         this.getAllData();
     }
 }
