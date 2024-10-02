@@ -80,12 +80,16 @@ export class EditeurPage implements OnInit {
         }
     }
 
-    actionModalClosed(data: any) {
+    actionModalClosed(data: IModalFields[]) {
         this.actionModalShow = false;
+        if (data == undefined || data.length == 0) return;
+        this.actionFields = data;
     }
 
-    reactionModalClose(data: any) {
+    reactionModalClose(data: IModalFields[]) {
         this.reactionModalShow = false;
+        if (data == undefined || data.length == 0) return;
+        this.reactionFields = data;
     }
 
     swapAction() {
@@ -96,7 +100,7 @@ export class EditeurPage implements OnInit {
         this.actionSwapModalOpen = false;
         if (id != undefined && id != '' && !isNaN(Number(id))) {
             this.actionID = id;
-            this.getAllDatas();
+            this.getAllDatas(true, false);
         }
     }
 
@@ -104,7 +108,7 @@ export class EditeurPage implements OnInit {
         this.reactionSwapModalOpen = false;
         if (id != undefined && id != '' && !isNaN(Number(id))) {
             this.reactionID = id;
-            this.getAllDatas();
+            this.getAllDatas(false, true);
         }
     }
 
@@ -118,7 +122,6 @@ export class EditeurPage implements OnInit {
         );
         this.service.getAllServices(token).subscribe(
             (res) => {
-                console.warn(res.data);
                 this.integrations = res.data;
                 this.getAllActions();
             },
@@ -143,7 +146,6 @@ export class EditeurPage implements OnInit {
         );
         this.service.getActions(token).subscribe(
             (res) => {
-                console.warn(res.data);
                 this.actions = res.data;
                 this.getAllReactions();
             },
@@ -160,7 +162,6 @@ export class EditeurPage implements OnInit {
 
         this.service.getUserConfigs(token).subscribe(
             (res) => {
-                console.error(res.data);
                 if (this.configID != null && this.configID != undefined) {
                     let config: any = res.data.filter(
                         (obj: any) => obj.id == this.configID
@@ -185,7 +186,6 @@ export class EditeurPage implements OnInit {
         );
         this.service.getReactions(token).subscribe(
             (res) => {
-                console.warn(res.data);
                 this.reactions = res.data;
                 this.loadConfig();
             },
@@ -195,7 +195,7 @@ export class EditeurPage implements OnInit {
         );
     }
 
-    getAllDatas() {
+    getAllDatas(updateAction: boolean = true, updateReaction: boolean = true) {
         if (this.actionID != null) {
             this.selectedAction = this.actions.filter(
                 (a) => a.id == Number(this.actionID)
@@ -206,45 +206,46 @@ export class EditeurPage implements OnInit {
                 (a) => a.id == Number(this.reactionID)
             )[0];
         }
-        this.actionFields = [];
-        this.actionVariables = [];
-        if (
-            this.selectedAction != undefined &&
-            this.selectedAction.input != undefined
-        ) {
-            for (let element of this.selectedAction.input) {
-                this.actionFields.push({
-                    fieldID: element.name,
-                    fieldType: element.type,
-                    fieldDescription: element.description,
-                    fieldValue: '',
-                });
-            }
-            for (let element of this.selectedAction.labels) {
-                this.actionVariables.push({
-                    name: element.name,
-                    value: element.value,
-                    img_src: this.getimgsrc(this.selectedAction.api_name),
-                });
-            }
-        }
-        this.reactionFields = [];
-        if (
-            this.selectedReaction != undefined &&
-            this.selectedReaction.input != undefined
-        ) {
-            for (let element of this.selectedReaction.input) {
-                this.reactionFields.push({
-                    fieldID: element.name,
-                    fieldType: element.type,
-                    fieldDescription: element.description,
-                    fieldValue: '',
-                });
+        if (updateAction) {
+            this.actionFields = [];
+            this.actionVariables = [];
+            if (
+                this.selectedAction != undefined &&
+                this.selectedAction.input != undefined
+            ) {
+                for (let element of this.selectedAction.input) {
+                    this.actionFields.push({
+                        fieldID: element.name,
+                        fieldType: element.type,
+                        fieldDescription: element.description,
+                        fieldValue: '',
+                    });
+                }
+                for (let element of this.selectedAction.labels) {
+                    this.actionVariables.push({
+                        name: element.name,
+                        value: element.value,
+                        img_src: this.getimgsrc(this.selectedAction.api_name),
+                    });
+                }
             }
         }
-
-        console.log(this.selectedAction);
-        console.log(this.selectedReaction);
+        if (updateReaction) {
+            this.reactionFields = [];
+            if (
+                this.selectedReaction != undefined &&
+                this.selectedReaction.input != undefined
+            ) {
+                for (let element of this.selectedReaction.input) {
+                    this.reactionFields.push({
+                        fieldID: element.name,
+                        fieldType: element.type,
+                        fieldDescription: element.description,
+                        fieldValue: '',
+                    });
+                }
+            }
+        }
     }
 
     constructor(

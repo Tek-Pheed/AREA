@@ -1,18 +1,32 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import { IonModal } from '@ionic/angular';
-import { IHeaderProperties, IModalFields, IModalVariables } from 'src/app/utils/data.models';
+import {
+    IHeaderProperties,
+    IModalFields,
+    IModalVariables,
+} from 'src/app/utils/data.models';
 
 @Component({
     selector: 'editor-settings',
     templateUrl: 'editor_settings.components.html',
     styleUrls: ['editor_settings.components.scss'],
 })
-export class EditorSettingsComponent{
+export class EditorSettingsComponent {
     @ViewChild(IonModal) modal: IonModal | undefined;
 
     focusedElement: any;
 
-    @Input('headerProperties') properties: IHeaderProperties = {img_src:'', name:'', description: ''};
+    @Input('headerProperties') properties: IHeaderProperties = {
+        img_src: '',
+        name: '',
+        description: '',
+    };
 
     @Input('fields') fields: IModalFields[] = [];
 
@@ -21,15 +35,8 @@ export class EditorSettingsComponent{
     @Input('isOpen') isOpen: boolean = false;
     @Output('onModalClose') onModalClose = new EventEmitter<IModalFields[]>();
 
-    cancel() {
-        this.onModalClose.emit([]);
-        this.isOpen = false;
-        this.modal?.dismiss(null, 'cancel');
-    }
-
     setFocusElement(element: any) {
         this.focusedElement = element.target;
-        console.warn(element.target);
     }
 
     addVariableToField(variable: string) {
