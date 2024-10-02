@@ -37,12 +37,20 @@ export class EditeurPage implements OnInit {
     selectedReaction: IReactions | undefined = undefined;
 
     actionModalShow: boolean = false;
-    actionProperties: IHeaderProperties = { name: '', img_src: '', description: '' };
+    actionProperties: IHeaderProperties = {
+        name: '',
+        img_src: '',
+        description: '',
+    };
     actionFields: IModalFields[] = [];
     actionVariables: IModalVariables[] = [];
 
     reactionModalShow: boolean = false;
-    reactionProperties: IHeaderProperties = { name: '', img_src: '', description: '' };
+    reactionProperties: IHeaderProperties = {
+        name: '',
+        img_src: '',
+        description: '',
+    };
     reactionFields: IModalFields[] = [];
     reactionVariables: IModalVariables[] = [];
 
@@ -66,7 +74,8 @@ export class EditeurPage implements OnInit {
                 this.selectedReaction.api_name
             );
             this.reactionProperties.name = this.selectedReaction.api_name;
-            this.reactionProperties.description = this.selectedReaction.description;
+            this.reactionProperties.description =
+                this.selectedReaction.description;
             this.reactionModalShow = true;
         }
     }
@@ -87,9 +96,7 @@ export class EditeurPage implements OnInit {
         this.actionSwapModalOpen = false;
         if (id != undefined && id != '' && !isNaN(Number(id))) {
             this.actionID = id;
-            this.selectedAction = this.actions.filter(
-                (a) => a.id == Number(this.actionID)
-            )[0];
+            this.getAllDatas();
         }
     }
 
@@ -97,9 +104,7 @@ export class EditeurPage implements OnInit {
         this.reactionSwapModalOpen = false;
         if (id != undefined && id != '' && !isNaN(Number(id))) {
             this.reactionID = id;
-            this.selectedReaction = this.reactions.filter(
-                (a) => a.id == Number(this.reactionID)
-            )[0];
+            this.getAllDatas();
         }
     }
 
@@ -201,6 +206,43 @@ export class EditeurPage implements OnInit {
                 (a) => a.id == Number(this.reactionID)
             )[0];
         }
+        this.actionFields = [];
+        this.actionVariables = [];
+        if (
+            this.selectedAction != undefined &&
+            this.selectedAction.input != undefined
+        ) {
+            for (let element of this.selectedAction.input) {
+                this.actionFields.push({
+                    fieldID: element.name,
+                    fieldType: element.type,
+                    fieldDescription: element.description,
+                    fieldValue: '',
+                });
+            }
+            for (let element of this.selectedAction.labels) {
+                this.actionVariables.push({
+                    name: element.name,
+                    value: element.value,
+                    img_src: this.getimgsrc(this.selectedAction.api_name),
+                });
+            }
+        }
+        this.reactionFields = [];
+        if (
+            this.selectedReaction != undefined &&
+            this.selectedReaction.input != undefined
+        ) {
+            for (let element of this.selectedReaction.input) {
+                this.reactionFields.push({
+                    fieldID: element.name,
+                    fieldType: element.type,
+                    fieldDescription: element.description,
+                    fieldValue: '',
+                });
+            }
+        }
+
         console.log(this.selectedAction);
         console.log(this.selectedReaction);
     }

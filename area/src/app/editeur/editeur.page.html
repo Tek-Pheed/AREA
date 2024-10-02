@@ -1,9 +1,9 @@
 <h1>Editor</h1>
 <editor-settings [headerProperties]="actionProperties" [fields]="actionFields"
-    [variables]="actionVariables" (onModalClose)="actionModalClosed($event)"
+    [variables]="[]" (onModalClose)="actionModalClosed($event)"
     [isOpen]="actionModalShow"></editor-settings>
 <editor-settings [headerProperties]="reactionProperties" [fields]="reactionFields"
-    [variables]="reactionVariables" (onModalClose)="reactionModalClose($event)"
+    [variables]="actionVariables" (onModalClose)="reactionModalClose($event)"
     [isOpen]="reactionModalShow"></editor-settings>
 <editor-swap-settings
     [services]="this.integrations"
