@@ -1,15 +1,17 @@
-name: Web - Pipeline
+name: Pipeline - Web
 
 on:
   push:
-    pull_request:
-      branches-ignore:
-        - 'ga-ignore-*'
+    branches-ignore:
+      - 'ga-ignore-*'
+  pull_request:
+    branches-ignore:
+      - 'ga-ignore-*'
 
 
 jobs:
   web_compile_test:
-    name: Website (Angular)
+    name: Build Website (Angular)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,3 +32,50 @@ jobs:
         run: |
           cd area/
           npm run build
+  api_compile_test:
+    name: Build API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install npm dependencies
+        run: |
+          cd api
+          npm i
+      - name: Build website
+        run: |
+          cd api/
+          npm run build
+  api_coverage_test:
+    name: Testing API
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: api_compile_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install npm dependencies
+        run: |
+          cd api
+          npm i
+      - name: Setup env file
+        run: |
+          cd api/
+          echo "${{secrets.ENV_FILE}}" > .env
+      - name: Run test
+        run: |
+          cd api/
+          npm test
+      - name: Summary Coverage Report
+        uses: kcjpop/coverage-comments@v2.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          coverage-file: 'api/coverage/lcov.info'
