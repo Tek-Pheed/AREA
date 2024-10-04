@@ -2,11 +2,10 @@ import supertest from 'supertest';
 import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import { generateToken } from '../routes/auth/auth';
-import { beforeEach } from 'node:test';
-import { getAllActions } from '../routes/actions/action.query';
 import {
     getAllReactions,
     getReactionAPI,
+    getSpecificReaction,
 } from '../routes/reactions/reactions.query';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
@@ -56,6 +55,13 @@ describe('reactions', () => {
                 .expect(200);
         });
 
+        it('Get know specific api', async () => {
+            await supertest(app)
+                .get('/api/reactions/1')
+                .set('Authorization', `Bearer ${token}`)
+                .expect(200);
+        });
+
         it('Get all reactions api', async () => {
             await supertest(app)
                 .get('/api/reactions/api')
@@ -74,6 +80,11 @@ describe('reactions', () => {
         it('Error when call reactions function api', async () => {
             db.end();
             const result = await getReactionAPI();
+            expect(result).toBe(null);
+        });
+
+        it('Get unknown specific api', async () => {
+            const result = await getSpecificReaction('10000');
             expect(result).toBe(null);
         });
     });
