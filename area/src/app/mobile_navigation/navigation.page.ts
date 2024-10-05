@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 export class NavigationPage {
     constructor(private platform: Platform) {
         if (this.platform.is('desktop')) {
-            window.location.href = '/';
+            window.location.href = 'dashboard';
         }
     }
 }

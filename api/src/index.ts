@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: 'http://localhost:4200', // Your Angular app's URL
+        origin: '*', // Your Angular app's URL
         credentials: true,
     })
 );

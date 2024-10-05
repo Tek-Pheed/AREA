@@ -7,6 +7,7 @@ import {
     IReactions,
     IUserConfig,
 } from '../utils/data.models';
+import { Platform } from '@ionic/angular';
 
 interface activeArea {
     name: string;
@@ -21,7 +22,10 @@ interface activeArea {
     styleUrls: ['dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-    constructor(private service: ApiService) {}
+    constructor(
+        private service: ApiService,
+        protected platform: Platform
+    ) {}
 
     userConfigs: IUserConfig[] = [];
     actions: IActions[] = [];
@@ -30,6 +34,7 @@ export class DashboardPage implements OnInit {
     datas: activeArea[] = [];
     showActiveArea: activeArea[] = [];
     searchText: string = '';
+    token: string = '';
 
     handleInput(event: any) {
         const query = event.target.value.toLowerCase();
@@ -41,11 +46,7 @@ export class DashboardPage implements OnInit {
     }
 
     getApis() {
-        let token = JSON.parse(
-            JSON.stringify(localStorage.getItem('Token')) as string
-        );
-
-        this.service.getAllServices(token).subscribe(
+        this.service.getAllServices(this.token).subscribe(
             (res) => {
                 this.apis = res.data;
                 this.getActions();
@@ -57,13 +58,8 @@ export class DashboardPage implements OnInit {
     }
 
     getActions() {
-        let token = JSON.parse(
-            JSON.stringify(localStorage.getItem('Token')) as string
-        );
-
-        this.service.getActions(token).subscribe(
+        this.service.getActions(this.token).subscribe(
             (res) => {
-                console.log(res.data);
                 this.actions = res.data;
                 this.getReactions();
             },
@@ -74,13 +70,8 @@ export class DashboardPage implements OnInit {
     }
 
     getReactions() {
-        let token = JSON.parse(
-            JSON.stringify(localStorage.getItem('Token')) as string
-        );
-
-        this.service.getReactions(token).subscribe(
+        this.service.getReactions(this.token).subscribe(
             (res) => {
-                console.log(res.data);
                 this.reactions = res.data;
                 this.getConfig();
             },
@@ -91,13 +82,8 @@ export class DashboardPage implements OnInit {
     }
 
     getConfig() {
-        let token = JSON.parse(
-            JSON.stringify(localStorage.getItem('Token')) as string
-        );
-
-        this.service.getUserConfigs(token).subscribe(
+        this.service.getUserConfigs(this.token).subscribe(
             (res) => {
-                console.warn(res.data);
                 this.userConfigs = res.data;
                 this.generateCards();
             },
@@ -137,10 +123,16 @@ export class DashboardPage implements OnInit {
 
     launchEditor(id: string | null) {
         if (id == null) return;
-        location.href = `/editeur?configID=${id}`;
+        location.href = `/dashboard/editor?configID=${id}`;
     }
 
     ngOnInit(): void {
+        this.token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        if (!this.token) {
+            window.location.href = 'home';
+        }
         this.getApis();
     }
 }

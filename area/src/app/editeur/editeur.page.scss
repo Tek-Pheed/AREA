@@ -6,6 +6,8 @@
     align-content: center;
     align-items: center;
     flex-direction: row;
+    margin-top: constant(safe-area-inset-top) !important;
+    margin-top: env(safe-area-inset-top) !important;
 }
 
 .bottomContainer {

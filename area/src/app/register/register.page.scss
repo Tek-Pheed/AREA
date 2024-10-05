@@ -41,7 +41,7 @@ input {
     font-size: 16px;
     width: 100%;
     max-width: 420px;
-    color: #000;
+    color: black;
 }
 
 input:last-of-type {
@@ -50,10 +50,8 @@ input:last-of-type {
 
 button {
     padding: 15px;
-    color: #f0f0f0;
     border: none;
     border-radius: 14px;
-    font-size: 16px;
     cursor: pointer;
     width: 100%;
     max-width: 420px;
@@ -72,25 +70,13 @@ hr {
 
 @media (max-width: 500px) {
     .register-container {
-        width: 90%;
+        width: 70%;
+        height: 50%;
     }
 
     h1 {
         font-size: 40px;
         margin-bottom: 30px;
-    }
-
-    input {
-        padding: 10px;
-        font-size: 14px;
-        max-width: 100%;
-    }
-
-    button {
-        padding: 10px;
-        font-size: 18px;
-        max-width: 100%;
-        margin-top: 30px;
     }
 
     hr {

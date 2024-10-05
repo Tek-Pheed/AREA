@@ -8,7 +8,11 @@ export const options = {
     servers: [
         {
             url: 'http://localhost:3000/',
-            description: 'Default server',
+            description: 'Dev server',
+        },
+        {
+            url: 'https://api.leafs-studio.com/',
+            description: 'Production server',
         },
     ],
     tags: [
