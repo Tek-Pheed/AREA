@@ -48,3 +48,21 @@ jobs:
         run: |
           cd api/
           npm run build
+  ws_compile_test:
+    name: WebService
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install npm dependencies
+        run: |
+          cd ws
+          npm i
+      - name: Build WebService
+        run: |
+          cd ws/
+          npm run build
