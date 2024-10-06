@@ -4,6 +4,7 @@ volumes:
 services:
     webservice:
       build: ./ws
+
     android:
         build:
             context: ./area
