@@ -1,4 +1,4 @@
-import { db } from './utils/database';
+import { db } from '../../utils/database';
 
 export async function getSpotifyToken(email: string): Promise<any> {
     try {

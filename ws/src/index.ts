@@ -1,9 +1,9 @@
 import dbConnect from './utils/database';
 import { getActions, getReactions, getUsersConfigs } from './query/usersConfig';
 import log from './utils/logger';
-import { getSpecificSong } from './actions';
+import { getSpecificSong } from './apis/spotify/actions';
 import { IBody, IBodySpecific } from './utils/data.model';
-import { skipToNextSong, startPlaybackSong } from './reactions';
+import { skipToNextSong, startPlaybackSong } from './apis/spotify/reactions';
 import { getStreamerStatus } from './apis/twitch/actions';
 import { getTwitchToken } from './apis/twitch/twitch.query';
 require('dotenv').config();
