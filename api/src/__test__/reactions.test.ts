@@ -57,7 +57,7 @@ describe('reactions', () => {
 
         it('Get know specific api', async () => {
             await supertest(app)
-                .get('/api/reactions/1')
+                .get('/api/reactions/17')
                 .set('Authorization', `Bearer ${token}`)
                 .expect(200);
         });

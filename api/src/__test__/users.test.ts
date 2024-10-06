@@ -47,11 +47,11 @@ describe('users', () => {
                 await supertest(app)
                     .post('/api/users/configs')
                     .send({
-                        actions_id: 1,
+                        actions_id: 6,
                         method: 'GET',
                         headers: 'json',
                         body: 'json',
-                        reaction_id: 1,
+                        reaction_id: 6,
                     })
                     .set(
                         'Authorization',
@@ -64,11 +64,11 @@ describe('users', () => {
                 await supertest(app)
                     .put(`/api/users/configs/8`)
                     .send({
-                        actions_id: 1,
+                        actions_id: 6,
                         method: 'GET',
                         headers: 'json',
                         body: 'json',
-                        reactions_id: 1,
+                        reactions_id: 6,
                     })
                     .set(
                         'Authorization',

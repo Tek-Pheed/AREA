@@ -60,7 +60,6 @@
         "passport-instagram": "^1.0.0",
         "passport-local": "^1.0.0",
         "passport-oauth2": "^1.8.0",
-        "passport-spotify": "^2.0.0",
         "passport-twitch": "^1.0.3",
         "passport-twitchtv": "^0.1.4",
         "passport-twitter": "^1.0.4",
