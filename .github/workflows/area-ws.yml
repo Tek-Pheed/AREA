@@ -6,7 +6,6 @@ on:
       branches-ignore:
         - 'ga-ignore-*'
 
-
 jobs:
   ws_compile_test:
     name: Build
