@@ -88,18 +88,21 @@ export async function skipToNextSong(email: string): Promise<boolean> {
 
 export async function skipToPreviousSong(email: string): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
-    const response = await axios.post(
-        'https://api.spotify.com/v1/me/player/previous',
-        {},
-        {
-            headers: {
-                Authorization: `Bearer ${sAccessToken}`,
-            },
-        }
-    );
-    if (response.status === 204) {
-        return true;
-    } else return false;
+    try {
+        const response = await axios.post(
+            'https://api.spotify.com/v1/me/player/previous',
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        return response.status === 204;
+    } catch (e: any) {
+        log.error('skipToNextSong ' + e.status);
+        return false;
+    }
 }
 
 export async function setPlaybackVolume(

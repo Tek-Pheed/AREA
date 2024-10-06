@@ -13,8 +13,12 @@ async function launchReaction(func: string, params: IBody, email: string) {
     log.info(`Reaction: ${func}`);
     switch (func) {
         case 'Skip to next':
-            const result = await skipToNextSong(email);
-            log.debug(result);
+            const nextResult = await skipToNextSong(email);
+            log.debug(nextResult);
+            break;
+        case 'Skip to previous':
+            const previousResult = await skipToNextSong(email);
+            log.debug(previousResult);
             break;
         case 'Start music':
             for (const param of params.reaction) {
