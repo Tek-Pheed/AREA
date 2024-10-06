@@ -2,23 +2,25 @@ import dbConnect from './utils/database';
 import { getActions, getReactions, getUsersConfigs } from './query/usersConfig';
 import log from './utils/logger';
 import { getSpecificSong } from './apis/spotify/actions';
-import { IBody, IBodySpecific } from './utils/data.model';
+import { IBody } from './utils/data.model';
 import { skipToNextSong, startPlaybackSong } from './apis/spotify/reactions';
 import { getStreamerStatus } from './apis/twitch/actions';
-import { getTwitchToken } from './apis/twitch/twitch.query';
 require('dotenv').config();
 
+import fs from 'fs';
+
 async function launchReaction(func: string, params: IBody, email: string) {
-    log.info('Reaction: ' + func);
+    log.info(`Reaction: ${func}`);
     switch (func) {
         case 'Skip to next':
             const result = await skipToNextSong(email);
-            log.info(result);
+            log.debug(result);
             break;
         case 'Start music':
             for (const param of params.reaction) {
                 if (param.name === 'songName') {
                     const result = await startPlaybackSong(email, param.value);
+                    log.debug(result);
                 }
             }
             break;
@@ -33,13 +35,13 @@ async function launchAction(
     email: string,
     reaction: any
 ) {
+    const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
     log.info('Action: ' + func);
     switch (func) {
         case 'When listen specific sound':
             for (const param of params.action) {
                 if (param.name === 'songName') {
                     const result = await getSpecificSong(email, param.value);
-                    log.info(result);
                     if (result != false) {
                         await launchReaction(reaction[0].title, params, email);
                     }
@@ -49,17 +51,28 @@ async function launchAction(
         case 'Live starting':
             for (const param of params.action) {
                 if (param.name === 'StreamUsername') {
-                    const result = await getStreamerStatus(
-                        await getTwitchToken(email),
-                        param.value
-                    );
-                    log.info(result);
+                    const key = email + param.name + param.value;
+                    const result = await getStreamerStatus(email, param.value);
+                    if (!storage[key]) storage[key] = {};
                     if (result != false) {
-                        await launchReaction(reaction[0].title, params, email);
+                        if (storage[key].isStream != true) {
+                            storage[key].isStream = true;
+                            await launchReaction(
+                                reaction[0].title,
+                                params,
+                                email
+                            );
+                        }
+                    } else {
+                        storage[key].isStream = false;
                     }
                 }
             }
+            break;
+        default:
+            break;
     }
+    fs.writeFileSync('storage.json', JSON.stringify(storage));
 }
 
 async function reloadWS() {
@@ -79,6 +92,9 @@ async function reloadWS() {
 
 dbConnect.then(async () => {
     log.info('Connected to DB...');
+    if (!fs.existsSync('storage.json')) {
+        fs.writeFileSync('storage.json', '{}');
+    }
     await reloadWS();
     setInterval(async () => {
         await reloadWS();
