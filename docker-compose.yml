@@ -4,6 +4,9 @@ volumes:
 services:
     webservice:
       build: ./ws
+      volumes:
+        - common_volume:/output
+
     android:
         build:
             context: ./area
@@ -14,10 +17,9 @@ services:
     server:
         build: ./api
         ports:
-            - 8080:3000
-        #depends_on:
-        #  webservice:
-        #    condition: service_started
+            - 3000:3000
+        volumes:
+          - common_volume:/output
 
     client_web:
         build: ./area
