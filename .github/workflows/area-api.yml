@@ -61,22 +61,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install npm dependencies
-        run: |
-          cd api
-          npm i
-      - name: Build
-        run: |
-          cd api/
-          npm run build
-      - name: Clean project
-        run: |
-          cd api/
-          rm -rf node_modules/ build/ package-lock.json
       - name: Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
