@@ -32,9 +32,9 @@ export async function refreshSpotifyToken(
         }
     );
     if (response.data.access_token) {
-        return false;
+        return true;
     }
-    refreshAccessTokeninDB(email, 'spotify', response.data.access_token);
+    await refreshAccessTokeninDB(email, 'spotify', response.data.access_token);
     return false;
 }
 

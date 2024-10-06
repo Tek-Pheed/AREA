@@ -1,4 +1,5 @@
 import { getSpotifyToken } from './spotify.query';
+import log from '../../utils/logger';
 
 const axios = require('axios');
 
@@ -36,40 +37,50 @@ export async function startPlaybackSong(
     email: string,
     track: string
 ): Promise<boolean> {
-    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
-    const song_id = await getSongID(track, sAccessToken);
-    console.log(song_id);
-    if (!song_id) {
+    try {
+        const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+        const song_id = await getSongID(track, sAccessToken);
+        console.log(song_id);
+        if (!song_id) {
+            return false;
+        }
+        const response = await axios.put(
+            'https://api.spotify.com/v1/me/player/play',
+            { uris: [`spotify:track:${song_id}`] },
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        if (response.status === 204) {
+            return true;
+        } else return false;
+    } catch (e) {
+        log.error(e);
         return false;
     }
-    const response = await axios.put(
-        'https://api.spotify.com/v1/me/player/play',
-        { uris: [`spotify:track:${song_id}`] },
-        {
-            headers: {
-                Authorization: `Bearer ${sAccessToken}`,
-            },
-        }
-    );
-    if (response.status === 204) {
-        return true;
-    } else return false;
 }
 
 export async function skipToNextSong(email: string): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
-    const response = await axios.post(
-        'https://api.spotify.com/v1/me/player/next',
-        {},
-        {
-            headers: {
-                Authorization: `Bearer ${sAccessToken}`,
-            },
-        }
-    );
-    if (response.status === 204) {
-        return true;
-    } else return false;
+    try {
+        const response = await axios.post(
+            'https://api.spotify.com/v1/me/player/next',
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        if (response.status === 204) {
+            return true;
+        } else return false;
+    } catch (e) {
+        log.error(e);
+        return false;
+    }
 }
 
 export async function skipToPreviousSong(email: string): Promise<boolean> {
