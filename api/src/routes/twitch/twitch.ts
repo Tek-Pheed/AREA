@@ -1,7 +1,6 @@
 import { Response, Express, Router } from 'express';
 import { isAuthenticatedTwitch } from '../../middlewares/oauth';
 import { insertTokeninDb } from '../oauth/oauth.query';
-import { getFollowedStreams } from './actions';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -162,44 +161,5 @@ twitchRouter.get(
                 }
                 #swagger.tags   = ['Twitch OAuth']
             */
-    }
-);
-
-twitchRouter.get(
-    '/get_followings',
-    isAuthenticatedTwitch,
-    async (req: any, res: Response) => {
-        if (!req.user || !req.user.accessTokenTwitch) {
-            return res.redirect('/api/oauth/twitch/login');
-        }
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Twitch OAuth']
-            */
-
-        try {
-            let accessToken = req.user.accessTokenTwitch;
-            const refreshToken = req.user.refreshTokenTwitch;
-            let followed = await getFollowedStreams(accessToken);
-
-            if (!followed && refreshToken) {
-                accessToken = await refreshTwitchToken(refreshToken);
-                req.user.accessTokenTwitch = accessToken;
-                followed = await getFollowedStreams(accessToken);
-            }
-            return res.json({ followed });
-        } catch (error) {
-            console.error('Error getting followed streams', error);
-            return res.status(500).send('Error getting followed streams');
-        }
     }
 );

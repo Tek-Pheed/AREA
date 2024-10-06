@@ -2,10 +2,8 @@ volumes:
   common_volume:
 
 services:
-    #webservice:
-    #  build: ./ws
-    #  ports:
-    #    - "8082:3000"
+    webservice:
+      build: ./ws
     android:
         build:
             context: ./area

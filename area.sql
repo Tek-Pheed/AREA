@@ -24,7 +24,8 @@ CREATE TABLE `actions`
     title       varchar(255)                                        NOT NULL,
     description varchar(255)                                        NOT NULL,
     api_name    varchar(255)                                        NOT NULL,
-    ask_url     varchar(255)                                        NOT NULL,
+    labels      json                                                DEFAULT NULL,
+    inputs      json                                                DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (api_name) REFERENCES actions_api (name)
 )CHARSET=utf8;
@@ -42,7 +43,7 @@ CREATE TABLE `reactions`
     title       varchar(255)                                        NOT NULL,
     description varchar(255)                                        NOT NULL,
     api_name    varchar(255)                                        NOT NULL,
-    ask_url     varchar(255)                                        NOT NULL,
+    inputs      json                                                DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (api_name) REFERENCES reactions_api (name)
 )CHARSET=utf8;
@@ -50,18 +51,18 @@ CREATE TABLE `reactions`
 CREATE TABLE `usersToken`
 (
     email       varchar(255)                                        NOT NULL,
-    githubAccessToken varchar(255)                                  ,
-    githubRefreshToken varchar(255)                                 ,
-    twitchAccessToken varchar(255)                                  ,
-    twitchRefreshToken varchar(255)                                 ,
-    spotifyAccessToken varchar(255)                                 ,
-    spotifyRefreshToken varchar(255)                                ,
-    discordAccessToken varchar(255)                                 ,
-    discordRefreshToken varchar(255)                                ,
-    coinbaseAccessToken varchar(255)                                ,
-    coinbaseRefreshToken varchar(255)                               ,
-    googleAccessToken varchar(255)                                  ,
-    googleRefreshToken varchar(255)                                 ,
+    githubAccessToken varchar(255)                                  DEFAULT NULL,
+    githubRefreshToken varchar(255)                                 DEFAULT NULL,
+    twitchAccessToken varchar(255)                                  DEFAULT NULL,
+    twitchRefreshToken varchar(255)                                 DEFAULT NULL,
+    spotifyAccessToken varchar(255)                                 DEFAULT NULL,
+    spotifyRefreshToken varchar(255)                                DEFAULT NULL,
+    discordAccessToken varchar(255)                                 DEFAULT NULL,
+    discordRefreshToken varchar(255)                                DEFAULT NULL,
+    coinbaseAccessToken varchar(255)                                DEFAULT NULL,
+    coinbaseRefreshToken varchar(255)                               DEFAULT NULL,
+    googleAccessToken varchar(255)                                  DEFAULT NULL,
+    googleRefreshToken varchar(255)                                 DEFAULT NULL,
     PRIMARY KEY (email),
     FOREIGN KEY (email) REFERENCES users (email)
 )CHARSET=utf8;
