@@ -5,7 +5,9 @@ const axios = require('axios');
 
 export async function getSongURL(
     name: string,
-    access_token: string
+    access_token: string,
+    refresh_token: string,
+    email: string
 ): Promise<any> {
     try {
         const response = await axios.get(
@@ -22,6 +24,7 @@ export async function getSongURL(
         return response.data.tracks.items[0].external_urls.spotify;
     } catch (e) {
         log.error(e);
+        await refreshSpotifyToken(email, refresh_token);
         return false;
     }
 }
@@ -34,8 +37,13 @@ export async function getSpecificSong(
     if (!sAccessToken || !sRefreshToken) {
         return false;
     }
+    const song_url = await getSongURL(
+        target_song,
+        sAccessToken,
+        sRefreshToken,
+        email
+    );
     try {
-        const song_url = await getSongURL(target_song, sAccessToken);
         if (!song_url) {
             return false;
         }
@@ -58,8 +66,7 @@ export async function getSpecificSong(
         } else return false;
     } catch (e) {
         log.error(e);
-        const result = await refreshSpotifyToken(email, sRefreshToken);
-        log.info(result);
+        await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }
 }

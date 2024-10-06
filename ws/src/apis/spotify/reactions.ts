@@ -40,7 +40,6 @@ export async function startPlaybackSong(
     try {
         const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
         const song_id = await getSongID(track, sAccessToken);
-        console.log(song_id);
         if (!song_id) {
             return false;
         }
@@ -56,8 +55,12 @@ export async function startPlaybackSong(
         if (response.status === 204) {
             return true;
         } else return false;
-    } catch (e) {
-        log.error(e);
+    } catch (e: any) {
+        if (e.status === 404) {
+            log.warn('No device found to launch music');
+        } else {
+            log.error('startPlaybackSong ' + e.status);
+        }
         return false;
     }
 }
@@ -77,8 +80,8 @@ export async function skipToNextSong(email: string): Promise<boolean> {
         if (response.status === 204) {
             return true;
         } else return false;
-    } catch (e) {
-        log.error(e);
+    } catch (e: any) {
+        log.error('skipToNextSong ' + e.status);
         return false;
     }
 }

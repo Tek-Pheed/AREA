@@ -1,4 +1,6 @@
 import log from '../../utils/logger';
+import { refreshTwitchToken } from '../../utils/refresh';
+import { getTwitchToken } from './twitch.query';
 
 const axios = require('axios');
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
@@ -61,9 +63,10 @@ export async function getFollowedStreams(token: string): Promise<any> {
 }
 
 export async function getStreamerStatus(
-    token: any,
+    email: any,
     username: string
 ): Promise<any> {
+    const token = await getTwitchToken(email);
     try {
         const response = await axios.get(
             `https://api.twitch.tv/helix/streams?user_login=${username}`,
@@ -85,12 +88,12 @@ export async function getStreamerStatus(
                 },
             };
         } else {
-            return {
-                streamDetails: [],
-            };
+            return false;
         }
-    } catch (error) {
-        log.error(`Error fetching streamer status : ${error}`);
-        return null;
+    } catch (e: any) {
+        log.error('getStreamerStatus ' + e);
+        const result = await refreshTwitchToken(email, token.tRefreshToken);
+        log.info('Refresh twitch token --> ' + result);
+        return false;
     }
 }

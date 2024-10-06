@@ -1,4 +1,5 @@
 import { db } from '../../utils/database';
+import log from '../../utils/logger';
 
 export async function getTwitchToken(email: string): Promise<any> {
     try {
@@ -16,7 +17,7 @@ export async function getTwitchToken(email: string): Promise<any> {
             return false;
         }
     } catch (error) {
-        console.error(error);
+        log.error(error);
         return false;
     }
 }
