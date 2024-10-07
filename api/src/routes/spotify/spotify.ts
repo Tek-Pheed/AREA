@@ -107,19 +107,7 @@ spotifyRouter.get(
     '/login',
     passport.authenticate('spotify'),
     function (req, res) {
-        //const email = req.params.email;
-        //res.cookie('email', email);
         /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
                 #swagger.tags   = ['Spotify OAuth']
             */
     }
@@ -152,5 +140,8 @@ spotifyRouter.get(
     }),
     async (req: any, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
+        res.redirect(
+            `http://localhost:8081/dashboard/profile?api=twitch&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+        );
     }
 );
