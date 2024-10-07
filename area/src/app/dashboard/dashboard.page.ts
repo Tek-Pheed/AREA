@@ -8,6 +8,7 @@ import {
     IUserConfig,
 } from '../utils/data.models';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 interface activeArea {
     name: string;
@@ -24,7 +25,8 @@ interface activeArea {
 export class DashboardPage implements OnInit {
     constructor(
         private service: ApiService,
-        protected platform: Platform
+        protected platform: Platform,
+        private router: Router
     ) {}
 
     userConfigs: IUserConfig[] = [];
@@ -35,6 +37,14 @@ export class DashboardPage implements OnInit {
     showActiveArea: activeArea[] = [];
     searchText: string = '';
     token: string = '';
+
+    navigateToIntegrations() {
+        if (this.platform.is('ios') || this.platform.is('android')) {
+            this.router.navigate(['/tabs/integrations']);
+        } else {
+            this.router.navigate(['/dashboard/integrations']);
+        }
+    }
 
     handleInput(event: any) {
         const query = event.target.value.toLowerCase();
@@ -123,7 +133,11 @@ export class DashboardPage implements OnInit {
 
     launchEditor(id: string | null) {
         if (id == null) return;
-        location.href = `/dashboard/editor?configID=${id}`;
+        this.router.navigate([`/dashboard/editor`], {
+            queryParams: {
+                configID: id,
+            },
+        });
     }
 
     ngOnInit(): void {
@@ -131,7 +145,7 @@ export class DashboardPage implements OnInit {
             JSON.stringify(localStorage.getItem('Token')) as string
         );
         if (!this.token) {
-            window.location.href = 'home';
+            this.router.navigate(['/home']);
         }
         this.getApis();
     }

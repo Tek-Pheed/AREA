@@ -11,6 +11,7 @@ import {
     IReactions,
     IUserConfig,
 } from '../utils/data.models';
+import { Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-editeur',
@@ -170,7 +171,11 @@ export class EditeurPage implements OnInit {
                         this.reactionID = config.reaction_id;
                     } else if (searchParams.get('configID') != null) {
                         alert('Unable to find corresponding user config');
-                        location.href = 'dashboard';
+                        if (this.platform.is('desktop')) {
+                            this.router.navigate(['/dashboard']);
+                        } else {
+                            this.router.navigate(['/tabs/home']);
+                        }
                     }
                 }
                 this.getAllDatas();
@@ -301,7 +306,11 @@ export class EditeurPage implements OnInit {
         if (URLconfigID == null || URLconfigID == undefined) {
             this.service.createNewUserConfig(token, conf).subscribe(
                 (res) => {
-                    location.href = '/dashboard';
+                    if (this.platform.is('desktop')) {
+                        this.router.navigate(['/dashboard']);
+                    } else {
+                        this.router.navigate(['/tabs/home']);
+                    }
                 },
                 (err) => {
                     console.error(err);
@@ -312,7 +321,11 @@ export class EditeurPage implements OnInit {
                 .updateUserConfig(token, conf, Number(URLconfigID))
                 .subscribe(
                     (res) => {
-                        location.href = '/dashboard';
+                        if (this.platform.is('desktop')) {
+                            this.router.navigate(['/dashboard/']);
+                        } else {
+                            this.router.navigate(['/tabs/home']);
+                        }
                     },
                     (err) => {
                         console.error(err);
@@ -342,7 +355,8 @@ export class EditeurPage implements OnInit {
     constructor(
         private router: Router,
         private service: ApiService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private platform: Platform
     ) {}
 
     ngOnInit(): void {

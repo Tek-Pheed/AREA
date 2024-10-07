@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { APIServices, IActions } from '../utils/data.models';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-integration',
@@ -18,7 +19,8 @@ export class IntegrationsPage implements OnInit {
 
     constructor(
         private service: ApiService,
-        protected platform: Platform
+        protected platform: Platform,
+        private router: Router
     ) {}
 
     getimgsrc(title: string) {
@@ -38,7 +40,9 @@ export class IntegrationsPage implements OnInit {
     }
 
     createConfigFromActionId(id: number) {
-        location.href = `/dashboard/editor?actionID=${id.toString()}`;
+        this.router.navigate([`/dashboard/editor`], {
+            queryParams: { actionID: id },
+        });
     }
 
     handleInput(event: any) {

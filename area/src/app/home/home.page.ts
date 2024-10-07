@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -7,7 +8,12 @@ import { Platform } from '@ionic/angular';
     styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-    constructor(private platform: Platform) {}
+    token: string = '';
+
+    constructor(
+        protected platform: Platform,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         if (
@@ -18,11 +24,15 @@ export class HomePage implements OnInit {
                 JSON.stringify(localStorage.getItem('Token')) as string
             ) != null
         ) {
-            if (this.platform.is('desktop')) {
-                window.location.href = 'dashboard';
-            } else {
-                window.location.href = '/tabs/home';
+            if (this.platform.is('mobile')) {
+                this.router.navigate(['/tabs/home']);
             }
+            this.token = JSON.parse(
+                JSON.stringify(localStorage.getItem('Token')) as string
+            );
         }
     }
+
+    protected readonly localStorage = localStorage;
+    protected readonly JSON = JSON;
 }

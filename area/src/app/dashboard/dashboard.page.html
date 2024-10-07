@@ -1,17 +1,19 @@
-<app-navbar *ngIf="platform.is('desktop')"></app-navbar>
-<div class="content">
-    <div class="topWrappedContent">
-        <h1>Start creating your automations</h1>
-        <ion-searchbar animated="true" placeholder="Search" value="{{searchText}}" [debounce]="500"
-            (ionInput)="handleInput($event)"></ion-searchbar>
+<ion-content>
+    <app-navbar *ngIf="platform.is('desktop')"></app-navbar>
+    <div class="content">
+        <div class="topWrappedContent">
+            <h1>Start creating your automations</h1>
+            <ion-searchbar placeholder="Search" value="{{searchText}}" [debounce]="500"
+                           (ionInput)="handleInput($event)"></ion-searchbar>
+        </div>
+        <div class="buttonContent">
+            <a (click)="navigateToIntegrations()" class="lighButton">Create New</a>
+        </div>
+        <div class="integrationList">
+            <app-dashboard-cards *ngFor="let d of showActiveArea" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
+                                 image_2="{{d.reactionAPILogoUrl}}" (click)="this.launchEditor(d.configID)">
+            </app-dashboard-cards>
+        </div>
+        <div class="bottom"></div>
     </div>
-    <div class="buttonContent">
-        <a href="dashboard/integrations" class="lighButton">Create New</a>
-    </div>
-    <div class="integrationList">
-        <app-dashboard-cards *ngFor="let d of showActiveArea" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
-            image_2="{{d.reactionAPILogoUrl}}" (click)="this.launchEditor(d.configID)">
-        </app-dashboard-cards>
-    </div>
-    <div class="bottom"></div>
-</div>
+</ion-content>

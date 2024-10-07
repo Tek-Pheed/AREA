@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-Register',
@@ -15,7 +16,8 @@ export class RegisterPage implements OnInit {
 
     constructor(
         private service: ApiService,
-        private platform: Platform
+        private platform: Platform,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -28,9 +30,9 @@ export class RegisterPage implements OnInit {
             ) != null
         ) {
             if (this.platform.is('desktop')) {
-                window.location.href = 'dashboard';
+                this.router.navigate(['/dashboard']);
             } else {
-                window.location.href = '/tabs/home';
+                this.router.navigate(['/tabs/home']);
             }
         }
     }
@@ -71,10 +73,11 @@ export class RegisterPage implements OnInit {
             alert('Unable to create account: ' + result.message);
         }
         localStorage.setItem('Token', result.data.token);
+
         if (this.platform.is('desktop')) {
-            window.location.href = 'dashboard';
+            this.router.navigate(['/dashboard']);
         } else {
-            window.location.href = '/tabs/home';
+            this.router.navigate(['/tabs/home']);
         }
     }
 }
