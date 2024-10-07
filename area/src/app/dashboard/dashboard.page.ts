@@ -21,6 +21,10 @@ interface activeArea {
     styleUrls: ['dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+    items: string[] = [];
+    loadItems(loadItems: any) {
+        throw new Error('Method not implemented.');
+    }
     constructor(private service: ApiService) {}
 
     userConfigs: IUserConfig[] = [];
