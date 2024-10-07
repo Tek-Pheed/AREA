@@ -29,4 +29,5 @@ services:
         ports:
             - 8081:4200
         volumes:
-            - common_volume:/output
+            - common_volume:/usr/src/app/src/assets/output
+
