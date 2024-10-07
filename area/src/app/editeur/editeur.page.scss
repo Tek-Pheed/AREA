@@ -72,6 +72,10 @@ button:active {
     background: rgb(66, 66, 66);
 }
 
+.ios .bottom {
+    margin-bottom: 20px;
+}
+
 @media screen and (max-width: 900px) {
     .container {
         flex-direction: column;

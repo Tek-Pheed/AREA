@@ -1,8 +1,4 @@
-import { Request, Response, NextFunction, Express, Router } from 'express';
-import { isAuthenticatedSpotify } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
-import { getCurrentSong } from './actions';
-import { auth } from '../../middlewares/auth';
+import { Request, Response, Router } from 'express';
 
 const axios = require('axios');
 const session = require('express-session');
