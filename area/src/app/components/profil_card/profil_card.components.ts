@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../../utils/api.services';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-profil-card',
@@ -20,7 +21,7 @@ export class ProfilCardComponent implements OnInit {
 
     token: string = '';
 
-    constructor(private service: ApiService) {}
+    constructor(private service: ApiService, private router: Router) {}
 
     ngOnInit() {
         this.token = JSON.parse(
@@ -46,6 +47,11 @@ export class ProfilCardComponent implements OnInit {
 
     updatePassword(event: any) {
         this.inputPassword = event.target.value;
+    }
+
+    logout() {
+        localStorage.clear();
+        this.router.navigate(['/home']);
     }
 
     applyChanges() {

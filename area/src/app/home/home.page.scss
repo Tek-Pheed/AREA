@@ -70,6 +70,10 @@ h2 {
   align-items: center;
 }
 
+.androidBtn {
+  text-decoration: none;
+}
+
 .rightPart {
   height: auto;
   display: flex;
@@ -101,6 +105,12 @@ h2 {
   color: black;
   font-size: 15px;
   border-radius: 5px;
+}
+
+@media (max-width: 769px) {
+  .androidBtn {
+    display: none;
+  }
 }
 
 @media (min-width: 769px) {

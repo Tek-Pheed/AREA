@@ -4,7 +4,7 @@ import { ApiService } from 'src/utils/api.services';
 @Component({
     selector: 'app-profil',
     templateUrl: 'download_apk.html',
-    styleUrls: [],
+    styleUrls: ['download_apk.scss'],
 })
 export class DownloadAPK implements OnInit {
     constructor(private service: ApiService) {}
