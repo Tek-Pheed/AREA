@@ -1,25 +1,25 @@
 volumes:
-  common_volume:
+    common_volume:
 
 services:
     webservice:
-      build: ./ws
-      volumes:
-        - common_volume:/output
+        build: ./ws
+        volumes:
+            - common_volume:/output
 
     android:
         build:
             context: ./area
             dockerfile: Dockerfile.apk
         volumes:
-          - common_volume:/output
+            - common_volume:/output
 
     server:
         build: ./api
         ports:
-            - 3000:3000
+            - 8080:8080
         volumes:
-          - common_volume:/output
+            - common_volume:/output
 
     client_web:
         build: ./area
@@ -30,4 +30,3 @@ services:
             - 8081:4200
         volumes:
             - common_volume:/output
-

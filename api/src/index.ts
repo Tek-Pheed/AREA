@@ -13,7 +13,7 @@ import { serviceRouter } from './routes/services/services';
 
 const app: Express = require('express')();
 const cookieParser = require('cookie-parser');
-const port: number = 3000;
+const port: number = 8080;
 const pjson = require('../package.json');
 const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');

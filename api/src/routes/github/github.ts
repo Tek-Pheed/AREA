@@ -120,7 +120,7 @@ githubRouter.get(
         console.log(req.user);
         console.log(req.params);
         res.redirect(
-            `http://localhost:4200/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            `http://localhost:8081/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
         );
         /*
                 #swagger.responses[200] = {

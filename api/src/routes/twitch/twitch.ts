@@ -146,7 +146,7 @@ twitchRouter.get(
     }),
     async (req: any, res: Response) => {
         res.redirect(
-            `http://localhost:4200/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
+            `http://localhost:8081/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
         );
         /*
                 #swagger.responses[200] = {

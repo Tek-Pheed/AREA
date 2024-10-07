@@ -25,7 +25,7 @@ export class AppConnectedCardComponent {
                 .logoutService(token, email, name.toLowerCase())
                 .subscribe(
                     (res) => {
-                        location.href = `http://localhost:4200/profile`;
+                        location.href = `http://localhost:8081/profile`;
                         console.warn(res.data);
                     },
                     (err) => {
@@ -33,7 +33,7 @@ export class AppConnectedCardComponent {
                     }
                 );
         } else {
-            location.href = `http://localhost:3000/api/oauth/${name.toLowerCase()}/login`;
+            location.href = `http://localhost:8080/api/oauth/${name.toLowerCase()}/login`;
         }
     }
 }
