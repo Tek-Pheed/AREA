@@ -48,8 +48,8 @@ export async function updateUserConfig(
     req_body: any,
     id: string
 ): Promise<boolean> {
-    const { actions_id, method, headers, body, reactions_id } = req_body;
-    if (!actions_id || !method || !headers || !body || !reactions_id)
+    const { actions_id, method, headers, body, reaction_id } = req_body;
+    if (!actions_id || !method || !headers || !body || !reaction_id)
         return false;
     try {
         const data = [
@@ -57,7 +57,7 @@ export async function updateUserConfig(
             method,
             JSON.stringify(headers),
             JSON.stringify(body),
-            reactions_id,
+            reaction_id,
         ];
         await db
             .promise()

@@ -51,7 +51,7 @@ describe('users', () => {
                         method: 'GET',
                         headers: 'json',
                         body: 'json',
-                        reactions_id: 6,
+                        reaction_id: 6,
                     })
                     .set(
                         'Authorization',
