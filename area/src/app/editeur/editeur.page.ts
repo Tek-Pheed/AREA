@@ -31,6 +31,7 @@ export class EditeurPage implements OnInit {
 
     selectedAction: IActions | undefined = undefined;
     selectedReaction: IReactions | undefined = undefined;
+    token: string = '';
 
     actionModalShow: boolean = false;
     actionProperties: IHeaderProperties = {
@@ -364,6 +365,12 @@ export class EditeurPage implements OnInit {
         const searchParams = new URLSearchParams(url.split('?')[1]);
         this.configID = searchParams.get('configID');
         this.actionID = searchParams.get('actionID');
+        this.token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        if (!this.token) {
+            this.router.navigate(['/home']);
+        }
         this.getAllData();
     }
 }

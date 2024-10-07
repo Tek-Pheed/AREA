@@ -16,6 +16,7 @@ export class IntegrationsPage implements OnInit {
     actionResults: IActions[] = [];
     inSearch: boolean = false;
     searchText: string = '';
+    token: string = '';
 
     constructor(
         private service: ApiService,
@@ -92,6 +93,12 @@ export class IntegrationsPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        if (!this.token) {
+            this.router.navigate(['/home']);
+        }
         this.getAllServices();
         this.getAllActions();
     }
