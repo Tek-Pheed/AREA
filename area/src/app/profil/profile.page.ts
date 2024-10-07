@@ -115,7 +115,6 @@ export class ProfilePage implements OnInit {
             .updateAPILoginTokens(this.token, this.email, body)
             .subscribe(
                 (res) => {
-                    console.log(res);
                     this.getAllServices();
                 },
                 (err) => {

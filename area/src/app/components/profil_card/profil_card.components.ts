@@ -63,7 +63,6 @@ export class ProfilCardComponent implements OnInit {
 
         this.service.updateCurrentUser(this.token, body).subscribe(
             (res) => {
-                console.log(res);
                 localStorage.setItem('Token', res.data.access_token);
                 window.location.reload();
             },

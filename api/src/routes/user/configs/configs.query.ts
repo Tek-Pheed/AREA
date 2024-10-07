@@ -11,7 +11,6 @@ export async function getAllUserConfigs(req: Request): Promise<any> {
         const result: any = await db
             .promise()
             .query('SELECT * FROM users_configs WHERE email=?', decoded.email);
-        console.log(result[0]);
         if (result[0].length > 0) {
             return result[0];
         } else {
