@@ -71,6 +71,10 @@ h2 {
   display: flex;
 }
 
+.androidBtn {
+  text-decoration: none;
+}
+
 .rightPart {
   height: 100%;
   align-content: center;
@@ -110,6 +114,12 @@ a {
 .buttonLight:hover {
   text-decoration: underline;
   background: none;
+}
+
+@media (max-width: 769px) {
+  .androidBtn {
+    display: none;
+  }
 }
 
 @media (min-width: 769px) {
