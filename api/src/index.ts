@@ -16,7 +16,7 @@ import { aboutRouter } from './routes/about/about';
 
 const app: Express = require('express')();
 const cookieParser = require('cookie-parser');
-const port: number = 8080;
+const port = process.env.API_PORT;
 const pjson = require('../package.json');
 const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');
