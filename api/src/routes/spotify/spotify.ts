@@ -1,6 +1,4 @@
-import { Request, Response, NextFunction, Express, Router } from 'express';
-import { isAuthenticatedSpotify } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
+import { Response, Router } from 'express';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -19,22 +17,6 @@ const SPOTIFY_SCOPES = [
 ];
 
 export const spotifyRouter = Router();
-
-/*export async function getCurrentSong(token: string): Promise<any> {
-    const response = await axios.get(
-        'https://api.spotify.com/v1/me/player/currently-playing',
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
-
-    if (!response.data) {
-        return null;
-    }
-    return response.data.item.name || null;
-}*/
 
 export async function refreshSpotifyToken(
     refreshToken: string
@@ -104,26 +86,11 @@ passport.deserializeUser((obj: any, done: any) => {
     done(null, obj);
 });
 
-// Spotify authentication routes
 spotifyRouter.get(
     '/login',
     passport.authenticate('spotify'),
     function (req, res) {
-        //const email = req.params.email;
-        //res.cookie('email', email);
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
+        //#swagger.tags   = ['Spotify OAuth']
     }
 );
 
@@ -136,18 +103,6 @@ spotifyRouter.get(
         res.redirect(
             `http://localhost:8081/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
         );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
+        //#swagger.tags   = ['Spotify OAuth']
     }
 );
