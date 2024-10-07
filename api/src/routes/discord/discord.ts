@@ -72,7 +72,7 @@ discordRouter.get(
     }),
     async function (req: any, res: Response) {
         res.redirect(
-            `http://localhost:4200/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
+            `http://localhost:8081/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
         );
         //#swagger.tags   = ['Discord OAuth']
     }

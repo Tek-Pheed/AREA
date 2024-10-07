@@ -101,7 +101,7 @@ spotifyRouter.get(
     }),
     async (req: any, res: Response) => {
         res.redirect(
-            `http://localhost:4200/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            `http://localhost:8081/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
         );
         //#swagger.tags   = ['Spotify OAuth']
     }

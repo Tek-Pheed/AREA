@@ -103,7 +103,7 @@ githubRouter.get(
     }),
     async function (req: any, res) {
         res.redirect(
-            `http://localhost:4200/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            `http://localhost:8081/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
         );
         //#swagger.tags   = ['Github OAuth']
     }

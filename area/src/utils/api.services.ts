@@ -7,7 +7,7 @@ import { HttpRequest } from '@angular/common/http';
     providedIn: 'root',
 })
 export class ApiService {
-    API_URL = 'http://localhost:3000';
+    API_URL = 'http://localhost:8080';
 
     constructor(private http: HttpClient) {}
 
