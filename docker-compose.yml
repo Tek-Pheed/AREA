@@ -19,7 +19,7 @@ services:
         ports:
             - 8080:8080
         volumes:
-            - common_volume:/output
+            - common_volume:/usr/src/app/src/output
 
     client_web:
         build: ./area
@@ -30,4 +30,3 @@ services:
             - 8081:4200
         volumes:
             - common_volume:/usr/src/app/src/assets/output
-

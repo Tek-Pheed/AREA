@@ -10,6 +10,7 @@ export class DownloadAPK implements OnInit {
     constructor(private service: ApiService) {}
 
     ngOnInit(): void {
-        throw new Error('Method not implemented.');
+        location.href = 'http://localhost:8080/api/download';
+        //throw new Error('Method not implemented.');
     }
 }
