@@ -2,9 +2,8 @@
     <div class="topBar">
         <h1>AREA</h1>
         <div class="rightPart">
-            <a class="buttonLight" href="/home">Home</a>
-            <a class="buttonLight" href="/integrations">Integration</a>
-            <a class="button buttonLogin" href="/login">Login</a>
+            <a *ngIf="false" class="link" href="/integrations">Integration</a>
+            <a *ngIf="platform.is('desktop')" class="button" href="/login">{{ token ? "Account" : "Login"}}</a>
         </div>
     </div>
     <div class="center">

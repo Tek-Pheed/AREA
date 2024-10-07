@@ -1,6 +1,4 @@
-import { Request, Response, NextFunction, Express, Router } from 'express';
-import { isAuthenticatedSpotify } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
+import { Request, Response, Router } from 'express';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -128,26 +126,31 @@ spotifyRouter.get(
 );
 
 spotifyRouter.get(
+    '/login/mobile/ios',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'ios' }),
+    }),
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+    }
+);
+
+spotifyRouter.get(
+    '/login/mobile/android',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'android' }),
+    }),
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+    }
+);
+
+spotifyRouter.get(
     '/callback',
     passport.authenticate('spotify', {
         failureRedirect: '/api/oauth/spotify/login',
     }),
     async (req: any, res: Response) => {
-        res.redirect(
-            `http://localhost:4200/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
-        );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
+        //#swagger.tags = ['Spotify OAuth']
     }
 );

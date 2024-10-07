@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { APIServices, IActions } from '../utils/data.models';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-integration',
@@ -16,6 +17,12 @@ export class IntegrationsPage implements OnInit {
     inSearch: boolean = false;
     searchText: string = '';
 
+    constructor(
+        private service: ApiService,
+        protected platform: Platform,
+        private router: Router
+    ) {}
+
     getimgsrc(title: string) {
         let res = this.integrations.find(
             ({ name }) => name === title
@@ -23,11 +30,6 @@ export class IntegrationsPage implements OnInit {
         if (res == undefined) return 'assets/favicon.png';
         return res;
     }
-
-    constructor(
-        private service: ApiService,
-        protected platform: Platform
-    ) {}
 
     selectIntegration(str: string) {
         this.inSearch = true;
@@ -38,7 +40,9 @@ export class IntegrationsPage implements OnInit {
     }
 
     createConfigFromActionId(id: number) {
-        location.href = `/editeur?actionID=${id.toString()}`
+        this.router.navigate([`/dashboard/editor`], {
+            queryParams: { actionID: id },
+        });
     }
 
     handleInput(event: any) {

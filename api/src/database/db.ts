@@ -23,7 +23,6 @@ const dbConnect = new Promise((resolve, reject) => {
         if (err) {
             reject(err);
         } else {
-            console.log('Connected');
             resolve(null);
         }
     });

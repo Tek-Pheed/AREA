@@ -1,9 +1,12 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'area',
-  webDir: 'www'
+    appId: 'com.tekpheed.area',
+    appName: 'area',
+    webDir: 'www',
+    ios: {
+        scheme: 'capacitor',
+    },
 };
 
 export default config;

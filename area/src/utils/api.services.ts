@@ -2,14 +2,19 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpRequest } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApiService {
-    API_URL = 'http://localhost:3000';
+    API_URL = environment.API_URL;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private platform: Platform
+    ) {}
 
     postAuthLogin(email: string, password: string): Observable<any> {
         const headers = new HttpHeaders({
