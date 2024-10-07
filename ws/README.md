@@ -4,6 +4,36 @@ The aim of this service is to run in parallel with the applications so as not to
 
 **This service of AREA use exclusively TypeScript**
 
+## Before start ws
+
+Before start ws please create ``.env`` file at the root of ``ws`` folder and add the following lines :
+
+```env
+MYSQL_HOST=
+MYSQL_USER=
+MYSQL_PASSWD=
+MYSQL_DATABASE=
+
+TWITCH_CLIENT_ID=
+TWITCH_CLIENT_SECRET=
+TWITCH_REDIRECT_URI=
+
+SPOTIFY_CLIENT_ID=
+SPOTIFY_CLIENT_SECRET=
+SPOTIFY_REDIRECT_URI=
+
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+DISCORD_REDIRECT_URI=
+
+TWITTER_APIKEY=
+TWITTER_SECRET=
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_REDIRECT_URI=
+```
+
 ## How do I start it?
 
 You can use the docker compose command [here](https://github.com/Tek-Pheed/AREA/blob/master/README.md).
