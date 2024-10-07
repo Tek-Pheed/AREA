@@ -132,3 +132,4 @@ dist
 build/
 .angular/
 .idea/
+package-lock.json

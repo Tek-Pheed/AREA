@@ -3,7 +3,11 @@ import { getActions, getReactions, getUsersConfigs } from './query/usersConfig';
 import log from './utils/logger';
 import { getSpecificSong } from './apis/spotify/actions';
 import { IBody } from './utils/data.model';
-import { skipToNextSong, startPlaybackSong } from './apis/spotify/reactions';
+import {
+    skipToNextSong,
+    skipToPreviousSong,
+    startPlaybackSong,
+} from './apis/spotify/reactions';
 import { getStreamerStatus } from './apis/twitch/actions';
 require('dotenv').config();
 
@@ -17,7 +21,7 @@ async function launchReaction(func: string, params: IBody, email: string) {
             log.debug(nextResult);
             break;
         case 'Skip to previous':
-            const previousResult = await skipToNextSong(email);
+            const previousResult = await skipToPreviousSong(email);
             log.debug(previousResult);
             break;
         case 'Start music':
