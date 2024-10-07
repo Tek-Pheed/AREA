@@ -41,14 +41,6 @@ jobs:
         run: |
           cd api
           npm i
-      - name: Build
-        run: |
-          cd api/
-          npm run build
-      - name: Clean project
-        run: |
-          cd api/
-          rm -rf node_modules/ build/ package-lock.json
       - name: Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
