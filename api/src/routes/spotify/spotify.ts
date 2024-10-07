@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, Express, Router } from 'express';
 import { isAuthenticatedSpotify } from '../../middlewares/oauth';
 import { insertTokeninDb } from '../oauth/oauth.query';
 import { getCurrentSong } from './actions';
+import { auth } from '../../middlewares/auth';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -129,27 +130,37 @@ spotifyRouter.get(
 );
 
 spotifyRouter.get(
+    '/login/mobile/:platform',
+    auth,
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+        passport.authenticate('spotify', {
+            state: JSON.stringify({ platform: req.params.platform }),
+        });
+    }
+);
+
+spotifyRouter.get(
     '/callback',
     passport.authenticate('spotify', {
         failureRedirect: '/api/oauth/spotify/login',
     }),
     async (req: any, res: Response) => {
-        res.redirect(
-            `http://localhost:4200/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
-        );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
+        //#swagger.tags = ['Spotify OAuth']
+        const platform = req.query.state;
+        if (platform === 'ios') {
+            res.redirect(
+                `capacitor://app/tabs/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            );
+        } else if (platform === 'android') {
+            res.redirect(
+                `http://localhost/tabs/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            );
+        } else {
+            res.redirect(
+                `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            );
+        }
     }
 );
 

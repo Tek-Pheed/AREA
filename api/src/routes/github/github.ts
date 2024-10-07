@@ -112,6 +112,28 @@ githubRouter.get(
 );
 
 githubRouter.get(
+    '/login/mobile/:platform',
+    passport.authenticate('github', { scope: ['user, repo'] }),
+    function (req, res) {
+        //const email = req.params.email;
+        //res.cookie('email', email);
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Github OAuth']
+            */
+    }
+);
+
+githubRouter.get(
     '/callback',
     passport.authenticate('github', {
         failureRedirect: '/api/oauth/github/login',
@@ -120,8 +142,41 @@ githubRouter.get(
         console.log(req.user);
         console.log(req.params);
         res.redirect(
-            `http://localhost:4200/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            `http://localhost:4200/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
         );
+        /*
+                #swagger.responses[200] = {
+                    description: "Some description...",
+                    content: {
+                        "application/json": {
+                            schema:{
+                                $ref: "#/components/schemas/actions"
+                            }
+                        }
+                    }
+                }
+                #swagger.tags   = ['Github OAuth']
+            */
+    }
+);
+
+githubRouter.get(
+    '/callback/mobile/:platform',
+    passport.authenticate('github', {
+        failureRedirect: '/api/oauth/github/login/mobile/:platform',
+    }),
+    async function (req: any, res) {
+        console.log(req.user);
+        console.log(req.params);
+        if (req.params.platform === 'ios') {
+            res.redirect(
+                `app://capacitor/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            );
+        } else {
+            res.redirect(
+                `http://localhost:4200/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            );
+        }
         /*
                 #swagger.responses[200] = {
                     description: "Some description...",
