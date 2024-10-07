@@ -48,6 +48,11 @@ export class ProfilCardComponent implements OnInit {
         this.inputPassword = event.target.value;
     }
 
+    logout() {
+        localStorage.clear();
+        window.location.href = '/'
+    }
+
     applyChanges() {
         let body: any = {
             username: this.inputName,
