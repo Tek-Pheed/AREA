@@ -44,7 +44,7 @@ This docker command will build all our project's services and put the result on 
 You will find below links to our documentation which are either readme or online documentation of our services.
 
 - [Website and Mobile doc](https://github.com/Tek-Pheed/AREA/blob/master/area/README.md)
-- [API doc (Readme)](https://github.com/Tek-Pheed/AREA/blob/master/area/api/README.md)
+- [API doc (Readme)](https://github.com/Tek-Pheed/AREA/blob/master/api/README.md)
 - [API doc (online)](https://api.leafs-studio.com/docs)
 - [Webservice doc](https://github.com/Tek-Pheed/AREA/blob/master/area/ws/README.md)
 
