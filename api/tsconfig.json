@@ -31,5 +31,6 @@
 
         "pretty": true,
     },
-    "include": ["typings/**/*", "src/**/*"]
+    "include": ["typings/**/*", "src/**/*"],
+    "exclude": ["**/*.test.ts", "**/*.mock.ts"]
 }
