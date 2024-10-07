@@ -30,7 +30,7 @@ export async function auth(req: Request, res: Response, next: any) {
         next();
         return;
     } catch (err) {
-        console.log(err);
+        console.error(err);
         res.status(401).json(
             API(401, true, 'Bad token, authorization denied', null)
         );

@@ -63,7 +63,6 @@ export class DashboardPage implements OnInit {
 
         this.service.getActions(token).subscribe(
             (res) => {
-                console.log(res.data);
                 this.actions = res.data;
                 this.getReactions();
             },
@@ -80,7 +79,6 @@ export class DashboardPage implements OnInit {
 
         this.service.getReactions(token).subscribe(
             (res) => {
-                console.log(res.data);
                 this.reactions = res.data;
                 this.getConfig();
             },
