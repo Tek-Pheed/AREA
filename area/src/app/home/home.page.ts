@@ -24,7 +24,7 @@ export class HomePage implements OnInit {
                 JSON.stringify(localStorage.getItem('Token')) as string
             ) != null
         ) {
-            if (this.platform.is('mobile')) {
+            if (!this.platform.is('desktop')) {
                 this.router.navigate(['/tabs/home']);
             }
             this.token = JSON.parse(
