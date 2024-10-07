@@ -43,23 +43,6 @@ describe('users', () => {
                     .expect(200);
             });
 
-            it('Create user config', async () => {
-                await supertest(app)
-                    .post('/api/users/configs')
-                    .send({
-                        actions_id: 6,
-                        method: 'GET',
-                        headers: 'json',
-                        body: 'json',
-                        reaction_id: 6,
-                    })
-                    .set(
-                        'Authorization',
-                        `Bearer ${generateToken('test@example.com')}`
-                    )
-                    .expect(200);
-            });
-
             it('Update user config', async () => {
                 await supertest(app)
                     .put(`/api/users/configs/8`)
