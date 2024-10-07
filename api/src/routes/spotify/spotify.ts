@@ -130,81 +130,51 @@ spotifyRouter.get(
 );
 
 spotifyRouter.get(
-    '/login/mobile/:platform',
-    auth,
+    '/login/mobile/ios',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'ios' }),
+    }),
     async (req: Request, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
-        passport.authenticate('spotify', {
-            state: JSON.stringify({ platform: req.params.platform }),
-        });
     }
 );
 
 spotifyRouter.get(
-    '/callback',
+    '/login/mobile/android',
     passport.authenticate('spotify', {
-        failureRedirect: '/api/oauth/spotify/login',
+        state: JSON.stringify({ platform: 'android' }),
     }),
-    async (req: any, res: Response) => {
+    async (req: Request, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
-        const platform = req.query.state;
+    }
+);
+
+spotifyRouter.get('/callback', (req: any, res: Response, next: any) => {
+    passport.authenticate('spotify', (err: any, user: any, info: any) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/api/oauth/spotify/login'); // Redirection en cas d'échec
+        }
+
+        const state = req.query.state
+            ? JSON.parse(req.query.state as string)
+            : {};
+        const platform = state.platform || 'unknown';
+
         if (platform === 'ios') {
-            res.redirect(
-                `capacitor://app/tabs/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            return res.redirect(
+                `capacitor://localhost/tabs/profile?api=spotify&refresh_token=${user.refreshTokenSpotify}&access_token=${user.accessTokenSpotify}`
             );
         } else if (platform === 'android') {
-            res.redirect(
-                `http://localhost/tabs/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            return res.redirect(
+                `http://localhost/tabs/profile?api=spotify&refresh_token=${user.refreshTokenSpotify}&access_token=${user.accessTokenSpotify}`
             );
         } else {
-            res.redirect(
-                `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            return res.redirect(
+                `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${user.refreshTokenSpotify}&access_token=${user.accessTokenSpotify}`
             );
         }
-    }
-);
-
-spotifyRouter.get(
-    '/get_current_song',
-    isAuthenticatedSpotify,
-    async (req: any, res: Response) => {
-        if (!req.user || !req.user.accessTokenSpotify) {
-            return res.redirect('/api/oauth/spotify/login');
-        }
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
-        try {
-            let accessToken = req.user.accessTokenSpotify;
-            const refreshToken = req.user.refreshTokenSpotify;
-            let currentSong = await getCurrentSong(
-                'raphael.scandella@epitech.eu',
-                'https://open.spotify.com/track/4Ws314Ylb27BVsvlZOy30C'
-            );
-
-            if (!currentSong && refreshToken) {
-                accessToken = await refreshSpotifyToken(refreshToken);
-                req.user.accessTokenSpotify = accessToken;
-                currentSong = await getCurrentSong(
-                    accessToken,
-                    'https://open.spotify.com/track/4Ws314Ylb27BVsvlZOy30C'
-                );
-            }
-
-            return res.json({ currentSong });
-        } catch (error) {
-            console.error('Error fetching current song', error);
-            return res.status(500).send('Error checking current song');
-        }
-    }
-);
+    })(req, res, next);
+});
