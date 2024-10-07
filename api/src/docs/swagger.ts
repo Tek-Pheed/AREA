@@ -7,8 +7,12 @@ export const options = {
     },
     servers: [
         {
-            url: 'http://localhost:8080/',
-            description: 'Default server',
+            url: 'http://localhost:3000/',
+            description: 'Dev server',
+        },
+        {
+            url: 'https://api.leafs-studio.com/',
+            description: 'Production server',
         },
     ],
     tags: [

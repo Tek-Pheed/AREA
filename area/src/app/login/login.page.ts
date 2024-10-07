@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -9,7 +11,11 @@ import { ApiService } from 'src/utils/api.services';
 export class LoginPage implements OnInit {
     @ViewChild('emailInput') emailInput: ElementRef | undefined;
     @ViewChild('passwordInput') passwordInput: ElementRef | undefined;
-    constructor(private service: ApiService) {}
+    constructor(
+        private service: ApiService,
+        private platform: Platform,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         if (
@@ -20,7 +26,11 @@ export class LoginPage implements OnInit {
                 JSON.stringify(localStorage.getItem('Token')) as string
             ) != null
         ) {
-            window.location.href = '/profile';
+            if (this.platform.is('desktop')) {
+                this.router.navigate(['/dashboard']);
+            } else {
+                this.router.navigate(['/tabs/home']);
+            }
         }
     }
 
@@ -52,6 +62,10 @@ export class LoginPage implements OnInit {
             localStorage.setItem('Email', email);
         }
         localStorage.setItem('Token', result.data.token);
-        window.location.href = '/profile';
+        if (this.platform.is('desktop')) {
+            this.router.navigate(['/dashboard']);
+        } else {
+            this.router.navigate(['/tabs/home']);
+        }
     }
 }
