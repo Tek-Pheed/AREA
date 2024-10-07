@@ -1,7 +1,4 @@
-import { Response, Express, Router } from 'express';
-import { isAuthenticatedTwitch } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
-import { getFollowedStreams } from './actions';
+import { Response, Router } from 'express';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -122,21 +119,7 @@ twitchRouter.get(
     '/login',
     passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE }),
     function (req, res) {
-        //const email = req.params.email;
-        //res.cookie('email', email);
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Twitch OAuth']
-            */
+        //#swagger.tags   = ['Twitch OAuth']
     }
 );
 
@@ -147,59 +130,8 @@ twitchRouter.get(
     }),
     async (req: any, res: Response) => {
         res.redirect(
-            `http://localhost:4200/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
+            `http://localhost:8081/dashboard/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
         );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Twitch OAuth']
-            */
-    }
-);
-
-twitchRouter.get(
-    '/get_followings',
-    isAuthenticatedTwitch,
-    async (req: any, res: Response) => {
-        if (!req.user || !req.user.accessTokenTwitch) {
-            return res.redirect('/api/oauth/twitch/login');
-        }
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Twitch OAuth']
-            */
-
-        try {
-            let accessToken = req.user.accessTokenTwitch;
-            const refreshToken = req.user.refreshTokenTwitch;
-            let followed = await getFollowedStreams(accessToken);
-
-            if (!followed && refreshToken) {
-                accessToken = await refreshTwitchToken(refreshToken);
-                req.user.accessTokenTwitch = accessToken;
-                followed = await getFollowedStreams(accessToken);
-            }
-            return res.json({ followed });
-        } catch (error) {
-            console.error('Error getting followed streams', error);
-            return res.status(500).send('Error getting followed streams');
-        }
+        //#swagger.tags   = ['Twitch OAuth']
     }
 );

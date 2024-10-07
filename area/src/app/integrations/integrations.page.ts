@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { APIServices, IActions } from '../utils/data.models';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-integration',
@@ -15,6 +16,13 @@ export class IntegrationsPage implements OnInit {
     actionResults: IActions[] = [];
     inSearch: boolean = false;
     searchText: string = '';
+    token: string = '';
+
+    constructor(
+        private service: ApiService,
+        protected platform: Platform,
+        private router: Router
+    ) {}
 
     getimgsrc(title: string) {
         let res = this.integrations.find(
@@ -24,17 +32,18 @@ export class IntegrationsPage implements OnInit {
         return res;
     }
 
-    constructor(
-        private service: ApiService,
-        protected platform: Platform
-    ) {}
-
     selectIntegration(str: string) {
         this.inSearch = true;
         this.searchText = str.toLowerCase();
         this.actionResults = this.actions.filter(
             (d) => d.api_name.toLowerCase().indexOf(str.toLowerCase()) > -1
         );
+    }
+
+    createConfigFromActionId(id: number) {
+        this.router.navigate([`/dashboard/editor`], {
+            queryParams: { actionID: id },
+        });
     }
 
     handleInput(event: any) {
@@ -84,6 +93,12 @@ export class IntegrationsPage implements OnInit {
     }
 
     ngOnInit(): void {
+        this.token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        if (!this.token) {
+            this.router.navigate(['/home']);
+        }
         this.getAllServices();
         this.getAllActions();
     }

@@ -1,0 +1,33 @@
+ion-modal {
+    --border-radius: 15px;
+    --overflow: hidden;
+    --position: relative;
+    --width: 90%;
+    --height: 90%;
+    margin-top: constant(safe-area-inset-top) !important;
+    margin-top: env(safe-area-inset-top) !important;
+}
+
+h4 {
+    align-self: center;
+    padding-left: 10px;
+    text-align: center;
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+.chooseClass {
+    height: 100%;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}

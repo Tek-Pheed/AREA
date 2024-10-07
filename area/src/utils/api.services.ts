@@ -2,14 +2,19 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpRequest } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApiService {
-    API_URL = 'http://localhost:3000';
+    API_URL = environment.API_URL;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private platform: Platform
+    ) {}
 
     postAuthLogin(email: string, password: string): Observable<any> {
         const headers = new HttpHeaders({
@@ -80,7 +85,7 @@ export class ApiService {
             Authorization: `Bearer ${token}`,
         });
         try {
-            return this.http.get<any>(`${this.API_URL}/api/actions/api`, {
+            return this.http.get<any>(`${this.API_URL}/api/services`, {
                 headers,
             });
         } catch (error) {
@@ -414,6 +419,48 @@ export class ApiService {
             });
         }
     }
-}
 
-// user/config
+    createNewUserConfig(token: string, body: any): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.post<any>(
+                `${this.API_URL}/api/users/configs`,
+                JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    updateUserConfig(token: string, body: any, id: number): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.put<any>(
+                `${this.API_URL}/api/users/configs/${id}`,
+                JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+}

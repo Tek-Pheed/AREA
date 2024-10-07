@@ -1,6 +1,5 @@
-import { options } from './docs/swagger';
-
 require('dotenv').config();
+import express from 'express';
 import { Express } from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
@@ -11,16 +10,17 @@ import { oauthRouter } from './routes/oauth/oauth';
 import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
+import { serviceRouter } from './routes/services/services';
+import { downloadRouter } from './routes/download/download';
+import { aboutRouter } from './routes/about/about';
 
 const app: Express = require('express')();
 const cookieParser = require('cookie-parser');
-const port: number = 3000;
+const port = process.env.API_PORT;
 const pjson = require('../package.json');
-const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');
 const cors = require('cors');
-const cookieSession = require('cookie-session');
 require('https').globalAgent.options.rejectUnauthorized = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: 'http://localhost:4200', // Your Angular app's URL
+        origin: '*', // Your Angular app's URL
         credentials: true,
     })
 );
@@ -61,6 +61,9 @@ app.use('/api/actions', actionsRouter);
 app.use('/api/reactions', reactionRouter);
 app.use('/api/users', userRouter);
 app.use('/api/oauth', oauthRouter);
+app.use('/api/services', serviceRouter);
+app.use('/api/download', downloadRouter);
+app.use('/about.json', aboutRouter);
 
 app.use(
     '/docs',
@@ -71,7 +74,7 @@ app.use(
 );
 
 dbConnect.then(() => {
-    app.listen(port, () => {
+    app.listen(port, async () => {
         console.log(
             `${pjson.name} listening on port ${port} - version ${pjson.version}`
         );

@@ -10,15 +10,15 @@ const routes: Routes = [
             {
                 path: 'home',
                 loadChildren: () =>
-                    import('../integrations/integrations.module').then(
-                        (m) => m.IntegrationsPageModule
+                    import('../dashboard/dashboard.module').then(
+                        (m) => m.DashboardPageModule
                     ),
             },
             {
                 path: 'profile',
                 loadChildren: () =>
-                    import('../integrations/integrations.module').then(
-                        (m) => m.IntegrationsPageModule
+                    import('../profil/profile.module').then(
+                        (m) => m.ProfilePageModule
                     ),
             },
             {
