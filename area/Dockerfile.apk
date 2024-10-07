@@ -1,10 +1,7 @@
-# Step 1: Base image
 FROM node:20 AS ionic-build
 
-# Step 2: Update apt-get and install Java (OpenJDK)
 RUN apt-get update && apt-get install -y default-jdk wget unzip
 
-# Step 3: Download and manually install Android SDK components
 RUN mkdir -p /opt/android-sdk && \
     cd /opt/android-sdk && \
     wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip && \
@@ -12,46 +9,33 @@ RUN mkdir -p /opt/android-sdk && \
     rm commandlinetools-linux-9477386_latest.zip && \
     mv cmdline-tools/cmdline-tools cmdline-tools/tools
 
-# Step 4: Set environment variables for Android SDK
 ENV ANDROID_HOME /opt/android-sdk
 ENV PATH="${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools:${PATH}"
 
-# Step 5: Install required Android SDK components and accept licenses
 RUN yes | sdkmanager --licenses && \
     sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
-# Step 6: Install Ionic and Capacitor
 RUN npm install -g @ionic/cli
 
-# Step 7: Copy project files
 WORKDIR /app
 COPY ./ /app
 
-# Step 8: Install project dependencies
 RUN npm install @capacitor/android
 RUN npm install
 
-# Step 9: Add Android platform using Capacitor
 RUN npx cap add android
 
-# Step 10: Sync project with Android platform
-#RUN npx cap sync
 RUN ionic capacitor build android
 
-# Step 11: Build the Android project using Gradle
 WORKDIR /app/android
-#RUN ./gradlew assembleRelease
-
-# Step 12: Expose APK build path (Optional, to check the build)
-#RUN mkdir /output
-#RUN cp /app/android/app/build/outputs/apk/release/app-release-unsigned.apk /output/
 
 COPY android_build.sh /app/android_build.sh
 
 USER root
 RUN mkdir /output
 
-# APK output path
 VOLUME /output
 
-CMD [ "bash", "/app/android_build.sh" ]
+RUN ./gradlew assembleRelease
+
+CMD [ "cp", "/app/android/app/build/outputs/apk/release/app-release-unsigned.apk", "/output/app-release-unsigned.apk"]
