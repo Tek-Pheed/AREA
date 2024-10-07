@@ -27,6 +27,6 @@ services:
             server:
                 condition: service_started
         ports:
-            - 8081:4200
+            - 8081:8081
         volumes:
             - common_volume:/usr/src/app/src/assets/output
