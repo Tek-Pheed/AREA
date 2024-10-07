@@ -1,4 +1,4 @@
-name: API - Pipeline
+name: WebService - Pipeline
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  api_compile_test:
+  ws_compile_test:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +20,9 @@ jobs:
           node-version: 20
       - name: Install npm dependencies
         run: |
-          cd api
+          cd ws
           npm i
-      - name: Build website
+      - name: Build WebService
         run: |
-          cd api/
+          cd ws/
           npm run build

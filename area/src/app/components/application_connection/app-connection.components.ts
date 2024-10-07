@@ -37,20 +37,13 @@ export class AppConnectedCardComponent {
                         } else {
                             this.router.navigate(['/dashboard/profile']);
                         }
-                        console.warn(res.data);
                     },
                     (err) => {
                         console.error(err);
                     }
                 );
         } else {
-            if (this.platform.is('ios')) {
-                location.href = `http://localhost:3000/api/oauth/${name.toLowerCase()}/login/mobile/ios`;
-            } else if (this.platform.is('android')) {
-                location.href = `${environment.API_URL}/api/oauth/${name.toLowerCase()}/login/mobile/android`;
-            } else {
-                location.href = `${environment.API_URL}/api/oauth/${name.toLowerCase()}/login`;
-            }
+            location.href = `http://localhost:8080/api/oauth/${name.toLowerCase()}/login`;
         }
     }
 }

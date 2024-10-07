@@ -149,32 +149,12 @@ spotifyRouter.get(
     }
 );
 
-spotifyRouter.get('/callback', (req: any, res: Response, next: any) => {
-    passport.authenticate('spotify', (err: any, user: any, info: any) => {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.redirect('/api/oauth/spotify/login'); // Redirection en cas d'échec
-        }
-
-        const state = req.query.state
-            ? JSON.parse(req.query.state as string)
-            : {};
-        const platform = state.platform || 'unknown';
-
-        if (platform === 'ios') {
-            return res.redirect(
-                `capacitor://localhost/tabs/profile?api=spotify&refresh_token=${user.refreshTokenSpotify}&access_token=${user.accessTokenSpotify}`
-            );
-        } else if (platform === 'android') {
-            return res.redirect(
-                `http://localhost/tabs/profile?api=spotify&refresh_token=${user.refreshTokenSpotify}&access_token=${user.accessTokenSpotify}`
-            );
-        } else {
-            return res.redirect(
-                `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${user.refreshTokenSpotify}&access_token=${user.accessTokenSpotify}`
-            );
-        }
-    })(req, res, next);
-});
+spotifyRouter.get(
+    '/callback',
+    passport.authenticate('spotify', {
+        failureRedirect: '/api/oauth/spotify/login',
+    }),
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+    }
+);

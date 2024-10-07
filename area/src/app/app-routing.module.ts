@@ -45,6 +45,13 @@ const routes: Routes = [
                 (m) => m.NavigationPageModule
             ),
     },
+    {
+        path: 'client.apk',
+        loadChildren: () =>
+            import('./download_apk/download_apk.module').then(
+                (m) => m.DownloadAPKModule
+            ),
+    },
 ];
 
 @NgModule({

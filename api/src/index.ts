@@ -1,5 +1,3 @@
-import { options } from './docs/swagger';
-
 require('dotenv').config();
 import { Express } from 'express';
 import session from 'express-session';
@@ -12,10 +10,12 @@ import { actionsRouter } from './routes/actions/actions';
 import { reactionRouter } from './routes/reactions/reactions';
 import { userRouter } from './routes/user/user';
 import { serviceRouter } from './routes/services/services';
+import { downloadRouter } from './routes/download/download';
+import { aboutRouter } from './routes/about/about';
 
 const app: Express = require('express')();
 const cookieParser = require('cookie-parser');
-const port: number = 3000;
+const port: number = 8080;
 const pjson = require('../package.json');
 const swaggerOutput = require('../swagger_output.json');
 const passport: any = require('passport');
@@ -61,6 +61,8 @@ app.use('/api/reactions', reactionRouter);
 app.use('/api/users', userRouter);
 app.use('/api/oauth', oauthRouter);
 app.use('/api/services', serviceRouter);
+app.use('/api/download', downloadRouter);
+app.use('/about.json', aboutRouter);
 
 app.use(
     '/docs',
@@ -71,7 +73,7 @@ app.use(
 );
 
 dbConnect.then(() => {
-    app.listen(port, () => {
+    app.listen(port, async () => {
         console.log(
             `${pjson.name} listening on port ${port} - version ${pjson.version}`
         );
