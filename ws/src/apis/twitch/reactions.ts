@@ -1,5 +1,6 @@
 import { getTwitchToken } from './twitch.query';
 import { getUserId } from './actions';
+import log from '../../utils/logger';
 
 const axios = require('axios');
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
@@ -13,7 +14,7 @@ export async function getBroadcasterId(
             `https://api.twitch.tv/helix/users?login=${username}`,
             {
                 headers: {
-                    'Client-ID': TWITCH_CLIENT_ID,
+                    'Client-Id': TWITCH_CLIENT_ID,
                     Authorization: `Bearer ${token}`,
                 },
             }
@@ -22,11 +23,11 @@ export async function getBroadcasterId(
         if (resp.data.data && resp.data.data.length > 0) {
             return resp.data.data[0].id;
         } else {
-            console.error(`Broadcaster not found for username : ${username}`);
+            log.error(`Broadcaster not found for username : ${username}`);
             return null;
         }
     } catch (error) {
-        console.error(
+        log.error(
             `Error fetching broadcaster ID for username : ${username}`,
             error
         );
@@ -54,7 +55,7 @@ export async function createClip(
             null,
             {
                 headers: {
-                    'Client-ID': TWITCH_CLIENT_ID,
+                    'Client-Id': TWITCH_CLIENT_ID,
                     Authorization: `Bearer ${tAccessToken}`,
                 },
             }
@@ -63,13 +64,13 @@ export async function createClip(
         if (response.status === 202) {
             return true;
         } else {
-            console.error(
+            log.error(
                 `Failed to create clip. Status code : ${response.status}`
             );
             return false;
         }
     } catch (error) {
-        console.error(`Error creating clip : ${error}`);
+        log.error(`Error creating clip : ${error}`);
         return false;
     }
 }
@@ -101,7 +102,7 @@ export async function sendChatMessage(
             {
                 headers: {
                     Authorization: `Bearer ${tAccessToken}`,
-                    'Client-ID': TWITCH_CLIENT_ID,
+                    'Client-Id': TWITCH_CLIENT_ID,
                     'Content-Type': 'application/json',
                 },
             }
