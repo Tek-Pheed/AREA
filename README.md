@@ -46,7 +46,7 @@ You will find below links to our documentation which are either readme or online
 - [Website and Mobile doc](https://github.com/Tek-Pheed/AREA/blob/master/area/README.md)
 - [API doc (Readme)](https://github.com/Tek-Pheed/AREA/blob/master/api/README.md)
 - [API doc (online)](https://api.leafs-studio.com/docs)
-- [Webservice doc](https://github.com/Tek-Pheed/AREA/blob/master/area/ws/README.md)
+- [Webservice doc](https://github.com/Tek-Pheed/AREA/blob/master/ws/README.md)
 
 ## CI / CD
 
