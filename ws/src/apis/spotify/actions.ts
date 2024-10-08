@@ -59,10 +59,16 @@ export async function getSpecificSong(
             return false;
         }
         if (response.data.item.external_urls.spotify.includes(song_url)) {
-            return {
-                artistsName: response.data.item.artists[0].name,
-                itemName: response.data.item.name,
-            };
+            return [
+                {
+                    name: 'artistsName',
+                    value: response.data.item.artists[0].name,
+                },
+                {
+                    name: 'songName',
+                    value: response.data.item.name,
+                },
+            ];
         } else return false;
     } catch (e) {
         log.error(e);
