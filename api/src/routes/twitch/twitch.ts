@@ -8,7 +8,11 @@ const passport: any = require('passport');
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 const TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
 const TWITCH_REDIRECT_URI = process.env.TWITCH_REDIRECT_URI;
-const TWITCH_OAUTH_SCOPE = ['user:read:follows', 'user:write:chat'];
+const TWITCH_OAUTH_SCOPE = [
+    'user:read:follows',
+    'user:write:chat',
+    'clips:edit',
+];
 
 export const twitchRouter = Router();
 

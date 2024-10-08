@@ -2,18 +2,38 @@ import dbConnect from './utils/database';
 import { getActions, getReactions, getUsersConfigs } from './query/usersConfig';
 import log from './utils/logger';
 import { getSpecificSong } from './apis/spotify/actions';
-import { IBody } from './utils/data.model';
+import { IBody, IBodySpecific } from './utils/data.model';
 import {
     skipToNextSong,
     skipToPreviousSong,
     startPlaybackSong,
 } from './apis/spotify/reactions';
 import { getStreamerStatus } from './apis/twitch/actions';
+import fs from 'fs';
+import { createClip, sendChatMessage } from './apis/twitch/reactions';
 require('dotenv').config();
 
-import fs from 'fs';
+function replaceLabel(label: string, paramName: string, value: string): string {
+    label = label.replace(`{{${paramName}}}`, value);
+    return label;
+}
 
-async function launchReaction(func: string, params: IBody, email: string) {
+async function launchReaction(
+    func: string,
+    params: IBody,
+    actionParam: IBodySpecific[],
+    email: string
+) {
+    for (const reaction of params.reaction) {
+        for (const action of actionParam) {
+            reaction.value = replaceLabel(
+                reaction.value,
+                action.name,
+                action.value
+            );
+            log.info(reaction.value);
+        }
+    }
     log.info(`Reaction: ${func}`);
     switch (func) {
         case 'Skip to next':
@@ -28,6 +48,29 @@ async function launchReaction(func: string, params: IBody, email: string) {
             for (const param of params.reaction) {
                 if (param.name === 'songName') {
                     const result = await startPlaybackSong(email, param.value);
+                    log.debug(result);
+                }
+            }
+            break;
+        case 'Create clip':
+            for (const param of params.reaction) {
+                if (param.name === 'username') {
+                    const result = await createClip(email, param.value);
+                    log.debug(result);
+                }
+            }
+            break;
+        case 'Send message in chat':
+            let username = '';
+            for (const param of params.reaction) {
+                if (param.name === 'username') {
+                    username = param.value;
+                } else if (param.name === 'message') {
+                    const result = await sendChatMessage(
+                        email,
+                        username,
+                        param.value
+                    );
                     log.debug(result);
                 }
             }
@@ -51,7 +94,13 @@ async function launchAction(
                 if (param.name === 'songName') {
                     const result = await getSpecificSong(email, param.value);
                     if (result != false) {
-                        await launchReaction(reaction[0].title, params, email);
+                        const actionsLabels: IBodySpecific[] = result;
+                        await launchReaction(
+                            reaction[0].title,
+                            params,
+                            actionsLabels,
+                            email
+                        );
                     }
                 }
             }
@@ -65,9 +114,11 @@ async function launchAction(
                     if (result != false) {
                         if (storage[key].isStream != true) {
                             storage[key].isStream = true;
+                            const actionsLabels: IBodySpecific[] = result;
                             await launchReaction(
                                 reaction[0].title,
                                 params,
+                                actionsLabels,
                                 email
                             );
                         }

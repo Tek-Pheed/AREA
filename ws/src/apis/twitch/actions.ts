@@ -80,13 +80,20 @@ export async function getStreamerStatus(
 
         if (response.data && response.data.data.length > 0) {
             const streamData = response.data.data[0];
-            return {
-                streamDetails: {
-                    game_name: streamData.game_name,
-                    title: streamData.title,
-                    viewer_count: streamData.viewer_count,
+            return [
+                {
+                    name: 'game_name',
+                    value: streamData.game_name,
                 },
-            };
+                {
+                    name: 'title',
+                    value: streamData.title,
+                },
+                {
+                    name: 'viewer_count',
+                    value: streamData.viewer_count,
+                },
+            ];
         } else {
             return false;
         }
