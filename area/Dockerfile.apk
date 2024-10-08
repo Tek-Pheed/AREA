@@ -21,11 +21,14 @@ WORKDIR /app
 COPY ./ /app
 
 RUN npm install @capacitor/android
+RUN npm install --save-dev @capacitor/assets
 RUN npm install
 
 RUN npx cap add android
 
 RUN ionic capacitor build android
+
+RUN npx @capacitor/assets generate
 
 WORKDIR /app/android
 

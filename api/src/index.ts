@@ -15,7 +15,6 @@ import { downloadRouter } from './routes/download/download';
 import { aboutRouter } from './routes/about/about';
 
 const app: Express = require('express')();
-const cookieParser = require('cookie-parser');
 const port = process.env.API_PORT;
 const pjson = require('../package.json');
 const swaggerOutput = require('../swagger_output.json');
@@ -25,7 +24,6 @@ require('https').globalAgent.options.rejectUnauthorized = false;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 
 app.use(
     cors({
