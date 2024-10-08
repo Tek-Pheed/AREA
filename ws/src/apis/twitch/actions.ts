@@ -99,8 +99,7 @@ export async function getStreamerStatus(
         }
     } catch (e: any) {
         log.error('getStreamerStatus ' + e);
-        const result = await refreshTwitchToken(email, token.tRefreshToken);
-        log.info('Refresh twitch token --> ' + result);
+        await refreshTwitchToken(email, token.tRefreshToken);
         return false;
     }
 }
