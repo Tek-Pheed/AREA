@@ -2,6 +2,8 @@ ion-modal {
     --border-radius: 15px;
     --overflow: hidden;
     --position: relative;
+    margin-top: constant(safe-area-inset-top) !important;
+    margin-top: env(safe-area-inset-top) !important;
 }
 
 .topImg {
@@ -59,10 +61,28 @@ p {
     justify-content: center;
 }
 
+.body-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
 h4 {
     font-size: medium;
     text-align: center;
     width: 100%;
+}
+
+.confirm {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+    ion-button {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 600px) {

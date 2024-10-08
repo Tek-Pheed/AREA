@@ -101,7 +101,9 @@
 }
 
 .apply-button {
-    position: absolute;
+    //position: absolute;
+    margin-left: 10px;
+    margin-right: 10px;
     bottom: 20px;
     right: 20px;
     padding: 15px 30px;
@@ -115,9 +117,18 @@
     cursor: pointer;
 }
 
+.logout {
+    color: white;
+    background-color: rgb(255, 0, 0);
+}
+
 .apply-button:hover {
     background-color: #f0f0f0;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.logout:hover {
+    background-color: rgb(187, 0, 0);
 }
 
 @media (prefers-color-scheme: dark) {

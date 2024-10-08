@@ -10,30 +10,30 @@
                 </div>
             </div>
             <ion-content class="ion-padding">
-                <ion-item *ngFor="let f of fields">
-                    <ion-toggle *ngIf="f.fieldType == 'bool'" [(ngModel)]="f.fieldValue"
-                        checked="f.fieldValue">{{f.fieldDescription}}</ion-toggle><br /><br />
-                    <ion-input *ngIf="f.fieldType != 'bool'" [(ngModel)]="f.fieldValue" label="{{f.fieldDescription}}"
-                        labelPlacement="stacked" type="text" placeholder="{{f.fieldValue}}" value="f.fieldValue"
-                        (click)="setFocusElement(f)"></ion-input>
-                </ion-item>
-                <div class="chipsContainer">
-                    <h4 *ngIf="this.variables.length != 0">Available Variables:</h4>
-                    <ion-chip [outline]="true" *ngFor="let v of this.variables" (click)="addVariableToField(v.value)">
-                        <ion-avatar>
-                            <img src="{{v.img_src}}" />
-                        </ion-avatar>
-                        <ion-label>{{v.name}}</ion-label>
-                    </ion-chip>
+                <div class="body-container">
+                    <div>
+                        <ion-item *ngFor="let f of fields">
+                            <ion-toggle *ngIf="f.fieldType === 'bool'" [(ngModel)]="f.fieldValue"
+                                        checked="f.fieldValue">{{f.fieldDescription}}</ion-toggle><br /><br />
+                            <ion-input *ngIf="f.fieldType !== 'bool'" [(ngModel)]="f.fieldValue" label="{{f.fieldDescription}}"
+                                       labelPlacement="stacked" type="text" placeholder="{{f.fieldValue}}" value="f.fieldValue"
+                                       (click)="setFocusElement(f)"></ion-input>
+                        </ion-item>
+                        <div class="chipsContainer">
+                            <h4 *ngIf="this.variables.length !== 0">Available Variables:</h4>
+                            <ion-chip [outline]="true" *ngFor="let v of this.variables" (click)="addVariableToField(v.value)">
+                                <ion-avatar>
+                                    <img src="{{v.img_src}}" />
+                                </ion-avatar>
+                                <ion-label>{{v.name}}</ion-label>
+                            </ion-chip>
+                        </div>
+                    </div>
+                    <div class="confirm">
+                        <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
+                    </div>
                 </div>
             </ion-content>
-            <div>
-                <ion-toolbar>
-                    <ion-buttons slot="end">
-                        <ion-button (click)="confirm()" [strong]="true">Save</ion-button>
-                    </ion-buttons>
-                </ion-toolbar>
-            </div>
         </ng-template>
     </ion-modal>
 </ion-content>

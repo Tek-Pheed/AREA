@@ -102,10 +102,8 @@ githubRouter.get(
         failureRedirect: '/api/oauth/github/login',
     }),
     async function (req: any, res) {
-        console.log(req.user);
-        console.log(req.params);
         res.redirect(
-            `http://localhost:4200/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            `http://localhost:8081/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
         );
         //#swagger.tags   = ['Github OAuth']
     }

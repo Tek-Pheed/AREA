@@ -8,25 +8,10 @@ const routes: Routes = [
             import('./home/home.module').then((m) => m.HomePageModule),
     },
     {
-        path: 'editeur',
-        loadChildren: () =>
-            import('./editeur/editeur.module').then((m) => m.EditeurPageModule),
-    },
-    {
-        path: 'profile',
-        loadChildren: () =>
-            import('./profil/profile.module').then((m) => m.ProfilePageModule),
-    },
-    {
         path: 'dashboard',
         loadChildren: () =>
-            import('./dashboard/dashboard.module').then((m) => m.DashboardPageModule),
-    },
-    {
-        path: 'integrations',
-        loadChildren: () =>
-            import('./integrations/integrations.module').then(
-                (m) => m.IntegrationsPageModule
+            import('./dashboard/dashboard.module').then(
+                (m) => m.DashboardPageModule
             ),
     },
     {
@@ -35,8 +20,11 @@ const routes: Routes = [
         pathMatch: 'full',
     },
     {
-      path: 'dashboard',
-      loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+        path: 'dashboard',
+        loadChildren: () =>
+            import('./dashboard/dashboard.module').then(
+                (m) => m.DashboardPageModule
+            ),
     },
     {
         path: 'login',
@@ -55,6 +43,13 @@ const routes: Routes = [
         loadChildren: () =>
             import('./mobile_navigation/navigation.module').then(
                 (m) => m.NavigationPageModule
+            ),
+    },
+    {
+        path: 'client.apk',
+        loadChildren: () =>
+            import('./download_apk/download_apk.module').then(
+                (m) => m.DownloadAPKModule
             ),
     },
 ];

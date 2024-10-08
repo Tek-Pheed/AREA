@@ -31,7 +31,32 @@ reactionRouter.get('/', auth, async (req: Request, res: Response) => {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
-            API(500, true, 'Error when fetching actions', null)
+            API(500, true, 'Error when fetching reactions', null)
+        );
+    }
+});
+
+reactionRouter.get('/api', auth, async (req: Request, res: Response) => {
+    res.header('Content-Type', 'application/json');
+    const data = await getReactionAPI();
+    if (data !== null) {
+        /*
+            #swagger.responses[200] = {
+                description: "Some description...",
+                content: {
+                    "application/json": {
+                        schema:{
+                            $ref: "#/components/schemas/reactions_api"
+                        }
+                    }
+                }
+            }
+            #swagger.tags = ['Reactions']
+        */
+        res.status(200).json(API(200, false, '', data));
+    } else {
+        res.status(500).json(
+            API(500, true, 'Error when fetching reactions', null)
         );
     }
 });
@@ -57,31 +82,6 @@ reactionRouter.get('/:id', auth, async (req: Request, res: Response) => {
     } else {
         res.status(500).json(
             API(500, true, 'Error when fetching action', null)
-        );
-    }
-});
-
-reactionRouter.get('/api', auth, async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    const data = await getReactionAPI();
-    if (data !== null) {
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/reactions_api"
-                        }
-                    }
-                }
-            }
-            #swagger.tags = ['Reactions']
-        */
-        res.status(200).json(API(200, false, '', data));
-    } else {
-        res.status(500).json(
-            API(500, true, 'Error when fetching actions', null)
         );
     }
 });

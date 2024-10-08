@@ -6,10 +6,9 @@ on:
       branches-ignore:
         - 'ga-ignore-*'
 
-
 jobs:
   web_compile_test:
-    name: Website (Angular)
+    name: Build Website (Angular)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

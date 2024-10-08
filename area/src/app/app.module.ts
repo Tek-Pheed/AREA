@@ -10,8 +10,26 @@ import { ApiService } from 'src/utils/api.services';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 @NgModule({
     declarations: [AppComponent],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
-    providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, ApiService],
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot({
+            platform: {
+                desktop: (win) => {
+                    const isMobile =
+                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+                            win.navigator.userAgent
+                        );
+                    return !isMobile;
+                },
+            },
+        }),
+        AppRoutingModule,
+        HttpClientModule,
+    ],
+    providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        ApiService,
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

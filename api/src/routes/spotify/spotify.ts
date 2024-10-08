@@ -1,4 +1,4 @@
-import { Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -17,6 +17,22 @@ const SPOTIFY_SCOPES = [
 ];
 
 export const spotifyRouter = Router();
+
+/*export async function getCurrentSong(token: string): Promise<any> {
+    const response = await axios.get(
+        'https://api.spotify.com/v1/me/player/currently-playing',
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    if (!response.data) {
+        return null;
+    }
+    return response.data.item.name || null;
+}*/
 
 export async function refreshSpotifyToken(
     refreshToken: string
@@ -86,11 +102,34 @@ passport.deserializeUser((obj: any, done: any) => {
     done(null, obj);
 });
 
+// Spotify authentication routes
 spotifyRouter.get(
     '/login',
     passport.authenticate('spotify'),
     function (req, res) {
-        //#swagger.tags   = ['Spotify OAuth']
+        /*
+                #swagger.tags   = ['Spotify OAuth']
+            */
+    }
+);
+
+spotifyRouter.get(
+    '/login/mobile/ios',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'ios' }),
+    }),
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+    }
+);
+
+spotifyRouter.get(
+    '/login/mobile/android',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'android' }),
+    }),
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
     }
 );
 
@@ -100,9 +139,9 @@ spotifyRouter.get(
         failureRedirect: '/api/oauth/spotify/login',
     }),
     async (req: any, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
         res.redirect(
-            `http://localhost:4200/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            `http://localhost:8081/dashboard/profile?api=twitch&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
         );
-        //#swagger.tags   = ['Spotify OAuth']
     }
 );
