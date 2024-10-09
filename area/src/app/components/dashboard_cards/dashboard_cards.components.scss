@@ -28,23 +28,44 @@
 .card-title {
     font-size: 24px;
     font-weight: bold;
-    margin-top: 16px;
-    margin-left: 16px;
     color: white;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        'Open Sans',
+        'Helvetica Neue',
         sans-serif;
     position: absolute;
-    top: 16px;
-    left: 16px;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 20px;
+    padding-top: 20px;
 }
 
 .card-description {
     font-size: 18px;
     margin-top: 80px;
     color: white;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        'Open Sans',
+        'Helvetica Neue',
         sans-serif;
 }
 
@@ -54,6 +75,19 @@
     right: 16px;
     display: flex;
     gap: 8px;
+}
+
+.bottom-left-circles {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    gap: 8px;
+}
+
+.deleteBin {
+    width: 30px;
+    height: 30px;
 }
 
 .small-circle-image {
