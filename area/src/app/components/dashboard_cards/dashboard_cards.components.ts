@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, input, Input, Output } from "@angular/core";
 
 @Component({
     selector: "app-dashboard-cards",
@@ -10,6 +10,18 @@ export class DashboardCardsComponent {
     @Input() background_color: string = "transparent";
     @Input() image_1: string = "";
     @Input() image_2: string = "";
+    @Input() id: string = "";
+
+    @Output('onDeleteClicked') onDeleteClicked = new EventEmitter<string>();
+    @Output('onCardClicked') onCardClicked = new EventEmitter<any>();
 
     constructor() {}
+
+    deleteCard() {
+        this.onDeleteClicked.emit(this.id);
+    }
+
+    cardClicked() {
+        this.onCardClicked.emit();
+    }
 }

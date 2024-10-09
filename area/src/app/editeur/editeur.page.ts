@@ -308,9 +308,9 @@ export class EditeurPage implements OnInit {
             this.service.createNewUserConfig(token, conf).subscribe(
                 (res) => {
                     if (this.platform.is('desktop')) {
-                        this.router.navigate(['/dashboard']);
+                        location.href = '/dashboard';
                     } else {
-                        this.router.navigate(['/tabs/home']);
+                        location.href = '/tabs/home';
                     }
                 },
                 (err) => {
