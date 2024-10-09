@@ -1,4 +1,5 @@
 import { db } from '../../database/db';
+import log from '../../utils/logger';
 
 export async function getJsonAbout(): Promise<any> {
     try {
@@ -34,7 +35,7 @@ FROM actions_api api;
             return null;
         }
     } catch (e) {
-        console.error(e);
+        log.error(e);
         return null;
     }
 }

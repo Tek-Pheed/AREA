@@ -1,4 +1,5 @@
 import { db } from '../../database/db';
+import log from '../../utils/logger';
 
 export async function getAllServices(): Promise<any> {
     try {
@@ -13,7 +14,7 @@ export async function getAllServices(): Promise<any> {
             return null;
         }
     } catch (e) {
-        console.error(e);
+        log.error(e);
         return null;
     }
 }

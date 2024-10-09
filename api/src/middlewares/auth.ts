@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { db } from '../database/db';
 import API from './api';
+import log from '../utils/logger';
 const jwt = require('jsonwebtoken');
 
 async function userExist(email: string): Promise<boolean> {
@@ -30,7 +31,7 @@ export async function auth(req: Request, res: Response, next: any) {
         next();
         return;
     } catch (err) {
-        console.error(err);
+        log.error(err);
         res.status(401).json(
             API(401, true, 'Bad token, authorization denied', null)
         );

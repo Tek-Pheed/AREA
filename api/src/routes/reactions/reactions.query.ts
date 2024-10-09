@@ -1,11 +1,12 @@
 import { db } from '../../database/db';
+import log from '../../utils/logger';
 
 export async function getAllReactions(): Promise<any> {
     try {
         const result = await db.promise().query('SELECT * FROM reactions');
         return result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
         return null;
     }
 }
@@ -21,7 +22,7 @@ export async function getSpecificReaction(id: string): Promise<any> {
             return null;
         }
     } catch (e) {
-        console.error(e);
+        log.error(e);
         return null;
     }
 }
@@ -31,7 +32,7 @@ export async function getReactionAPI(): Promise<any> {
         const result = await db.promise().query('SELECT * FROM reactions_api');
         return result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
         return null;
     }
 }
