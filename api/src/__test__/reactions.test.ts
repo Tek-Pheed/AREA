@@ -7,6 +7,7 @@ import {
     getReactionAPI,
     getSpecificReaction,
 } from '../routes/reactions/reactions.query';
+import log from '../utils/logger';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
 );
@@ -17,13 +18,13 @@ describe('reactions', () => {
     beforeAll(async () => {
         pool.getConnection((err, connection) => {
             if (err) {
-                console.error(
+                log.error(
                     'Erreur de connexion à la base de données MySQL :',
                     err
                 );
                 process.exit(1);
             } else {
-                console.log('Connexion au pool MySQL réussie.');
+                log.info('Connexion au pool MySQL réussie.');
                 connection.release();
             }
         });
@@ -92,12 +93,12 @@ describe('reactions', () => {
     afterAll(async () => {
         pool.end((err) => {
             if (err) {
-                console.error(
+                log.error(
                     'Erreur lors de la fermeture du pool de connexions MySQL :',
                     err
                 );
             } else {
-                console.log('Pool de connexions MySQL fermé avec succès.');
+                log.info('Pool de connexions MySQL fermé avec succès.');
                 db.end();
             }
         });
