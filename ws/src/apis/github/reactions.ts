@@ -1,0 +1,228 @@
+import { getGithubToken } from './github.query';
+import log from '../../utils/logger';
+import { refreshSpotifyToken } from '../../utils/refresh';
+import bodyParser from 'body-parser';
+
+const axios = require('axios');
+
+export async function createIssue(
+    email: string,
+    owner: string,
+    repo: string,
+    issueTitle: string,
+    issueBody: string,
+    issueAssigne: string,
+    issueMilestone: string,
+    issueLabels: string[]
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+    const response = await axios.post(
+        `https://api.github.com/repos/${owner}/${repo}/issues`,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${sAccessToken}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github+json',
+            },
+            body: {
+                title: issueTitle,
+                body: issueBody,
+                assignee: issueAssigne,
+                milestone: issueMilestone,
+                labels: issueLabels,
+            },
+        }
+    );
+    if (response.status === 201) {
+        return true;
+    } else {
+        console.warn("Github create issue error: " + response.status);
+        return false;
+    }
+}
+
+/* 
+export async function getUserSpotifyID(token: string): Promise<string> {
+    const response = await axios.get('https://api.spotify.com/v1/me', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    if (!response.data) {
+        return '';
+    }
+    return response.data.id;
+}
+
+export async function getSongID(
+    name: string,
+    access_token: string
+): Promise<any> {
+    const response = await axios.get(
+        `https://api.spotify.com/v1/search?q=${name}&type=track`,
+        {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        }
+    );
+    if (!response.data) {
+        return false;
+    }
+    return response.data.tracks.items[0].id;
+}
+
+export async function startPlaybackSong(
+    email: string,
+    track: string
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    try {
+        const song_id = await getSongID(track, sAccessToken);
+        if (!song_id) {
+            return false;
+        }
+        const response = await axios.put(
+            'https://api.spotify.com/v1/me/player/play',
+            { uris: [`spotify:track:${song_id}`] },
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        if (response.status === 204) {
+            return true;
+        } else return false;
+    } catch (e: any) {
+        if (e.status === 404) {
+            log.warn('No device found to launch music');
+        } else {
+            log.error('startPlaybackSong ' + e.status);
+            await refreshSpotifyToken(email, sRefreshToken);
+        }
+        return false;
+    }
+}
+
+export async function skipToNextSong(email: string): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    try {
+        const response = await axios.post(
+            'https://api.spotify.com/v1/me/player/next',
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        if (response.status === 204) {
+            return true;
+        } else return false;
+    } catch (e: any) {
+        log.error('skipToNextSong ' + e.status);
+        await refreshSpotifyToken(email, sRefreshToken);
+        return false;
+    }
+}
+
+export async function skipToPreviousSong(email: string): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    try {
+        const response = await axios.post(
+            'https://api.spotify.com/v1/me/player/previous',
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        return response.status === 204;
+    } catch (e: any) {
+        log.error('skipToNextSong ' + e.status);
+        await refreshSpotifyToken(email, sRefreshToken);
+        return false;
+    }
+}
+
+export async function setPlaybackVolume(
+    email: string,
+    volumePercent: string
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    const response = await axios.put(
+        `https://api.spotify.com/v1/me/player/volume?volume_percent=${volumePercent}`,
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${sAccessToken}`,
+            },
+        }
+    );
+    if (response.status === 204) {
+        return true;
+    } else return false;
+}
+
+export async function createPlaylist(
+    email: string,
+    playlistName: string,
+    playlistDescription: string,
+    isPublic: boolean
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    const userId = await getUserSpotifyID(sAccessToken);
+    if (!userId) {
+        return false;
+    }
+    const response = await axios.post(
+        `https://api.spotify.com/v1/users/${userId}/playlists`,
+        {
+            name: playlistName,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${sAccessToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: {
+                description: playlistDescription,
+                public: isPublic,
+            },
+        }
+    );
+    if (response.status === 201) {
+        return true;
+    } else return false;
+}
+
+export async function addItemsToPlaylist(
+    email: string,
+    playlist_id: string,
+    track_uris: string[]
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    const response = await axios.post(
+        `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+        {
+            uris: track_uris,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${sAccessToken}`,
+                'Content-Type': 'application/json',
+            },
+            body: {
+                uris: track_uris,
+                position: 0,
+            },
+        }
+    );
+    if (response.status === 201) {
+        return true;
+    } else return false;
+}
+ */
