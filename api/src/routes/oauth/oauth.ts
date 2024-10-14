@@ -3,7 +3,8 @@ import { spotifyRouter } from '../spotify/spotify';
 import { twitchRouter } from '../twitch/twitch';
 import { discordRouter } from '../discord/discord';
 import { githubRouter } from '../github/github';
-import { jiraRouter } from '../jira/jira';
+import { unsplashRouter } from '../unsplash/unsplash';
+
 import {
     getAllConnections,
     insertTokeninDb,
@@ -18,7 +19,7 @@ oauthRouter.use('/spotify', spotifyRouter);
 oauthRouter.use('/twitch', twitchRouter);
 oauthRouter.use('/discord', discordRouter);
 oauthRouter.use('/github', githubRouter);
-oauthRouter.use('/jira', jiraRouter);
+oauthRouter.use('/unsplash', unsplashRouter);
 
 oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
     //#swagger.tags = ['OAuth']
