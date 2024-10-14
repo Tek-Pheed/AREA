@@ -4,8 +4,8 @@ import { twitchRouter } from '../twitch/twitch';
 import { discordRouter } from '../discord/discord';
 import { githubRouter } from '../github/github';
 import { unsplashRouter } from '../unsplash/unsplash';
-
 import { googleRouter } from '../google/google';
+
 import {
     getAllConnections,
     insertTokeninDb,
@@ -43,7 +43,7 @@ oauthRouter.post(
         //#swagger.tags = ['OAuth']
         res.header('Content-Type', 'application/json');
         const email = req.params.email;
-        const { twitch, spotify, github, discord, google } = req.body;
+        const { twitch, spotify, github, discord, google, unsplash } = req.body;
 
         if (
             twitch.access_token != undefined &&
@@ -85,7 +85,7 @@ oauthRouter.post(
             );
         }
 
-        /*if (
+        if (
             google.access_token != undefined &&
             google.refresh_token != undefined
         ) {
@@ -95,7 +95,16 @@ oauthRouter.post(
                 google.refresh_token,
                 email
             );
-        }*/
+        }
+
+        if (unsplash.access_token != undefined) {
+            await insertTokeninDb(
+                'unsplash',
+                unsplash.access_token,
+                null,
+                email
+            );
+        }
 
         res.status(200).json(API(200, false, 'Tokens updated', null));
     }
