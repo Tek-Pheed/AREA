@@ -8,11 +8,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
 }
 
 .register-container {
     width: 30%;
-    height: 35%;
     border-radius: 8px;
     text-align: center;
 }
@@ -20,14 +20,15 @@
 h1 {
     font-size: 60px;
     font-weight: bold;
-    margin-bottom: 50px;
-    color: #000;
+    margin-bottom: 70px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    margin-top: 200px;
+    align-items: center;
+    margin-top: 50px;
+    width: 100%;
 }
 
 input {
@@ -40,19 +41,20 @@ input {
     font-size: 16px;
     width: 100%;
     max-width: 420px;
-    color: #000;
+    color: black;
+}
+
+input:last-of-type {
+    margin-bottom: 40px;
 }
 
 button {
     padding: 15px;
-    background-color: #000;
-    color: #f0f0f0;
     border: none;
     border-radius: 14px;
-    font-size: 16px;
     cursor: pointer;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     font-size: 20px;
     margin-top: 50px;
 }
@@ -64,4 +66,21 @@ hr {
     border: none;
     margin-top: 30px;
     margin-left: -25%;
+}
+
+@media (max-width: 500px) {
+    .register-container {
+        width: 70%;
+        height: 50%;
+    }
+
+    h1 {
+        font-size: 40px;
+        margin-bottom: 30px;
+    }
+
+    hr {
+        width: 100%;
+        margin-left: 0;
+    }
 }

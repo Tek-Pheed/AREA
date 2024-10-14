@@ -10,7 +10,7 @@ export const userRouter = Router();
 userRouter.get('/me', auth, async (req: Request, res: Response) => {
     // #swagger.tags = ['Users']
     res.header('Content-Type', 'application/json');
-    const result = await getCurrentUser(req);
+    const result = await getCurrentUser(`${req.headers.authorization}`);
     if (result) {
         /*
             #swagger.responses[200] = {

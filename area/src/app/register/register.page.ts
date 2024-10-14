@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-Register',
@@ -12,7 +14,11 @@ export class RegisterPage implements OnInit {
     @ViewChild('inputPassword') inputPassword: ElementRef | undefined;
     @ViewChild('inputPassword2') inputPassword2: ElementRef | undefined;
 
-    constructor(private service: ApiService) {}
+    constructor(
+        private service: ApiService,
+        private platform: Platform,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         if (
@@ -23,7 +29,11 @@ export class RegisterPage implements OnInit {
                 JSON.stringify(localStorage.getItem('Token')) as string
             ) != null
         ) {
-            window.location.href = '/profile';
+            if (this.platform.is('desktop')) {
+                this.router.navigate(['/dashboard']);
+            } else {
+                this.router.navigate(['/tabs/home']);
+            }
         }
     }
 
@@ -49,7 +59,6 @@ export class RegisterPage implements OnInit {
             this.service.postAuthRegister(name, email, password).subscribe(
                 (res) => {
                     this.registerUserCallback(res);
-                    window.location.href = '/profile';
                 },
                 (err) => {
                     console.error(err);
@@ -64,5 +73,11 @@ export class RegisterPage implements OnInit {
             alert('Unable to create account: ' + result.message);
         }
         localStorage.setItem('Token', result.data.token);
+
+        if (this.platform.is('desktop')) {
+            this.router.navigate(['/dashboard']);
+        } else {
+            this.router.navigate(['/tabs/home']);
+        }
     }
 }

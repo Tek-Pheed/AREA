@@ -25,7 +25,7 @@ userConfigRouter.get('/', async (req: Request, res: Response) => {
         }
      */
     res.header('Content-Type', 'application/json');
-    const result = await getAllUserConfigs(req);
+    const result = await getAllUserConfigs(`${req.headers.authorization}`);
     if (result !== null) {
         res.status(200).json(API(200, false, '', result));
     } else {
@@ -99,8 +99,8 @@ userConfigRouter.put('/:id', auth, async (req: Request, res: Response) => {
             }
         }
     */
-    const result = updateUserConfig(req.body, req.params.id);
-    if (result !== null) {
+    const result = await updateUserConfig(req.body, req.params.id);
+    if (result) {
         res.status(200).json(
             API(200, false, 'User config update successfully', null)
         );
@@ -115,11 +115,11 @@ userConfigRouter.delete('/:id', auth, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Configs']
     */
-    const result = removeUserConfig(
+    const result = await removeUserConfig(
         req.params.id,
         `${req.headers.authorization}`
     );
-    if (result !== null) {
+    if (result) {
         res.status(200).json(
             API(200, false, 'User config delete successfully', null)
         );

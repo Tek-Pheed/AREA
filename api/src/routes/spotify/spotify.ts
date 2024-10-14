@@ -1,7 +1,4 @@
-import { Request, Response, NextFunction, Express, Router } from 'express';
-import { isAuthenticatedSpotify } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
-import { getCurrentSong } from './actions';
+import { Request, Response, Router } from 'express';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -110,21 +107,29 @@ spotifyRouter.get(
     '/login',
     passport.authenticate('spotify'),
     function (req, res) {
-        //const email = req.params.email;
-        //res.cookie('email', email);
         /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
                 #swagger.tags   = ['Spotify OAuth']
             */
+    }
+);
+
+spotifyRouter.get(
+    '/login/mobile/ios',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'ios' }),
+    }),
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+    }
+);
+
+spotifyRouter.get(
+    '/login/mobile/android',
+    passport.authenticate('spotify', {
+        state: JSON.stringify({ platform: 'android' }),
+    }),
+    async (req: Request, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
     }
 );
 
@@ -134,66 +139,9 @@ spotifyRouter.get(
         failureRedirect: '/api/oauth/spotify/login',
     }),
     async (req: any, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
         res.redirect(
-            `http://localhost:4200/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+            `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
         );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
-    }
-);
-
-spotifyRouter.get(
-    '/get_current_song',
-    isAuthenticatedSpotify,
-    async (req: any, res: Response) => {
-        if (!req.user || !req.user.accessTokenSpotify) {
-            return res.redirect('/api/oauth/spotify/login');
-        }
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Spotify OAuth']
-            */
-        try {
-            let accessToken = req.user.accessTokenSpotify;
-            const refreshToken = req.user.refreshTokenSpotify;
-            let currentSong = await getCurrentSong(
-                'raphael.scandella@epitech.eu',
-                'https://open.spotify.com/track/4Ws314Ylb27BVsvlZOy30C'
-            );
-
-            if (!currentSong && refreshToken) {
-                accessToken = await refreshSpotifyToken(refreshToken);
-                req.user.accessTokenSpotify = accessToken;
-                currentSong = await getCurrentSong(
-                    accessToken,
-                    'https://open.spotify.com/track/4Ws314Ylb27BVsvlZOy30C'
-                );
-            }
-
-            return res.json({ currentSong });
-        } catch (error) {
-            console.error('Error fetching current song', error);
-            return res.status(500).send('Error checking current song');
-        }
     }
 );

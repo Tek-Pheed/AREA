@@ -1,6 +1,6 @@
-import { Response, Express, Router } from 'express';
+import { Response, Router } from 'express';
 import { isAuthenticatedGithub } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
+import log from '../../utils/logger';
 
 const GitHubStrategy = require('passport-github2').Strategy;
 const axios = require('axios');
@@ -93,21 +93,7 @@ githubRouter.get(
     '/login',
     passport.authenticate('github', { scope: ['user, repo'] }),
     function (req, res) {
-        //const email = req.params.email;
-        //res.cookie('email', email);
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Github OAuth']
-            */
+        //#swagger.tags   = ['Github OAuth']
     }
 );
 
@@ -117,24 +103,10 @@ githubRouter.get(
         failureRedirect: '/api/oauth/github/login',
     }),
     async function (req: any, res) {
-        console.log(req.user);
-        console.log(req.params);
         res.redirect(
-            `http://localhost:4200/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+            `http://localhost:8081/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
         );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Github OAuth']
-            */
+        //#swagger.tags   = ['Github OAuth']
     }
 );
 
@@ -145,19 +117,6 @@ githubRouter.get(
         if (!req.user || !req.user.accessTokenGithub) {
             return res.redirect('/api/oauth/github/login');
         }
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Github OAuth']
-            */
 
         try {
             let accessToken = req.user.accessTokenGithub;
@@ -171,8 +130,9 @@ githubRouter.get(
             }
             return res.json({ issues });
         } catch (error) {
-            console.error('Error getting issues ', error);
+            log.error('Error getting issues ', error);
             return res.status(500).send('Error getting issues');
         }
+        //#swagger.tags   = ['Github OAuth']
     }
 );

@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { IUsers } from '../../utils/data.model';
 import { db } from '../../database/db';
+import log from '../../utils/logger';
 
 export async function login(email: string, password: string): Promise<boolean> {
     if (!email || !password) {
@@ -19,7 +20,7 @@ export async function login(email: string, password: string): Promise<boolean> {
             return false;
         }
     } catch (error) {
-        console.error(error);
+        log.error(error);
         return false;
     }
 }
@@ -40,7 +41,7 @@ export async function register(body: IUsers): Promise<boolean> {
             .query('INSERT INTO usersToken (email) values (?)', [email]);
         return result.length > 0 && result_token.length > 0;
     } catch (err) {
-        console.error(err);
+        log.error(err);
         return false;
     }
 }

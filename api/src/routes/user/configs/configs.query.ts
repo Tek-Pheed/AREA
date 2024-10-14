@@ -1,9 +1,9 @@
 import { Request } from 'express';
 const jwt = require('jsonwebtoken');
 import { db } from '../../../database/db';
+import log from '../../../utils/logger';
 
-export async function getAllUserConfigs(req: Request): Promise<any> {
-    const token = req.headers.authorization;
+export async function getAllUserConfigs(token: string): Promise<any> {
     if (!token) return null;
     try {
         let webToken = token.toString().split(' ')[1];
@@ -11,14 +11,9 @@ export async function getAllUserConfigs(req: Request): Promise<any> {
         const result: any = await db
             .promise()
             .query('SELECT * FROM users_configs WHERE email=?', decoded.email);
-        console.log(result[0]);
-        if (result[0].length > 0) {
-            return result[0];
-        } else {
-            return null;
-        }
+        return result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
@@ -45,36 +40,44 @@ export async function createUserConfig(body: any, token: string): Promise<any> {
 
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
 
-export async function updateUserConfig(body: any, id: string): Promise<any> {
+export async function updateUserConfig(
+    req_body: any,
+    id: string
+): Promise<boolean> {
+    const { actions_id, method, headers, body, reaction_id } = req_body;
+    if (!actions_id || !method || !headers || !body || !reaction_id)
+        return false;
     try {
-        body = [
-            body.method,
-            JSON.stringify(body.headers),
-            JSON.stringify(body.body),
+        const data = [
+            actions_id,
+            method,
+            JSON.stringify(headers),
+            JSON.stringify(body),
+            reaction_id,
         ];
         await db
             .promise()
             .query(
-                `UPDATE users_configs SET method=?,headers=?,body=? WHERE id=${id}`,
-                body
+                `UPDATE users_configs SET actions_id=?,method=?,headers=?,body=?,reaction_id=? WHERE id=${id}`,
+                data
             );
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
-    return null;
+    return false;
 }
 
 export async function removeUserConfig(
     id: string,
     token: string
-): Promise<any> {
-    if (!token) return null;
+): Promise<boolean> {
+    if (!token) return false;
     try {
         let webToken = token.toString().split(' ')[1];
         let decoded: any = jwt.verify(webToken, process.env.SECRET);
@@ -84,8 +87,9 @@ export async function removeUserConfig(
                 decoded.email,
                 id,
             ]);
+        return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
-    return null;
+    return false;
 }

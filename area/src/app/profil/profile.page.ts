@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { APIServices } from '../utils/data.models';
 import { ProfileData } from '../utils/data.models';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 
 @Component({
@@ -20,7 +20,8 @@ export class ProfilePage implements OnInit {
 
     constructor(
         private service: ApiService,
-        protected platform: Platform
+        protected platform: Platform,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -30,6 +31,9 @@ export class ProfilePage implements OnInit {
         this.email = JSON.parse(
             JSON.stringify(localStorage.getItem('Email')) as string
         );
+        if (!this.token) {
+            this.router.navigate(['/home']);
+        }
         this.getAllServices();
         this.getProfileData();
         let url: string = window.location.href;
@@ -115,7 +119,6 @@ export class ProfilePage implements OnInit {
             .updateAPILoginTokens(this.token, this.email, body)
             .subscribe(
                 (res) => {
-                    console.log(res);
                     this.getAllServices();
                 },
                 (err) => {

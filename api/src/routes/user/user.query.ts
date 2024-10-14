@@ -1,10 +1,10 @@
 import { Request } from 'express';
 import { db } from '../../database/db';
 import bcrypt from 'bcryptjs';
+import log from '../../utils/logger';
 const jwt = require('jsonwebtoken');
 
-export async function getCurrentUser(req: Request): Promise<any> {
-    const token = req.headers.authorization;
+export async function getCurrentUser(token: string): Promise<any> {
     if (!token) return null;
     try {
         let webToken = token.toString().split(' ')[1];
@@ -15,13 +15,9 @@ export async function getCurrentUser(req: Request): Promise<any> {
                 'SELECT id, email, username, create_at FROM users WHERE email=?',
                 decoded.email
             );
-        if (result[0].length > 0) {
-            return result[0];
-        } else {
-            return null;
-        }
+        return result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
@@ -35,7 +31,7 @@ export async function updateCurrentUser(
         let webToken = token.toString().split(' ')[1];
         let decoded: any = jwt.verify(webToken, process.env.SECRET);
         if (body.password) {
-            const result: any = await db
+            await db
                 .promise()
                 .query(
                     `UPDATE users SET username=?, email=?, password=? WHERE email='${decoded.email}'`,
@@ -46,7 +42,7 @@ export async function updateCurrentUser(
                     ]
                 );
         } else {
-            const result: any = await db
+            await db
                 .promise()
                 .query(
                     `UPDATE users SET username=?, email=? WHERE email='${decoded.email}'`,
@@ -55,7 +51,7 @@ export async function updateCurrentUser(
         }
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return false;
 }

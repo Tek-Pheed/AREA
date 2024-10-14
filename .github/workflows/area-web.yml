@@ -1,4 +1,4 @@
-name: Build - Web
+name: Web - Pipeline
 
 on:
   push:
@@ -6,10 +6,9 @@ on:
       branches-ignore:
         - 'ga-ignore-*'
 
-
 jobs:
   web_compile_test:
-    name: Website (Angular)
+    name: Build Website (Angular)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,22 +28,4 @@ jobs:
       - name: Build website
         run: |
           cd area/
-          npm run build
-  api_compile_test:
-    name: API
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install npm dependencies
-        run: |
-          cd api
-          npm i
-      - name: Build website
-        run: |
-          cd api/
           npm run build

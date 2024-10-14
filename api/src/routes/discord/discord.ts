@@ -1,6 +1,6 @@
-import { Response, Express, Router } from 'express';
+import { Response, Router } from 'express';
 import { isAuthenticatedDiscord } from '../../middlewares/oauth';
-import { insertTokeninDb } from '../oauth/oauth.query';
+import log from '../../utils/logger';
 
 const axios = require('axios');
 const passport: any = require('passport');
@@ -62,21 +62,7 @@ discordRouter.get(
     '/login',
     passport.authenticate('discord'),
     async (req: any, res: Response) => {
-        //const email = req.params.email;
-        //res.cookie('email', email);
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/actions"
-                        }
-                    }
-                }
-            }
-            #swagger.tags = ['Discord OAuth']
-        */
+        //#swagger.tags = ['Discord OAuth']
     }
 );
 
@@ -87,21 +73,9 @@ discordRouter.get(
     }),
     async function (req: any, res: Response) {
         res.redirect(
-            `http://localhost:4200/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
+            `http://localhost:8081/dashboard/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
         );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Discord OAuth']
-            */
+        //#swagger.tags   = ['Discord OAuth']
     }
 );
 
@@ -112,27 +86,15 @@ discordRouter.get(
         if (!req.user || !req.user.accessTokenDiscord) {
             return res.redirect('/api/oauth/discord/login');
         }
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Discord OAuth']
-            */
         try {
             let accessToken = req.user.accessTokenDiscord;
             let infos = await getInfoDiscord(accessToken);
 
             return res.json({ infos });
         } catch (error) {
-            console.error('Error getting discord infos', error);
+            log.error('Error getting discord infos', error);
             return res.status(500).send('Error getting discord infos');
         }
+        //#swagger.tags   = ['Discord OAuth']
     }
 );
