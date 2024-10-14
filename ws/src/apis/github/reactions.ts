@@ -14,16 +14,24 @@ export async function createIssue(
     issueAssigne: string,
     issueLabels: string[]
 ): Promise<boolean> {
+    const { gAccessToken, gRefreshToken } = await getGithubToken(email);
+
+    let data: any = {
+        title: issueTitle,
+        body: issueBody,
+    };
+
+    if (issueAssigne.length > 0) {
+        data.assignee = issueAssigne;
+    }
+
+    if (issueLabels.length > 0) {
+        data.labels = issueLabels;
+    }
+
+    data = JSON.stringify(data);
+
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
-
-        let data = JSON.stringify({
-            title: issueTitle,
-            body: issueBody,
-            assignee: issueAssigne,
-            labels: issueLabels,
-        });
-
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -31,7 +39,7 @@ export async function createIssue(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${sAccessToken}`,
+                Authorization: `Bearer ${gAccessToken}`,
             },
             data: data,
         };
@@ -39,7 +47,7 @@ export async function createIssue(
         if (response.status === 201) {
             return true;
         } else {
-            console.warn('Github create issue error: ' + response.status);
+            log.warn('Github create issue error: ' + response.status);
             return false;
         }
     } catch (e) {
@@ -55,8 +63,8 @@ export async function createIssueComment(
     issueNumber: string,
     commentBody: string
 ): Promise<boolean> {
+    const { gAccessToken, gRefreshToken } = await getGithubToken(email);
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
         let data = JSON.stringify({
             body: commentBody,
         });
@@ -67,7 +75,7 @@ export async function createIssueComment(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${sAccessToken}`,
+                Authorization: `Bearer ${gAccessToken}`,
             },
             data: data,
         };
@@ -75,7 +83,7 @@ export async function createIssueComment(
         if (response.status === 201) {
             return true;
         } else {
-            console.warn('Github create comment error: ' + response.status);
+            log.warn('Github create comment error: ' + response.status);
             return false;
         }
     } catch (e) {
@@ -94,8 +102,8 @@ export async function createPullRequest(
     prBaseBranch: string,
     prIsDraft: boolean
 ): Promise<boolean> {
+    const { gAccessToken, gRefreshToken } = await getGithubToken(email);
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
         let data = JSON.stringify({
             title: prTitle,
             head: prHeadBranch,
@@ -110,7 +118,7 @@ export async function createPullRequest(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${sAccessToken}`,
+                Authorization: `Bearer ${gAccessToken}`,
             },
             data: data,
         };
@@ -118,7 +126,7 @@ export async function createPullRequest(
         if (response.status === 201) {
             return true;
         } else {
-            console.warn('Github create pr error: ' + response.status);
+            log.warn('Github create pr error: ' + response.status);
             return false;
         }
     } catch (e) {
@@ -135,8 +143,8 @@ export async function mergePullRequest(
     commitTitle: string,
     commitMessage: string
 ): Promise<boolean> {
+    const { gAccessToken, gRefreshToken } = await getGithubToken(email);
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
         let data = JSON.stringify({
             commit_title: commitTitle,
             commit_message: commitMessage,
@@ -148,15 +156,15 @@ export async function mergePullRequest(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${sAccessToken}`,
+                Authorization: `Bearer ${gAccessToken}`,
             },
             data: data,
         };
         const response = await axios.request(config);
-        if (response.status === 201) {
+        if (response.status === 200) {
             return true;
         } else {
-            console.warn('Github merge pr error: ' + response.status);
+            log.warn('Github merge pr error: ' + response.status);
             return false;
         }
     } catch (e) {
@@ -172,8 +180,8 @@ export async function rerunWorkflow(
     workflowRunId: string,
     workflowDebugLoggin: boolean
 ): Promise<boolean> {
+    const { gAccessToken, gRefreshToken } = await getGithubToken(email);
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
         let data = JSON.stringify({
             enable_debug_logging: workflowDebugLoggin,
         });
@@ -184,7 +192,7 @@ export async function rerunWorkflow(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${sAccessToken}`,
+                Authorization: `Bearer ${gAccessToken}`,
             },
             data: data,
         };
@@ -192,7 +200,7 @@ export async function rerunWorkflow(
         if (response.status === 201) {
             return true;
         } else {
-            console.warn('Github merge pr error: ' + response.status);
+            log.warn('Github merge pr error: ' + response.status);
             return false;
         }
     } catch (e) {
@@ -208,8 +216,8 @@ export async function rerunWorkflowFailedJobs(
     workflowRunId: string,
     workflowDebugLoggin: boolean
 ): Promise<boolean> {
+    const { gAccessToken, gRefreshToken } = await getGithubToken(email);
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
         let data = JSON.stringify({
             enable_debug_logging: workflowDebugLoggin,
         });
@@ -220,7 +228,7 @@ export async function rerunWorkflowFailedJobs(
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
-                Authorization: `Bearer ${sAccessToken}`,
+                Authorization: `Bearer ${gAccessToken}`,
             },
             data: data,
         };
@@ -228,7 +236,7 @@ export async function rerunWorkflowFailedJobs(
         if (response.status === 201) {
             return true;
         } else {
-            console.warn('Github merge pr error: ' + response.status);
+            log.warn('Github merge pr error: ' + response.status);
             return false;
         }
     } catch (e) {
