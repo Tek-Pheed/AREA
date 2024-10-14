@@ -91,10 +91,10 @@ unsplashRouter.get(
         failureRedirect: '/api/oauth/unsplash/login',
     }),
     async (req: any, res: Response) => {
-        /*res.redirect(
+        res.redirect(
             `http://localhost:8081/dashboard/profile?api=unsplash&refresh_token=${req.user.refreshTokenUnsplash}&access_token=${req.user.accessTokenUnsplash}`
-        );*/
-        res.redirect('http://localhost:8080/api/oauth/unsplash/get_random_img');
+        );
+        //res.redirect('http://localhost:8080/api/oauth/unsplash/get_random_img');
         //#swagger.tags   = ['Unsplash OAuth']
     }
 );

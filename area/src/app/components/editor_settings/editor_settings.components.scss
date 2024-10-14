@@ -1,9 +1,13 @@
-ion-modal {
+.ion-modal-style {
     --border-radius: 15px;
     --overflow: hidden;
     --position: relative;
     margin-top: constant(safe-area-inset-top) !important;
     margin-top: env(safe-area-inset-top) !important;
+}
+
+.dateminiModal {
+    backdrop-filter: blur(10px);
 }
 
 ion-input {
@@ -12,7 +16,7 @@ ion-input {
 }
 
 @media screen and (min-width: 1000px) {
-    ion-modal {
+    .ion-modal-style {
         --border-radius: 15px;
         --overflow: hidden;
         --position: relative;

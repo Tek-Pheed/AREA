@@ -113,6 +113,26 @@ export class ProfilePage implements OnInit {
                         ? this.current_refresh_oauth_token
                         : undefined,
             },
+            google: {
+                access_token:
+                    this.current_oauth_api == 'google'
+                        ? this.current_access_oauth_token
+                        : undefined,
+                refresh_token:
+                    this.current_oauth_api == 'google'
+                        ? this.current_refresh_oauth_token
+                        : undefined,
+            },
+            unsplash: {
+                access_token:
+                    this.current_oauth_api == 'unsplash'
+                        ? this.current_access_oauth_token
+                        : undefined,
+                refresh_token:
+                    this.current_oauth_api == 'unsplash'
+                        ? this.current_refresh_oauth_token
+                        : undefined,
+            },
         };
 
         this.service
@@ -159,6 +179,21 @@ export class ProfilePage implements OnInit {
                             data.twitchAccessToken != null &&
                             data.twitchRefreshToken != null &&
                             this.servicesData[i].name.toLowerCase() === 'twitch'
+                        ) {
+                            this.servicesData[i].connected = true;
+                        }
+
+                        if (
+                            data.googleAccessToken != null &&
+                            this.servicesData[i].name.toLowerCase() === 'google'
+                        ) {
+                            this.servicesData[i].connected = true;
+                        }
+
+                        if (
+                            data.unsplashAccessToken != null &&
+                            this.servicesData[i].name.toLowerCase() ===
+                                'unsplash'
                         ) {
                             this.servicesData[i].connected = true;
                         }

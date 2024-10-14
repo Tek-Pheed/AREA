@@ -33,6 +33,8 @@ export class EditeurPage implements OnInit {
     selectedReaction: IReactions | undefined = undefined;
     token: string = '';
 
+    date = new Date();
+
     actionModalShow: boolean = false;
     actionProperties: IHeaderProperties = {
         name: '',
@@ -56,6 +58,11 @@ export class EditeurPage implements OnInit {
 
     openActionModal() {
         if (this.selectedAction != undefined) {
+            let i = 0;
+            for (let  element of this.actionFields) {
+                this.actionFields[i].fieldValue = (element.fieldType == 'datetime' && element.fieldValue == '' ? this.date.toISOString() : this.actionFields[i].fieldValue);
+                i++
+            }
             this.actionProperties.img_src = this.getimgsrc(
                 this.selectedAction.api_name
             );
@@ -67,6 +74,11 @@ export class EditeurPage implements OnInit {
 
     openReactionModal() {
         if (this.selectedReaction != undefined) {
+            let i = 0;
+            for (let  element of this.reactionFields) {
+                this.reactionFields[i].fieldValue = (element.fieldType == 'datetime' && element.fieldValue == '' ? this.date.toISOString() : this.reactionFields[i].fieldValue);
+                i++
+            }
             this.reactionProperties.img_src = this.getimgsrc(
                 this.selectedReaction.api_name
             );
@@ -294,16 +306,15 @@ export class EditeurPage implements OnInit {
         for (const element of this.actionFields) {
             conf.body.action.push({
                 name: element.fieldID,
-                value: element.fieldValue,
+                value: String(element.fieldValue),
             });
         }
         for (const element of this.reactionFields) {
             conf.body.reaction.push({
                 name: element.fieldID,
-                value: element.fieldValue,
+                value: String(element.fieldValue),
             });
         }
-        console.warn(conf);
         if (URLconfigID == null || URLconfigID == undefined) {
             this.service.createNewUserConfig(token, conf).subscribe(
                 (res) => {
