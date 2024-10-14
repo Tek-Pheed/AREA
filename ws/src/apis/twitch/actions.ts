@@ -5,7 +5,26 @@ import { getTwitchToken } from './twitch.query';
 const axios = require('axios');
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 
-export async function getUserId(
+export async function getUserId(token: any, email: string): Promise<any> {
+    try {
+        const response = await axios.get('https://api.twitch.tv/helix/users/', {
+            headers: {
+                'Client-Id': TWITCH_CLIENT_ID,
+                Authorization: `Bearer ${token.tAccessToken}`,
+            },
+        });
+        if (response.data && response.data.data.length > 0) {
+            return response.data.data[0].id;
+        }
+    } catch (error) {
+        log.error(`Error : ${error}`);
+        await refreshTwitchToken(email, token.tRefreshToken);
+        return null;
+    }
+}
+
+
+export async function getBroadcasterIdFromUsername(
     token: any,
     username: string,
     email: string
@@ -123,7 +142,7 @@ export async function getStreamerStatus(
 
 async function getChannelInfo(email: string, username: string): Promise<any> {
     const token = await getTwitchToken(email);
-    const broadcasterId = await getUserId(token, username, email);
+    const broadcasterId = await getBroadcasterIdFromUsername(token, username, email);
     try {
         const response = await axios.get(
             `https://api.twitch.tv/helix/channels?broadcaster_id=${broadcasterId}`,

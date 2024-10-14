@@ -88,7 +88,7 @@ export async function sendChatMessage(
             tAccessToken,
             broadcasterUsername
         );
-        const senderId = await getUserId(tAccessToken);
+        const senderId = await getUserId(tAccessToken, email);
 
         if (!broadcasterId || !senderId) {
             return null;
