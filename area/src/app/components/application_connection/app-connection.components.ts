@@ -35,7 +35,7 @@ export class AppConnectedCardComponent {
                         if (this.platform.is('mobile')) {
                             this.router.navigate(['/tabs/profile']);
                         } else {
-                            this.router.navigate(['/dashboard/profile']);
+                            location.reload();
                         }
                     },
                     (err) => {
