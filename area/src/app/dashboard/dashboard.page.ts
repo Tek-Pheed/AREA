@@ -144,6 +144,24 @@ export class DashboardPage implements OnInit {
         });
     }
 
+    deleteConfig(id: string) {
+        this.token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+
+        if (!confirm("Confirm suppression ?"))
+            return;
+        this.service.deleteUserConfigs(this.token, id).subscribe(
+            (res) => {
+                location.reload();
+            },
+            (err) => {
+                console.error(err);
+                alert(`Unable to delete user config: ${err}`);
+            }
+        );
+    }
+
     ngOnInit(): void {
         this.token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string

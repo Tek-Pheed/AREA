@@ -1,6 +1,7 @@
 import { Request } from 'express';
 const jwt = require('jsonwebtoken');
 import { db } from '../../../database/db';
+import log from '../../../utils/logger';
 
 export async function getAllUserConfigs(token: string): Promise<any> {
     if (!token) return null;
@@ -12,7 +13,7 @@ export async function getAllUserConfigs(token: string): Promise<any> {
             .query('SELECT * FROM users_configs WHERE email=?', decoded.email);
         return result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
@@ -39,7 +40,7 @@ export async function createUserConfig(body: any, token: string): Promise<any> {
 
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
@@ -67,7 +68,7 @@ export async function updateUserConfig(
             );
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return false;
 }
@@ -88,7 +89,7 @@ export async function removeUserConfig(
             ]);
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return false;
 }

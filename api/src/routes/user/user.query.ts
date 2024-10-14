@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { db } from '../../database/db';
 import bcrypt from 'bcryptjs';
+import log from '../../utils/logger';
 const jwt = require('jsonwebtoken');
 
 export async function getCurrentUser(token: string): Promise<any> {
@@ -16,7 +17,7 @@ export async function getCurrentUser(token: string): Promise<any> {
             );
         return result[0];
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
@@ -50,7 +51,7 @@ export async function updateCurrentUser(
         }
         return true;
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return false;
 }

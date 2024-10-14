@@ -1,5 +1,6 @@
 import { Response, Router } from 'express';
 import { isAuthenticatedGithub } from '../../middlewares/oauth';
+import log from '../../utils/logger';
 
 const GitHubStrategy = require('passport-github2').Strategy;
 const axios = require('axios');
@@ -129,7 +130,7 @@ githubRouter.get(
             }
             return res.json({ issues });
         } catch (error) {
-            console.error('Error getting issues ', error);
+            log.error('Error getting issues ', error);
             return res.status(500).send('Error getting issues');
         }
         //#swagger.tags   = ['Github OAuth']

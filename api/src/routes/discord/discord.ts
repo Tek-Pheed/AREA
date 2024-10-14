@@ -1,5 +1,6 @@
 import { Response, Router } from 'express';
 import { isAuthenticatedDiscord } from '../../middlewares/oauth';
+import log from '../../utils/logger';
 
 const axios = require('axios');
 const passport: any = require('passport');
@@ -91,7 +92,7 @@ discordRouter.get(
 
             return res.json({ infos });
         } catch (error) {
-            console.error('Error getting discord infos', error);
+            log.error('Error getting discord infos', error);
             return res.status(500).send('Error getting discord infos');
         }
         //#swagger.tags   = ['Discord OAuth']

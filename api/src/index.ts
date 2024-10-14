@@ -1,3 +1,5 @@
+import log from './utils/logger';
+
 require('dotenv').config();
 import express from 'express';
 import { Express } from 'express';
@@ -73,8 +75,8 @@ app.use(
 
 dbConnect.then(() => {
     app.listen(port, async () => {
-        console.log(
-            `${pjson.name} listening on port ${port} - version ${pjson.version}`
-        );
+        log.info('Connected to database');
+        log.info(`${pjson.name} version ${pjson.version}`);
+        log.info(`Listening on port ${port}`);
     });
 });
