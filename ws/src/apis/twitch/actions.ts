@@ -246,7 +246,8 @@ export async function getTopGame(email: any): Promise<any> {
             }
 
             return {
-                name: mostPlayedGameName,
+                name: 'most_played_game',
+                value: mostPlayedGameName,
             };
         } else {
             return null;
