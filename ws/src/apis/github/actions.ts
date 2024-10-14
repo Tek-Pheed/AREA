@@ -94,14 +94,6 @@ export async function getActionWhenKo(
                 value: response.data[0].workflows_runs.repository.id,
             },
             {
-                name: 'nameRepo',
-                value: response.data[0].workflows_runs.repository.name,
-            },
-            {
-                name: 'fullnameRepo',
-                value: response.data[0].workflows_runs.repository.full_name,
-            },
-            {
                 name: 'repoName',
                 value: repos,
             },
@@ -155,14 +147,6 @@ export async function getActionWhenOk(
             {
                 name: 'idRepo',
                 value: response.data[0].workflows_runs.repository.id,
-            },
-            {
-                name: 'nameRepo',
-                value: response.data[0].workflows_runs.repository.name,
-            },
-            {
-                name: 'fullnameRepo',
-                value: response.data[0].workflows_runs.repository.full_name,
             },
             {
                 name: 'repoName',
@@ -219,14 +203,6 @@ export async function getActionInProgress(
             {
                 name: 'idRepo',
                 value: response.data[0].workflows_runs.repository.id,
-            },
-            {
-                name: 'nameRepo',
-                value: response.data[0].workflows_runs.repository.name,
-            },
-            {
-                name: 'fullnameRepo',
-                value: response.data[0].workflows_runs.repository.full_name,
             },
             {
                 name: 'repoName',
