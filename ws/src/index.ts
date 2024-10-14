@@ -87,9 +87,9 @@ async function launchAction(
     reaction: any
 ) {
     const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
-    log.info('Action: ' + func);
+    log.info(`When ${func}`);
     switch (func) {
-        case 'When listen specific sound':
+        case 'Listen specific sound':
             for (const param of params.action) {
                 if (param.name === 'songName') {
                     const result = await getSpecificSong(email, param.value);

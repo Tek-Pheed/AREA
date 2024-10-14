@@ -19,6 +19,11 @@ export async function refreshSpotifyToken(
             throw new Error('Missing Spotify Client ID or Client Secret');
         }
 
+        if (refreshToken === null) {
+            log.warn(`Spotify refresh token for ${email} is null`);
+            return false;
+        }
+
         const response = await axios.post(
             `https://accounts.spotify.com/api/token?grant_type=refresh_token&refresh_token=${refreshToken}&client_id=${SPOTIFY_CLIENT_ID}&client_secret=${SPOTIFY_CLIENT_SECRET}`,
             {},
@@ -52,25 +57,38 @@ export async function refreshDiscordToken(
         throw new Error('Missing Discord Client ID or Client Secret');
     }
 
-    const response = await axios.post(
-        'https://discord.com/api/oauth2/token',
-        new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            client_id: DISCORD_CLIENT_ID,
-            client_secret: DISCORD_CLIENT_SECRET,
-        }).toString(),
-        {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        }
-    );
-    if (response.data.access_token) {
+    if (refreshToken === null) {
+        log.warn(`Discord refresh token for ${email} is null`);
         return false;
     }
-    refreshAccessTokeninDB(email, 'discord', response.data.access_token);
-    return false;
+
+    try {
+        const response = await axios.post(
+            'https://discord.com/api/oauth2/token',
+            new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+                client_id: DISCORD_CLIENT_ID,
+                client_secret: DISCORD_CLIENT_SECRET,
+            }).toString(),
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+        if (response.data.access_token) {
+            await refreshAccessTokeninDB(
+                email,
+                'discord',
+                response.data.access_token
+            );
+            return true;
+        }
+    } catch (e) {
+        log.error(e);
+        return false;
+    }
 }
 
 export async function refreshTwitchToken(
@@ -81,27 +99,36 @@ export async function refreshTwitchToken(
         throw new Error('Missing Twitch Client ID or Client Secret');
     }
 
-    const response = await axios.post(
-        'https://id.twitch.tv/oauth2/token',
-        new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            client_id: TWITCH_CLIENT_ID,
-            client_secret: TWITCH_CLIENT_SECRET,
-        }).toString(),
-        {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        }
-    );
-    if (response.data.access_token) {
-        await refreshAccessTokeninDB(
-            email,
-            'twitch',
-            response.data.access_token
-        );
-        return true;
+    if (refreshToken === null) {
+        log.warn(`Twitch refresh token for ${email} is null`);
+        return false;
     }
-    return false;
+
+    try {
+        const response = await axios.post(
+            'https://id.twitch.tv/oauth2/token',
+            new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+                client_id: TWITCH_CLIENT_ID,
+                client_secret: TWITCH_CLIENT_SECRET,
+            }).toString(),
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+        if (response.data.access_token) {
+            await refreshAccessTokeninDB(
+                email,
+                'twitch',
+                response.data.access_token
+            );
+            return true;
+        }
+    } catch (e) {
+        log.error(e);
+        return false;
+    }
 }
