@@ -5,6 +5,7 @@ import { discordRouter } from '../discord/discord';
 import { githubRouter } from '../github/github';
 import { unsplashRouter } from '../unsplash/unsplash';
 
+import { googleRouter } from '../google/google';
 import {
     getAllConnections,
     insertTokeninDb,
@@ -20,6 +21,7 @@ oauthRouter.use('/twitch', twitchRouter);
 oauthRouter.use('/discord', discordRouter);
 oauthRouter.use('/github', githubRouter);
 oauthRouter.use('/unsplash', unsplashRouter);
+oauthRouter.use('/google', googleRouter);
 
 oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
     //#swagger.tags = ['OAuth']
@@ -41,7 +43,7 @@ oauthRouter.post(
         //#swagger.tags = ['OAuth']
         res.header('Content-Type', 'application/json');
         const email = req.params.email;
-        const { twitch, spotify, github, discord } = req.body;
+        const { twitch, spotify, github, discord, google } = req.body;
 
         if (
             twitch.access_token != undefined &&
@@ -82,6 +84,18 @@ oauthRouter.post(
                 email
             );
         }
+
+        /*if (
+            google.access_token != undefined &&
+            google.refresh_token != undefined
+        ) {
+            await insertTokeninDb(
+                'google',
+                google.access_token,
+                google.refresh_token,
+                email
+            );
+        }*/
 
         res.status(200).json(API(200, false, 'Tokens updated', null));
     }
