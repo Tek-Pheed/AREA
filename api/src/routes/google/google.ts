@@ -193,6 +193,9 @@ googleRouter.get(
     async (req: any, res: Response) => {
         try {
             let accessToken = req.user.accessTokenGoogle;
+            let refreshToken = req.user.refreshTokenGoogle;
+            console.log(accessToken);
+            console.log(refreshToken);
             let calendars = await getEvents(accessToken);
             return res.status(200).json({ calendars });
         } catch (err) {
