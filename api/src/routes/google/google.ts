@@ -180,7 +180,7 @@ googleRouter.get(
     }),
     async (req: any, res: Response) => {
         res.redirect(
-            `http://localhost:8081/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
+            `http://localhost:8081/dashboard/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
         );
         //res.redirect('http://localhost:8080/api/oauth/google/getCalendars');
         // #swagger.tags   = ['Google OAuth']
