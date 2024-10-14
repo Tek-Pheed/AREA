@@ -16,7 +16,7 @@ export async function getMonthsStats(
             Authorization: `Bearer ${token}`,
         },
     });
-    if (response.data && response.data.elem.toString() >= amount) {
+    if (response.data && response.data[`${elem}`].toString() >= amount) {
         return [
             {
                 name: 'downloads',
