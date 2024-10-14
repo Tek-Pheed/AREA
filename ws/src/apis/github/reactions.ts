@@ -12,37 +12,109 @@ export async function createIssue(
     issueTitle: string,
     issueBody: string,
     issueAssigne: string,
-    issueMilestone: string,
     issueLabels: string[]
 ): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getGithubToken(email);
-    const response = await axios.post(
-        `https://api.github.com/repos/${owner}/${repo}/issues`,
-        {},
-        {
-            headers: {
-                Authorization: `Bearer ${sAccessToken}`,
-                'Content-Type': 'application/json',
-                'Accept': 'application/vnd.github+json',
-            },
-            body: {
-                title: issueTitle,
-                body: issueBody,
-                assignee: issueAssigne,
-                milestone: issueMilestone,
-                labels: issueLabels,
-            },
-        }
-    );
+
+    let data = JSON.stringify({
+        title: issueTitle,
+        body: issueBody,
+        assignee: issueAssigne,
+        labels: issueLabels,
+    });
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://api.github.com/repos/${owner}/${repo}/issues`,
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.github+json',
+            Authorization: `Bearer ${sAccessToken}`,
+        },
+        data: data,
+    };
+    const response = await axios.request(config);
     if (response.status === 201) {
         return true;
     } else {
-        console.warn("Github create issue error: " + response.status);
+        console.warn('Github create issue error: ' + response.status);
         return false;
     }
 }
 
-/* 
+export async function createIssueComment(
+    email: string,
+    owner: string,
+    repo: string,
+    issueNumber: string,
+    commentBody: string
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+
+    let data = JSON.stringify({
+        body: commentBody,
+    });
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments`,
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.github+json',
+            Authorization: `Bearer ${sAccessToken}`,
+        },
+        data: data,
+    };
+    const response = await axios.request(config);
+    if (response.status === 201) {
+        return true;
+    } else {
+        console.warn('Github create comment error: ' + response.status);
+        return false;
+    }
+}
+
+export async function createPullRequest(
+    email: string,
+    owner: string,
+    repo: string,
+    prTitle: string,
+    prBody: string,
+    prHeadBranch: string,
+    prBaseBranch: string,
+    prIsDraft: boolean
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+
+    let data = JSON.stringify({
+        title: prTitle,
+        head: prHeadBranch,
+        base: prBaseBranch,
+        body: prBody,
+        draft: prIsDraft,
+    });
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://api.github.com/repos/${owner}/${repo}/pulls`,
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.github+json',
+            Authorization: `Bearer ${sAccessToken}`,
+        },
+        data: data,
+    };
+    const response = await axios.request(config);
+    if (response.status === 201) {
+        return true;
+    } else {
+        console.warn('Github create comment error: ' + response.status);
+        return false;
+    }
+}
+
+/*
 export async function getUserSpotifyID(token: string): Promise<string> {
     const response = await axios.get('https://api.spotify.com/v1/me', {
         headers: {
