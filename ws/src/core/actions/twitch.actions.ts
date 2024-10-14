@@ -13,7 +13,7 @@ import { launchReaction } from '../reaction.manager';
 export async function liveStart(params: IBody, email: string, reaction: any) {
     for (const param of params.action) {
         if (param.name === 'StreamUsername') {
-            const key = email + param.name + param.value;
+            const key = `${email}-twitch-streamer-${param.value}`;
             const result = await getStreamerStatus(email, param.value);
             if (result != false) {
                 await createVariable(key);
