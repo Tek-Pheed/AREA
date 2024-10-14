@@ -92,7 +92,7 @@ unsplashRouter.get(
     }),
     async (req: any, res: Response) => {
         res.redirect(
-            `http://localhost:8081/dashboard/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
+            `http://localhost:8081/dashboard/profile?api=unsplash&refresh_token=${req.user.refreshTokenUnsplash}&access_token=${req.user.accessTokenUnsplash}`
         );
         //#swagger.tags   = ['Unsplash OAuth']
     }
@@ -105,7 +105,6 @@ unsplashRouter.get('/get_random_img', async (req: any, res: Response) => {
 
     try {
         let accessToken = req.user.accessTokenUnsplash;
-        //const img = await getRandomImg(accessToken);
         const stats = await getUsernameStats(accessToken, 'samsungmemory');
         return res.status(200).json({ stats });
     } catch (error) {
