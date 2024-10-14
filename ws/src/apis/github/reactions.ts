@@ -179,3 +179,35 @@ export async function rerunWorkflow(
         return false;
     }
 }
+
+export async function rerunWorkflowFailedJobs(
+    email: string,
+    owner: string,
+    repo: string,
+    workflowRunId: string,
+    workflowDebugLoggin: boolean
+): Promise<boolean> {
+    const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+
+    let data = JSON.stringify({
+        enable_debug_logging: workflowDebugLoggin,
+    });
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://api.github.com/repos/${repo}/${owner}/actions/runs/${workflowRunId}/rerun-failed-jobs`,
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/vnd.github+json',
+            Authorization: `Bearer ${sAccessToken}`,
+        },
+        data: data,
+    };
+    const response = await axios.request(config);
+    if (response.status === 201) {
+        return true;
+    } else {
+        console.warn('Github merge pr error: ' + response.status);
+        return false;
+    }
+}
