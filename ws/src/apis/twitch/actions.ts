@@ -164,13 +164,18 @@ export async function GetCurrentGame(
     const channelInfo = await getChannelInfo(email, username);
 
     if (channelInfo) {
-        const broadcaster_name = username;
         const game_name = channelInfo[0].value;
 
-        return {
-            broadcaster_name,
-            game_name,
-        };
+        return [
+            {
+                name: 'game_name',
+                value: game_name,
+            },
+            {
+                name: 'broadcaster_name',
+                value: username,
+            },
+        ];
     } else {
         return null;
     }
@@ -183,13 +188,18 @@ export async function GetCurrentTitle(
     const channelInfo = await getChannelInfo(email, username);
 
     if (channelInfo) {
-        const broadcaster_name = username;
         const title = channelInfo[1].value;
 
-        return {
-            broadcaster_name,
-            title,
-        };
+        return [
+            {
+                name: 'title',
+                value: title,
+            },
+            {
+                name: 'broadcaster_name',
+                value: username,
+            },
+        ];
     } else {
         return null;
     }
