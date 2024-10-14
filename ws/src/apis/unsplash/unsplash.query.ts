@@ -11,8 +11,7 @@ export async function getUnsplashToken(email: string): Promise<any> {
             );
         if (result[0].length > 0) {
             let uAccessToken = result[0][0].unsplashAccessToken;
-            let uRefreshToken = result[0][0].unsplashRefreshToken;
-            return { uAccessToken, uRefreshToken };
+            return uAccessToken;
         } else {
             return false;
         }

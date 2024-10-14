@@ -5,13 +5,18 @@ const axios = require('axios');
 
 //Z9nOlaWAxQk1yzwIOrnt8y8zWW7FbvoqA18am1I8SBc
 
-export async function getMonthsStats(token: string): Promise<any> {
+export async function getMonthsStats(
+    email: string,
+    elem: string,
+    amount: string
+): Promise<any> {
+    const token = await getUnsplashToken(email);
     const response = await axios.get('https://api.unsplash.com/stats/month', {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-    if (response.data) {
+    if (response.data && response.data.elem.toString() >= amount) {
         return [
             {
                 name: 'downloads',
