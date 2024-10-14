@@ -1,4 +1,4 @@
-import { db } from '../../database/db';
+import { db } from '../../utils/database';
 
 export async function getGoogleToken(email: string): Promise<any> {
     try {

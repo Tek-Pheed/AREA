@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Express, Router } from 'express';
 import { isAuthenticatedGoogle } from '../../middlewares/oauth';
-import qs from 'qs'; // Make sure to install this package
+import qs from 'qs';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -10,6 +10,48 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 var GoogleStrategy = require('passport-google-oauth20');
+
+export async function getEvents(email: string) {
+    //const { gAccessToken, gRefreshToken } = await getGoogleToken(email);
+    const date = new Date();
+    console.log(date);
+    const rfc339 = date.toISOString();
+    console.log(rfc339);
+    try {
+        const response = await axios.get(
+            `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${rfc339}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${email}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+        for (let i = 0; i < response.data.items.length; i++) {
+            if (
+                response.data.items[i].start.dateTime.split('T')[0] ===
+                rfc339.split('T')[0]
+            )
+                return [
+                    {
+                        name: 'title',
+                        value: response.data.items[i].summary,
+                    },
+                    {
+                        name: 'creator_email',
+                        value: response.data.items[i].creator.email,
+                    },
+                    {
+                        name: 'link',
+                        value: response.data.items[i].htmlLink,
+                    },
+                ];
+        }
+        return false;
+    } catch (err: any) {
+        return false;
+    }
+}
 
 export const googleRouter = Router();
 
@@ -58,7 +100,7 @@ export async function setEventCalendarTest(accessToken: string) {
 
         const response = await axios.post(
             'https://www.googleapis.com/calendar/v3/calendars/primary/events',
-            event, // This is the request body
+            event,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -102,8 +144,6 @@ passport.use(
                 accessTokenGoogle,
                 refreshTokenGoogle,
             };
-
-            console.log('refresh', refreshTokenGoogle);
             cb(null, user);
         }
     )
@@ -121,19 +161,7 @@ googleRouter.get(
     '/login',
     passport.authenticate('google', { accessType: 'offline' }),
     function (req, res) {
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Google OAuth']
-            */
+        //#swagger.tags   = ['Google OAuth']
     }
 );
 
@@ -152,21 +180,10 @@ googleRouter.get(
     }),
     async (req: any, res: Response) => {
         res.redirect(
-            `http://localhost:4200/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
+            `http://localhost:8081/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
         );
-        /*
-                #swagger.responses[200] = {
-                    description: "Some description...",
-                    content: {
-                        "application/json": {
-                            schema:{
-                                $ref: "#/components/schemas/actions"
-                            }
-                        }
-                    }
-                }
-                #swagger.tags   = ['Google OAuth']
-            */
+        //res.redirect('http://localhost:8080/api/oauth/google/getCalendars');
+        // #swagger.tags   = ['Google OAuth']
     }
 );
 
@@ -176,21 +193,11 @@ googleRouter.get(
     async (req: any, res: Response) => {
         try {
             let accessToken = req.user.accessTokenGoogle;
-            //const refreshToken = req.user.refreshTokenGoogle;
-            let calendars = await setEventCalendarTest(accessToken);
-
-            if (!calendars) {
-                console.log('refreshing token');
-                accessToken = await refreshGoogleAccessToken(
-                    'ya29.a0AcM612wW9okJg8qji7mQ6JjqefcpCt70VM3o7R_ed8MaX8623SPDSXwIEwpZ2SG3RJjgBduLLXzUubpltMRyLDChwupkYJ4hoENYgoM-ZS5LqklQSCS03WlsNQ_aRRL4zPoOHYhnWlhz_eNRTmoqtFelY_OUpimBEUdDO1rRaCgYKAY4SARASFQHGX2MiCpMk8MBQJbylOFBrqrMqZA0175'
-                );
-                req.user.accessTokenGoogle = accessToken;
-                calendars = await setEventCalendarTest(accessToken);
-            }
+            let calendars = await getEvents(accessToken);
+            return res.status(200).json({ calendars });
         } catch (err) {
             console.error('Error setting event', err);
             return res.status(500).send('Error setting event');
         }
-        return res.status(200).send('Event set');
     }
 );

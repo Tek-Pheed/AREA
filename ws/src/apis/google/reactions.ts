@@ -1,22 +1,23 @@
 import { getGoogleToken } from './google.query';
-
+import log from '../../utils/logger';
 const axios = require('axios');
 
 export async function setEventCalendar(
     email: string,
     eventTitle: string,
     eventDescription: string,
-    eventDate: string
+    eventStart: string,
+    eventEnd: string
 ) {
     const { gAccessToken, gRefreshToken } = await getGoogleToken(email);
     try {
         const event = {
             start: {
-                dateTime: eventDate,
+                dateTime: eventStart,
                 timeZone: 'Europe/Paris',
             },
             end: {
-                dateTime: eventDate,
+                dateTime: eventEnd,
                 timeZone: 'Europe/Paris',
             },
 
@@ -37,10 +38,7 @@ export async function setEventCalendar(
 
         return response.data;
     } catch (err: any) {
-        console.error(
-            'Error setting event:',
-            err.response ? err.response.data : err.message
-        );
+        log.error(err);
         return null;
     }
 }
