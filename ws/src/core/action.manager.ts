@@ -7,6 +7,7 @@ import {
     getSpecificTitle,
     liveStart,
 } from './actions/twitch.actions';
+import { getLastCommitOfSpecificUser } from './actions/github.actions';
 
 export async function launchAction(
     func: string,
@@ -30,6 +31,9 @@ export async function launchAction(
             break;
         case 'Game is the most streamed':
             await getMostViewedCategory(params, email, reaction);
+            break;
+        case 'Commit Specific User':
+            await getLastCommitOfSpecificUser(params, email, reaction);
             break;
         default:
             break;

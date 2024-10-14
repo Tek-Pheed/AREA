@@ -5,15 +5,15 @@ const axios = require('axios');
 export async function getCommitFromSpecificUser(
     org: string,
     repos: string,
-    email: string,
+    email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/orgs/${org}/${repos}/commits?author=${email}`,
+            `https://api.github.com/repos/${org}/${repos}/commits?author=${email}`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
@@ -59,12 +59,12 @@ export async function getActionWhenKo(
     email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/repos/:org/:repos/actions/runs?status=failure`,
+            `https://api.github.com/repos/${org}/${repos}/actions/runs?status=failure`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
@@ -122,12 +122,12 @@ export async function getActionWhenOk(
     email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
             `https://api.github.com/repos/:org/:repos/actions/runs?status=success`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
@@ -186,12 +186,12 @@ export async function getActionInProgress(
     email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
             `https://api.github.com/repos/:org/:repos/actions/runs?status=in_progress`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
