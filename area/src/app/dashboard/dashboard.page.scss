@@ -6,6 +6,11 @@
     overflow-y: scroll;
 }
 
+.buttonIcon {
+    width: 100%;
+    height: 100%;
+}
+
 .chooseClass {
     align-content: center;
     align-self: center;
@@ -75,13 +80,58 @@ input {
     margin-bottom: 5vh;
     display: flex;
     justify-content: center;
+    height: 10vh;
+    align-items: center;
+    align-self: center;
 }
+
+ion-modal {
+    --border-radius: 15px;
+    --overflow: hidden;
+    --position: relative;
+    --width: 90%;
+    --height: 90%;
+    margin-top: constant(safe-area-inset-top) !important;
+    margin-top: env(safe-area-inset-top) !important;
+}
+
+ion-input {
+    --highlight-color-valid: #0054e9;
+    font-size: large;
+}
+
+@media screen and (min-width: 1000px) {
+    ion-modal {
+        --border-radius: 15px;
+        --overflow: hidden;
+        --position: relative;
+        --width: 90%;
+        --height: 90%;
+        margin-top: constant(safe-area-inset-top) !important;
+        margin-top: env(safe-area-inset-top) !important;
+    }
+}
+
+.codeDiv {
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
+}
+
+code {
+    font-family: Consolas,"courier new";
+    background-color: #f1f1f1;
+    padding: 2px;
+    font-size: 105%;
+    width: 100%;
+    display: block;
+  }
 
 .lighButton {
     background: rgb(145, 145, 145);
     text-decoration: none;
-    height: 30%;
-    width: 40%;
+    height: 75%;
+    width: auto;
     border-radius: 10px;
     color: white;
     font-size: large;
@@ -90,10 +140,15 @@ input {
     min-width: 150px;
     padding: 15px;
     text-align: center;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
+    margin: 5vh;
 }
 
 .lighButton:hover {
     background: rgb(99, 99, 99);
+    cursor: pointer;
 }
 
 .lighButton:active {
