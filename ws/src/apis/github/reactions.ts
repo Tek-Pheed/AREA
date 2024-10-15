@@ -47,11 +47,13 @@ export async function createIssue(
         if (response.status === 201) {
             return true;
         } else {
-            log.warn('Github create issue error: ' + response.status);
+            log.warn(
+                `email:${email} Github create issue error: ${response.status}`
+            );
             return false;
         }
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -83,11 +85,13 @@ export async function createIssueComment(
         if (response.status === 201) {
             return true;
         } else {
-            log.warn('Github create comment error: ' + response.status);
+            log.warn(
+                `email:${email} Github create comment error: ${response.status}`
+            );
             return false;
         }
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -126,11 +130,13 @@ export async function createPullRequest(
         if (response.status === 201) {
             return true;
         } else {
-            log.warn('Github create pr error: ' + response.status);
+            log.warn(
+                `email:${email} Github create pr error: ${response.status}`
+            );
             return false;
         }
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -164,11 +170,13 @@ export async function mergePullRequest(
         if (response.status === 200) {
             return true;
         } else {
-            log.warn('Github merge pr error: ' + response.status);
+            log.warn(
+                `email:${email} Github merge pr error: ${response.status}`
+            );
             return false;
         }
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -200,11 +208,13 @@ export async function rerunWorkflow(
         if (response.status === 201) {
             return true;
         } else {
-            log.warn('Github merge pr error: ' + response.status);
+            log.warn(
+                `email:${email} Github merge pr error: ${response.status}`
+            );
             return false;
         }
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -236,11 +246,13 @@ export async function rerunWorkflowFailedJobs(
         if (response.status === 201) {
             return true;
         } else {
-            log.warn('Github merge pr error: ' + response.status);
+            log.warn(
+                `email:${email} Github merge pr error: ${response.status}`
+            );
             return false;
         }
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }

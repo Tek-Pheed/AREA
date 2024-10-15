@@ -20,7 +20,7 @@ export async function getRandomPhotos(email: string): Promise<any> {
             return false;
         }
     } catch (error) {
-        log.error('Error fetching random photos', error);
+        log.error(`email:${email} Error fetching random photos ${error}`);
         return false;
     }
 }
@@ -42,7 +42,7 @@ export async function likePhoto(email: string, photo_id: string): Promise<any> {
             return false;
         }
     } catch (error) {
-        log.error('Error liking photo', error);
+        log.error(`email:${email} Error liking photo ${error}`);
         return false;
     }
 }

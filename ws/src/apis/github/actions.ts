@@ -53,7 +53,7 @@ export async function getCommitFromSpecificUser(
             },
         ];
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -122,7 +122,7 @@ export async function getActionWhenKo(
             },
         ];
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -190,7 +190,7 @@ export async function getActionWhenOk(
             },
         ];
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }
@@ -258,7 +258,7 @@ export async function getActionInProgress(
             },
         ];
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} ${e}`);
         return false;
     }
 }

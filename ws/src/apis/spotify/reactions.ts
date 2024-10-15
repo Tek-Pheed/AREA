@@ -58,9 +58,9 @@ export async function startPlaybackSong(
         } else return false;
     } catch (e: any) {
         if (e.status === 404) {
-            log.warn('No device found to launch music');
+            log.warn(`email:${email} No device found to launch music`);
         } else {
-            log.error('startPlaybackSong ' + e.status);
+            log.error(`email:${email} startPlaybackSong ${e.status}`);
             await refreshSpotifyToken(email, sRefreshToken);
         }
         return false;
@@ -83,7 +83,7 @@ export async function skipToNextSong(email: string): Promise<boolean> {
             return true;
         } else return false;
     } catch (e: any) {
-        log.error('skipToNextSong ' + e.status);
+        log.error(`email:${email} skipToNextSong ${e.status}`);
         await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }
@@ -103,7 +103,7 @@ export async function skipToPreviousSong(email: string): Promise<boolean> {
         );
         return response.status === 204;
     } catch (e: any) {
-        log.error('skipToNextSong ' + e.status);
+        log.error(`email:${email} skipToNextSong ${e.status}`);
         await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }

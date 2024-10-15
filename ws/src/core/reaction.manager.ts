@@ -45,7 +45,7 @@ export async function launchReaction(
             }
         }
     }
-    log.info(`Reaction: ${func}`);
+    log.info(`email:${email} Reaction: ${func}`);
     switch (func) {
         case 'Skip to next':
             await skipToNextMusic(email);

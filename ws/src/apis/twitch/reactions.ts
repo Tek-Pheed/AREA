@@ -66,7 +66,7 @@ export async function createClip(
             return true;
         } else {
             log.error(
-                `Failed to create clip. Status code : ${response.status}`
+                `email:${email} Failed to create clip. Status code : ${response.status}`
             );
             return false;
         }

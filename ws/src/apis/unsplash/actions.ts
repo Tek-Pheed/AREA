@@ -41,7 +41,7 @@ export async function getMonthsStats(
             return null;
         }
     } catch (error) {
-        log.error('Error fetching monthly stats', error);
+        log.error(`email:${email} Error fetching monthly stats ${error}`);
         return null;
     }
 }
