@@ -15,6 +15,7 @@ interface activeArea {
     actionAPILogoUrl: string;
     reactionAPILogoUrl: string;
     configID: string | null;
+    apiname: string,
 }
 
 @Component({
@@ -130,6 +131,7 @@ export class DashboardPage implements OnInit {
                 actionAPILogoUrl: apiA.icon_url,
                 reactionAPILogoUrl: apiB.icon_url,
                 configID: element.id,
+                apiname: apiA.name
             });
         }
         this.showActiveArea = this.datas.slice();
