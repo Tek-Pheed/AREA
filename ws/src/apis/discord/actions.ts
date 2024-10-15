@@ -4,7 +4,7 @@ import { getDiscordToken } from './discord.query';
 
 const axios = require('axios');
 
-async function getJoinedServers(email: any): Promise<any> {
+async function getDiscordLastServerName(email: any): Promise<any> {
     const token = await getDiscordToken(email);
     try {
         const response = await axios.get(
@@ -16,14 +16,36 @@ async function getJoinedServers(email: any): Promise<any> {
             }
         );
 
-        const messages = response.data.map((message: any) => ({
-            content: message.content,
-            author: message.author.username,
-        }));
+        const servers = response.data;
 
-        return messages;
+        if (servers.length > 0) {
+            const lastServer = servers[servers.length - 1];
+            return lastServer.name;
+        } else {
+            return null;
+        }
     } catch (error) {
-        console.error(`Failed to fetch messages: ${error}`);
+        console.error(`Failed to fetch joined servers : ${error}`);
+        await refreshDiscordToken(email, token.tRefreshToken);
+        return null;
+    }
+}
+
+async function getDiscordUsername(email: any): Promise<any> {
+    const token = await getDiscordToken(email);
+    try {
+        const response = await axios.get(
+            `https://discord.com/api/v10/users/@me`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token.dAccessToken}`,
+                },
+            }
+        );
+
+        return response.data.global_name;
+    } catch (error) {
+        console.error(`Failed to fetch Discord username : ${error}`);
         await refreshDiscordToken(email, token.tRefreshToken);
         return null;
     }
