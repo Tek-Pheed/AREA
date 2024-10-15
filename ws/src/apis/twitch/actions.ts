@@ -23,7 +23,6 @@ export async function getUserId(token: any, email: string): Promise<any> {
     }
 }
 
-
 export async function getBroadcasterIdFromUsername(
     token: any,
     username: string,

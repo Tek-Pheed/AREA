@@ -10,7 +10,14 @@ const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
 const DISCORD_REDIRECT_URI = process.env.DISCORD_REDIRECT_URI;
 
 const DiscordStrategy = require('passport-discord').Strategy;
-const scopes = ['identify', 'email', 'guilds', 'guilds.join'];
+const scopes = [
+    'identify',
+    'email',
+    'guilds',
+    'connections',
+    'guilds.join',
+    'guilds.members.read',
+];
 
 export const discordRouter = Router();
 
