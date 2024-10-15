@@ -133,7 +133,7 @@ export async function getStreamerStatus(
             return false;
         }
     } catch (e: any) {
-        log.error(`email:${email} getStreamerStatus ${e}`);
+        log.error(`email:${email} service:Twitch getStreamerStatus ${e}`);
         await refreshTwitchToken(email, token.tRefreshToken);
         return false;
     }
@@ -173,7 +173,7 @@ async function getChannelInfo(email: string, username: string): Promise<any> {
             return false;
         }
     } catch (e: any) {
-        log.error(`email:${email} getChannelInfo ${e}`);
+        log.error(`email:${email} service:Twitch getChannelInfo ${e}`);
         await refreshTwitchToken(email, token.tRefreshToken);
         return false;
     }
@@ -283,7 +283,7 @@ export async function getTopGame(email: any): Promise<any> {
             return null;
         }
     } catch (e: any) {
-        log.error(`email:${email} getTopGame ${e}`);
+        log.error(`email:${email} service:Twitch getTopGame ${e}`);
         await refreshTwitchToken(email, token.tRefreshToken);
         return null;
     }
