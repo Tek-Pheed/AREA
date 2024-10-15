@@ -10,7 +10,7 @@ import fs from 'fs';
 import { createVariable, setItem } from '../../utils/storage';
 import { launchReaction } from '../reaction.manager';
 
-export async function getLastCommitOfSpecificUser(
+export async function whenNewCommitByMe(
     params: IBody,
     email: string,
     reaction: any
@@ -41,7 +41,7 @@ export async function getLastCommitOfSpecificUser(
     }
 }
 
-export async function getLastWorkflowFailed(
+export async function whenLastWorkflowFailed(
     params: IBody,
     email: string,
     reaction: any
@@ -72,7 +72,7 @@ export async function getLastWorkflowFailed(
     }
 }
 
-export async function getLastWorkflowSuccess(
+export async function whenLastWorkflowSuccess(
     params: IBody,
     email: string,
     reaction: any
@@ -81,8 +81,7 @@ export async function getLastWorkflowSuccess(
     for (const param of params.action) data.push(param.value);
     const result = await getActionWhenOk(data[0], data[1], email);
     const key: string = `${email}-${data[0]}-${data[1]}`;
-    await createVariable(key);
-    const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
+    const storage = await createVariable(key);
     if (result.length === 0) {
         log.warn('No workflow success');
     } else if (result !== false) {
@@ -103,7 +102,7 @@ export async function getLastWorkflowSuccess(
     }
 }
 
-export async function getLastWorkflowProgress(
+export async function whenLastWorkflowInProgress(
     params: IBody,
     email: string,
     reaction: any
@@ -112,8 +111,7 @@ export async function getLastWorkflowProgress(
     for (const param of params.action) data.push(param.value);
     const result = await getActionInProgress(data[0], data[1], email);
     const key: string = `${email}-${data[0]}-${data[1]}`;
-    await createVariable(key);
-    const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
+    const storage = await createVariable(key);
     if (result.length === 0) {
         log.warn('No workflow in progress currently');
     } else if (result !== false) {

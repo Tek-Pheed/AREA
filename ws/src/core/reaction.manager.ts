@@ -17,6 +17,7 @@ import {
     reRunFailedWorkflow,
     reRunWorkflow,
 } from './reactions/github.reactions';
+import { setEventInCalendar } from './reactions/google.reactions';
 
 export function replaceLabel(
     label: string,
@@ -79,6 +80,9 @@ export async function launchReaction(
             break;
         case 'Re-run a workflow':
             await reRunFailedWorkflow(params, email);
+            break;
+        case 'Add event':
+            await setEventInCalendar(params, email);
             break;
         default:
             break;

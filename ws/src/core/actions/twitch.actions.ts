@@ -4,7 +4,7 @@ import {
     getStreamerStatus,
     getTopGame,
 } from '../../apis/twitch/actions';
-import { createVariable, setItem } from '../../utils/storage';
+import { createVariable, readValue, setItem } from '../../utils/storage';
 import fs from 'fs';
 import { IBody, IBodySpecific } from '../../utils/data.model';
 import log from '../../utils/logger';
@@ -13,15 +13,12 @@ import { launchReaction } from '../reaction.manager';
 export async function liveStart(params: IBody, email: string, reaction: any) {
     for (const param of params.action) {
         if (param.name === 'StreamUsername') {
-            const key = `${email}-twitch-streamer-${param.value}`;
+            const key = `${email}-twitch`;
             const result = await getStreamerStatus(email, param.value);
             if (result != false) {
                 await createVariable(key);
-                const storage = JSON.parse(
-                    fs.readFileSync('storage.json', 'utf8')
-                );
-                if (!storage[key].isStream) {
-                    await setItem(key, 'isStream', true);
+                if (!(await readValue(key))[`${param.value}IsStream`]) {
+                    await setItem(key, `${param.value}IsStream`, true);
                     const actionsLabels: IBodySpecific[] = result;
                     await launchReaction(
                         reaction[0].title,
@@ -31,7 +28,7 @@ export async function liveStart(params: IBody, email: string, reaction: any) {
                     );
                 }
             } else {
-                await setItem(key, 'isStream', false);
+                await setItem(key, `${param.value}IsStream`, false);
             }
         }
     }
@@ -77,8 +74,18 @@ export async function getMostViewedCategory(
     for (const param of params.action) most.push(param.value);
     const mResult = await getTopGame(email);
     log.debug(mResult);
+    const key = `${email}-twitch`;
+    await createVariable(key);
     if (mResult[0].value === most[0]) {
-        const actionsLabels: IBodySpecific[] = mResult;
-        await launchReaction(reaction[0].title, params, actionsLabels, email);
+        if ((await readValue(key))[`mostViewedCategory`] !== most[0]) {
+            await setItem(key, `mostViewedCategory`, most[0]);
+            const actionsLabels: IBodySpecific[] = mResult;
+            await launchReaction(
+                reaction[0].title,
+                params,
+                actionsLabels,
+                email
+            );
+        }
     }
 }
