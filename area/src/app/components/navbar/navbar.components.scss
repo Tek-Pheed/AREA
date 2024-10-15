@@ -33,6 +33,10 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 .home {
     margin-left: auto;
 }
