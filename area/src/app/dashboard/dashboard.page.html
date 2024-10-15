@@ -9,7 +9,7 @@
         <div class="buttonContent">
             <a (click)="navigateToIntegrations()" class="lighButton">Create New</a>
             <a (click)="setOpen(true)"
-                class="lighButton">Logs<!-- <img src="assets/system-log-2.svg" class="buttonIcon"> --></a>
+                class="lighButton">Logs</a>
         </div>
         <div class="integrationList">
             <app-dashboard-cards *ngFor="let d of showActiveArea" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
@@ -25,7 +25,7 @@
     <ng-template>
         <ion-header>
             <ion-toolbar>
-                <ion-title>Webservice Logs</ion-title>
+                <ion-title>Webservice Logs {{this.selectedLogs}}</ion-title>
                 <ion-buttons slot="end">
                     <ion-button (click)="setOpen(false)">Close</ion-button>
                 </ion-buttons>
@@ -33,18 +33,19 @@
         </ion-header>
         <ion-header>
             <ion-toolbar>
-                <ion-buttons>
+                <ion-buttons class="topToolBar">
                     <ion-button (click)="selectServices('', true)">All</ion-button>
                     <ion-button *ngFor="let a of this.apis"
                         (click)="selectServices(a.name, true)">{{a.name}}</ion-button>
+                    <ion-toggle [(ngModel)]="this.autoScroll" [value]="this.autoScroll" [checked]="this.autoScroll" class="toggleScroll">Auto Scroll</ion-toggle>
                 </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
             <div id="codeDiv" class="codeDiv">
-                <code *ngFor="let s of this.currentLogs">
-                    {{s}}<br>
-                </code>
+                    <code *ngFor="let s of this.currentLogs" [ngStyle]="{ 'color': this.getColor(s)}">
+                        {{s}}<br>
+                    </code>
             </div>
         </ion-content>
     </ng-template>

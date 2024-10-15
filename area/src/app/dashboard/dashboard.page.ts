@@ -46,6 +46,7 @@ export class DashboardPage implements OnInit {
     isModalOpen = false;
     selectedLogs: string = '';
     logInterval: any = null;
+    autoScroll: boolean = true;
 
     navigateToIntegrations() {
         if (this.platform.is('ios') || this.platform.is('android')) {
@@ -188,7 +189,8 @@ export class DashboardPage implements OnInit {
                 if (objDiv == null) {
                     return;
                 }
-                objDiv.scrollTop = objDiv.scrollHeight;
+                if (this.autoScroll)
+                    objDiv.scrollTop = objDiv.scrollHeight;
             },
             (err) => {
                 console.error(err);
@@ -201,6 +203,16 @@ export class DashboardPage implements OnInit {
         if (this.isModalOpen) {
             this.selectedLogs = '';
         }
+    }
+
+    getColor(str: string) {
+        if (str.includes('INFO'))
+            return ("green")
+        if (str.includes('ERROR'))
+            return ("red")
+        if (str.includes('WARN'))
+            return ("orange")
+        return ('black');
     }
 
     ngOnInit(): void {

@@ -85,22 +85,12 @@ input {
     align-self: center;
 }
 
-ion-modal {
-    --border-radius: 15px;
-    --overflow: hidden;
-    --position: relative;
-    --width: 90%;
-    --height: 90%;
-    margin-top: constant(safe-area-inset-top) !important;
-    margin-top: env(safe-area-inset-top) !important;
-}
-
 ion-input {
     --highlight-color-valid: #0054e9;
     font-size: large;
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 750px) {
     ion-modal {
         --border-radius: 15px;
         --overflow: hidden;
@@ -126,6 +116,15 @@ code {
     width: 100%;
     display: block;
   }
+
+.toggleScroll {
+    padding-right: 25px;
+    margin-left: auto;
+}
+
+.topToolBar {
+    overflow-x: scroll;
+}
 
 .lighButton {
     background: rgb(145, 145, 145);
