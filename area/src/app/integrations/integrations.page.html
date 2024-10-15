@@ -1,7 +1,7 @@
 <ion-content>
     <app-navbar *ngIf="platform.is('desktop')"></app-navbar>
     <div class="container">
-        <h1>Select your action !</h1>
+        <h1>Select a service to create a new configuration</h1>
         <ion-searchbar placeholder="Aa" value="{{searchText}}" show-clear-button="always" [debounce]="500"
             (ionInput)="handleInput($event)"></ion-searchbar>
         <ng-container *ngIf="inSearch === false">

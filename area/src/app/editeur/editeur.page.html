@@ -15,13 +15,16 @@
             (onModalClose)="swapReactionSave($event)"></editor-swap-settings>
         <div class="container">
             <div class="container">
-                <app-actions-cards title="{{selectedAction?.title}}" description="{{selectedAction?.description}}"
+                <app-actions-cards title="{{(selectedAction == undefined ? 'Unknown Service' : selectedAction.title)}}"
+                    description="{{selectedReaction == undefined ? 'Please select an action' : selectedAction?.description}}"
                     service="{{selectedAction?.api_name}}" image="{{getimgsrc(selectedAction?.api_name)}}"
                     [editable]="true" (onCardClicked)="openActionModal()"
                     (onEditClicked)="swapAction()"></app-actions-cards>
-                <img
+                <img alt="middle separator icon"
                     src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
-                <app-actions-cards title="{{selectedReaction?.title}}" description="{{selectedReaction?.description}}"
+                <app-actions-cards
+                    title="{{(selectedReaction == undefined ? 'Unknown Service' : selectedReaction.title)}}"
+                    description="{{selectedReaction == undefined ? 'Please select a reaction' : selectedReaction.description}}"
                     service="{{selectedReaction?.api_name}}" image="{{getimgsrc(selectedReaction?.api_name)}}"
                     [editable]="true" (onCardClicked)="openReactionModal()"
                     (onEditClicked)="swapReactions()"></app-actions-cards>
