@@ -1,5 +1,4 @@
-<div class="card-container" [style]="'background-color:'+background_color">
-    <img class="bgImg" [src]="image_1" (click)="this.cardClicked()">
+<div class="card-container" [ngStyle]="{'background-color': this.getServiceColor()}">
     <h2 class="card-title" (click)="this.cardClicked()">{{ title }}</h2>
     <div class="bottom-right-circles" (click)="this.cardClicked()">
         <img class="small-circle-image" [src]="image_1" alt="circle_image_1" (click)="this.cardClicked()" />

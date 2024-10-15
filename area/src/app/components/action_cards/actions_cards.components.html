@@ -1,11 +1,10 @@
-<div class="card-container" [style]="'background-color:'+background_color">
+<div class="card-container" [ngStyle]="{'background-color': this.getServiceColor()}">
     <img *ngIf="editable == true" class="editImg"
         src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/switch-icon.png"
         (click)="editClicked()">
     <div class="top-row" (click)="cardClicked()">
-        <img class="circle-image" src={{image}} />
-        <img src="{{image}}" class="bgImg">
-        <h2 class="card-title">{{ title }}</h2>
+        <img class="circle-image" (click)="cardClicked()" src={{image}} />
+        <h2 class="card-title" (click)="cardClicked()">{{ title }}</h2>
     </div>
     <p class="card-description" (click)="cardClicked()">{{ description }}</p>
 </div>
