@@ -24,7 +24,7 @@ logsRouter.get('/:email/:service', (req, res) => {
                 .map((log) =>
                     log.replace(new RegExp(`email:${email}`, 'g'), '')
                 );
-            return res.json({ logs });
+            return res.status(200).json({ logs });
         }
 
         return res.status(404).json({ error: 'No logs found' });
