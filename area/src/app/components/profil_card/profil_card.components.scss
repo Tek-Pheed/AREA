@@ -119,4 +119,8 @@ ion-button {
 }
 
 @media (prefers-color-scheme: dark) {
+    .card-container {
+        background: #1a1a1a;
+        box-shadow: 0 4px 8px rgba(206, 206, 206, 0.205);
+    }
 }

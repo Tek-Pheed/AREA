@@ -51,10 +51,7 @@
 @media (prefers-color-scheme: dark) {
     .container {
         background: black;
-    }
-
-    .profile-img {
-        background: white;
+        box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.432);
     }
 }
 
@@ -80,4 +77,8 @@
 
 .google {
     background: linear-gradient(217deg, #e66465, #5b42f3);
+}
+
+.container:hover {
+    filter: drop-shadow(0 0 0.75rem rgb(136, 136, 136));
 }
