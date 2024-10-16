@@ -14,6 +14,7 @@ const SPOTIFY_SCOPES = [
     'user-modify-playback-state',
     'playlist-modify-public',
     'playlist-modify-private',
+    'user-read-playback-state',
 ];
 
 export const spotifyRouter = Router();

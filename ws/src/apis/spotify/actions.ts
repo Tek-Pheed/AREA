@@ -29,6 +29,42 @@ export async function getSongURL(
     }
 }
 
+export async function isPlaying(email: string): Promise<any> {
+    const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
+    if (!sAccessToken || !sRefreshToken) {
+        return false;
+    }
+    try {
+        const response = await axios.get(
+            'https://api.spotify.com/v1/me/player',
+            {
+                headers: {
+                    Authorization: `Bearer ${sAccessToken}`,
+                },
+            }
+        );
+        if (!response.data) {
+            return false;
+        }
+        if (response.data.context.external_urls.spotify) {
+            return [
+                {
+                    name: 'artistsName',
+                    value: response.data.item.artists[0].name,
+                },
+                {
+                    name: 'songName',
+                    value: response.data.item.name,
+                },
+            ];
+        } else return false;
+    } catch (e) {
+        log.error(e);
+        await refreshSpotifyToken(email, sRefreshToken);
+        return false;
+    }
+}
+
 export async function getSpecificSong(
     email: string,
     target_song: string

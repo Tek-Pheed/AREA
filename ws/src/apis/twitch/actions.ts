@@ -141,7 +141,11 @@ export async function getStreamerStatus(
 
 async function getChannelInfo(email: string, username: string): Promise<any> {
     const token = await getTwitchToken(email);
-    const broadcasterId = await getBroadcasterIdFromUsername(token, username, email);
+    const broadcasterId = await getBroadcasterIdFromUsername(
+        token,
+        username,
+        email
+    );
     try {
         const response = await axios.get(
             `https://api.twitch.tv/helix/channels?broadcaster_id=${broadcasterId}`,
@@ -175,51 +179,57 @@ async function getChannelInfo(email: string, username: string): Promise<any> {
     }
 }
 
-export async function GetCurrentGame(
+export async function getCurrentGame(
     email: any,
-    username: string
+    username: string,
+    gameName: string
 ): Promise<any> {
     const channelInfo = await getChannelInfo(email, username);
 
     if (channelInfo) {
         const game_name = channelInfo[0].value;
 
-        return [
-            {
-                name: 'game_name',
-                value: game_name,
-            },
-            {
-                name: 'broadcaster_name',
-                value: username,
-            },
-        ];
+        if (game_name == gameName)
+            return [
+                {
+                    name: 'game_name',
+                    value: game_name,
+                },
+                {
+                    name: 'broadcaster_name',
+                    value: username,
+                },
+            ];
+        else return false;
     } else {
-        return null;
+        return false;
     }
 }
 
-export async function GetCurrentTitle(
+export async function getCurrentTitle(
     email: any,
-    username: string
+    username: string,
+    titleName: string
 ): Promise<any> {
     const channelInfo = await getChannelInfo(email, username);
 
     if (channelInfo) {
         const title = channelInfo[1].value;
 
-        return [
-            {
-                name: 'title',
-                value: title,
-            },
-            {
-                name: 'broadcaster_name',
-                value: username,
-            },
-        ];
+        if (titleName == title)
+            return [
+                {
+                    name: 'title',
+                    value: title,
+                },
+                {
+                    name: 'broadcaster_name',
+                    value: username,
+                },
+            ];
+        else return false;
     } else {
-        return null;
+        return false;
     }
 }
 
@@ -263,10 +273,12 @@ export async function getTopGame(email: any): Promise<any> {
                 }
             }
 
-            return {
-                name: 'most_played_game',
-                value: mostPlayedGameName,
-            };
+            return [
+                {
+                    name: 'most_played_game',
+                    value: mostPlayedGameName,
+                },
+            ];
         } else {
             return null;
         }

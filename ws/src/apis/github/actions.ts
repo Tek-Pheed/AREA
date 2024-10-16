@@ -5,15 +5,15 @@ const axios = require('axios');
 export async function getCommitFromSpecificUser(
     org: string,
     repos: string,
-    email: string,
+    email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/orgs/${org}/${repos}/commits?author=${email}`,
+            `https://api.github.com/repos/${org}/${repos}/commits?author=${email}`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
@@ -21,6 +21,11 @@ export async function getCommitFromSpecificUser(
         if (!response.data) {
             return false;
         }
+
+        if (response.data.length === 0) {
+            return [];
+        }
+
         return [
             {
                 name: 'sha',
@@ -59,47 +64,53 @@ export async function getActionWhenKo(
     email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/repos/:org/:repos/actions/runs?status=failure`,
+            `https://api.github.com/repos/${org}/${repos}/actions/runs?status=failure`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
         );
+
         if (!response.data) {
             return false;
         }
+
+        if (response.data.workflow_runs.length === 0) {
+            return [];
+        }
+
         return [
             {
                 name: 'id',
-                value: response.data[0].workflows_runs.id,
+                value: response.data.workflow_runs[0].id,
             },
             {
                 name: 'actor',
-                value: response.data[0].workflows_runs.actor.login,
+                value: response.data.workflow_runs[0].actor.login,
             },
             {
                 name: 'workflow_id',
-                value: response.data[0].workflows_runs.workflow_id,
+                value: response.data.workflow_runs[0].workflow_id,
             },
             {
                 name: 'idActor',
-                value: response.data[0].workflows_runs.actor.id,
+                value: response.data.workflow_runs[0].actor.id,
             },
             {
                 name: 'idRepo',
-                value: response.data[0].workflows_runs.repository.id,
+                value: response.data.workflow_runs[0].repository.id,
             },
             {
                 name: 'nameRepo',
-                value: response.data[0].workflows_runs.repository.name,
+                value: response.data.workflow_runs[0].repository.name,
             },
             {
                 name: 'fullnameRepo',
-                value: response.data[0].workflows_runs.repository.full_name,
+                value: response.data.workflow_runs[0].repository.full_name,
             },
             {
                 name: 'repoName',
@@ -122,12 +133,12 @@ export async function getActionWhenOk(
     email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/repos/:org/:repos/actions/runs?status=success`,
+            `https://api.github.com/repos/${org}/${repos}/actions/runs?status=success`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
@@ -135,34 +146,39 @@ export async function getActionWhenOk(
         if (!response.data) {
             return false;
         }
+
+        if (response.data.workflow_runs.length === 0) {
+            return [];
+        }
+
         return [
             {
                 name: 'id',
-                value: response.data[0].workflows_runs.id,
+                value: response.data.workflow_runs[0].id,
             },
             {
                 name: 'actor',
-                value: response.data[0].workflows_runs.actor.login,
+                value: response.data.workflow_runs[0].actor.login,
             },
             {
                 name: 'workflow_id',
-                value: response.data[0].workflows_runs.workflow_id,
+                value: response.data.workflow_runs[0].workflow_id,
             },
             {
                 name: 'idActor',
-                value: response.data[0].workflows_runs.actor.id,
+                value: response.data.workflow_runs[0].actor.id,
             },
             {
                 name: 'idRepo',
-                value: response.data[0].workflows_runs.repository.id,
+                value: response.data.workflow_runs[0].repository.id,
             },
             {
                 name: 'nameRepo',
-                value: response.data[0].workflows_runs.repository.name,
+                value: response.data.workflow_runs[0].repository.name,
             },
             {
                 name: 'fullnameRepo',
-                value: response.data[0].workflows_runs.repository.full_name,
+                value: response.data.workflow_runs[0].repository.full_name,
             },
             {
                 name: 'repoName',
@@ -182,16 +198,15 @@ export async function getActionWhenOk(
 export async function getActionInProgress(
     org: string,
     repos: string,
-    access_token: string,
     email: string
 ): Promise<any> {
     try {
-        const { sAccessToken, sRefreshToken } = await getGithubToken(email);
+        const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/repos/:org/:repos/actions/runs?status=in_progress`,
+            `https://api.github.com/repos/${org}/${repos}/actions/runs?status=in_progress`,
             {
                 headers: {
-                    Authorization: `Bearer ${sAccessToken}`,
+                    Authorization: `Bearer ${gAccessToken}`,
                     accept: 'application/vnd.github+json',
                 },
             }
@@ -199,34 +214,39 @@ export async function getActionInProgress(
         if (!response.data) {
             return false;
         }
+
+        if (response.data.workflow_runs.length === 0) {
+            return [];
+        }
+
         return [
             {
                 name: 'id',
-                value: response.data[0].workflows_runs.id,
+                value: response.data.workflow_runs[0].id,
             },
             {
                 name: 'actor',
-                value: response.data[0].workflows_runs.actor.login,
+                value: response.data.workflow_runs[0].actor.login,
             },
             {
                 name: 'workflow_id',
-                value: response.data[0].workflows_runs.workflow_id,
+                value: response.data.workflow_runs[0].workflow_id,
             },
             {
                 name: 'idActor',
-                value: response.data[0].workflows_runs.actor.id,
+                value: response.data.workflow_runs[0].actor.id,
             },
             {
                 name: 'idRepo',
-                value: response.data[0].workflows_runs.repository.id,
+                value: response.data.workflow_runs[0].repository.id,
             },
             {
                 name: 'nameRepo',
-                value: response.data[0].workflows_runs.repository.name,
+                value: response.data.workflow_runs[0].repository.name,
             },
             {
                 name: 'fullnameRepo',
-                value: response.data[0].workflows_runs.repository.full_name,
+                value: response.data.workflow_runs[0].repository.full_name,
             },
             {
                 name: 'repoName',
