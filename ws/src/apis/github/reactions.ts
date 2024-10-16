@@ -25,7 +25,7 @@ export async function createIssue(
         data.assignee = issueAssigne;
     }
 
-    if (issueLabels.length > 0) {
+    if (issueLabels.length > 0 && issueLabels[0].length > 0) {
         data.labels = issueLabels;
     }
 

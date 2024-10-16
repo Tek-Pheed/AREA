@@ -40,7 +40,7 @@ export async function startPlaybackSong(
 ): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
     try {
-        const song_id = await getSongID(track, sAccessToken);
+        const song_id = await getSongID(track.replace('|', ''), sAccessToken);
         if (!song_id) {
             return false;
         }
