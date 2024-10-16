@@ -25,6 +25,10 @@
     margin-bottom: 2vh;
 }
 
+.title {
+    font-weight: bolder;
+}
+
 a {
     color: black;
     font-size: 1.3rem;
@@ -41,10 +45,27 @@ a:hover {
     margin-left: auto;
 }
 
+.middleContainer {
+    width: 100%;
+    display: flex;
+}
+
+.middle {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    display: block;
+    height: 65px;
+    width: 65px;
+    align-self: center;
+}
+
 img {
     margin-left: 3%;
     height: 35px;
-    width: 35px;
+    width: 42px;
     border-radius: 50%;
     margin-right: 2%;
 }
