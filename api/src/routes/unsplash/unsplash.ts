@@ -7,6 +7,17 @@ const passport: any = require('passport');
 const UNSPLASH_CLIENT_ID = process.env.UNSPLASH_CLIENT_ID;
 const UNSPLASH_CLIENT_SECRET = process.env.UNSPLASH_CLIENT_SECRET;
 const UNSPLASH_REDIRECT_URI = process.env.UNSPLASH_REDIRECT_URI;
+const UNSPLASH_SCOPE = [
+    'public',
+    'read_user',
+    'write_user',
+    'read_photos',
+    'write_photos',
+    'write_likes',
+    'write_followers',
+    'read_collections',
+    'write_collections',
+];
 
 export const unsplashRouter = Router();
 
@@ -51,6 +62,8 @@ passport.use(
             clientID: UNSPLASH_CLIENT_ID,
             clientSecret: UNSPLASH_CLIENT_SECRET,
             callbackURL: UNSPLASH_REDIRECT_URI,
+            scope: UNSPLASH_SCOPE,
+            scope_separator: '+',
             response_type: 'code',
         },
         function (
@@ -79,7 +92,7 @@ passport.deserializeUser((obj: any, done: any) => {
 
 unsplashRouter.get(
     '/login',
-    passport.authenticate('unsplash'),
+    passport.authenticate('unsplash', { scope: UNSPLASH_SCOPE }),
     function (req, res) {
         //#swagger.tags   = ['Unsplash OAuth']
     }
