@@ -1,11 +1,11 @@
 <div class="card-container" [ngStyle]="{'background-color': this.getServiceColor()}">
     <h2 class="card-title" (click)="this.cardClicked()">{{ title }}</h2>
     <div class="bottom-right-circles" (click)="this.cardClicked()">
-        <img class="small-circle-image" [src]="image_1" alt="circle_image_1" (click)="this.cardClicked()" />
-        <img class="small-circle-image" [src]="image_2" alt="circle_image_2" (click)="this.cardClicked()" />
+        <img class="small-circle-image" [src]="image_1" alt="first service logo" (click)="this.cardClicked()" />
+        <img class="small-circle-image" [src]="image_2" alt="second service logo" (click)="this.cardClicked()" />
     </div>
     <div class="bottom-left-circles">
         <img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/recycle-bin-icon.png"
-            class="deleteBin" (click)="deleteCard()">
+            class="deleteBin" (click)="deleteCard()" alt="delete icon" title="Delete this configuration">
     </div>
 </div>

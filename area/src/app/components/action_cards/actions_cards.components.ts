@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
 })
 export class ActionsCardsComponent {
-    @Input() title: string = '';
-    @Input() description: string = '';
-    @Input() background_color: string = '#ccf1f7';
-    @Input() image: string = '';
+    @Input() title: string = 'Unknown service';
+    @Input() description: string = 'Please select a service';
+    @Input() background_color: string = '#919191';
+    @Input() image: string = 'assets/question-mark-round-icon.svg';
     @Input() service: string = '';
     @Input() editable: boolean = false;
     @Input() id: string = '';

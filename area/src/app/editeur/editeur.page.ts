@@ -141,7 +141,7 @@ export class EditeurPage implements OnInit {
     }
 
     getimgsrc(title: string | undefined) {
-        if (title == undefined) return '';
+        if (title == undefined) return 'assets/question-mark-round-icon.svg';
         let res = this.integrations.find(
             ({ name }) => name === title
         )?.icon_url;
