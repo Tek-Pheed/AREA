@@ -1,6 +1,7 @@
 import { access } from 'fs';
 import { db } from '../../database/db';
 import jwt from 'jsonwebtoken';
+import log from '../../utils/logger';
 
 export async function insertTokeninDb(
     provider: string,
@@ -15,7 +16,7 @@ export async function insertTokeninDb(
                 `UPDATE usersToken SET ${provider}AccessToken='${accessToken}', ${provider}RefreshToken='${refreshToken}' WHERE email='${email}'`
             );
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
 }
 
@@ -35,7 +36,7 @@ export async function getAllConnections(token: string): Promise<any> {
             return null;
         }
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
     return null;
 }
@@ -53,6 +54,6 @@ export async function logoutService(email: string, service: string) {
             return null;
         }
     } catch (e) {
-        console.error(e);
+        log.error(e);
     }
 }

@@ -44,3 +44,14 @@ export function isAuthenticatedGithub(
     }
     res.redirect('/api/oauth/discord/login');
 }
+
+export function isAuthenticatedGoogle(
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/api/oauth/google/login');
+}

@@ -1,9 +1,30 @@
-ion-modal {
+.ion-modal-style {
     --border-radius: 15px;
     --overflow: hidden;
     --position: relative;
     margin-top: constant(safe-area-inset-top) !important;
     margin-top: env(safe-area-inset-top) !important;
+}
+
+.dateminiModal {
+    backdrop-filter: blur(10px);
+}
+
+ion-input {
+    --highlight-color-valid: #0054e9;
+    font-size: large;
+}
+
+@media screen and (min-width: 1000px) {
+    .ion-modal-style {
+        --border-radius: 15px;
+        --overflow: hidden;
+        --position: relative;
+        --width: 40%;
+        --height: 90%;
+        margin-top: constant(safe-area-inset-top) !important;
+        margin-top: env(safe-area-inset-top) !important;
+    }
 }
 
 .topImg {
@@ -18,14 +39,14 @@ ion-modal {
 }
 
 .topContent {
-    padding: 3%;
+    padding: 1%;
     display: flex;
     background-color: rgba(0, 0, 0, 0.207);
 }
 
 .bgImg {
-    filter: blur(35px) saturate(2);
-    transform: scale(2.5);
+    filter: blur(50px) saturate(3);
+    transform: scale(2);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -72,6 +93,7 @@ h4 {
     font-size: medium;
     text-align: center;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .confirm {

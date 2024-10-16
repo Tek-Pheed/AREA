@@ -1,6 +1,7 @@
 import { getTwitchToken } from './twitch.query';
 import { getUserId } from './actions';
 import log from '../../utils/logger';
+import { refreshTwitchToken } from '../../utils/refresh';
 
 const axios = require('axios');
 const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
@@ -39,8 +40,8 @@ export async function createClip(
     email: string,
     broadcasterUsername: string
 ): Promise<any> {
+    const { tAccessToken, tRefreshToken } = await getTwitchToken(email);
     try {
-        const { tAccessToken, tRefreshToken } = await getTwitchToken(email);
         const broadcasterId = await getBroadcasterId(
             tAccessToken,
             broadcasterUsername
@@ -65,12 +66,13 @@ export async function createClip(
             return true;
         } else {
             log.error(
-                `Failed to create clip. Status code : ${response.status}`
+                `email:${email} service:Twitch Failed to create clip. Status code : ${response.status}`
             );
             return false;
         }
     } catch (error) {
         log.error(`Error creating clip : ${error}`);
+        await refreshTwitchToken(email, tRefreshToken);
         return false;
     }
 }
@@ -80,13 +82,13 @@ export async function sendChatMessage(
     broadcasterUsername: string,
     message: string
 ): Promise<any> {
+    const { tAccessToken, tRefreshToken } = await getTwitchToken(email);
     try {
-        const { tAccessToken, tRefreshToken } = await getTwitchToken(email);
         const broadcasterId = await getBroadcasterId(
             tAccessToken,
             broadcasterUsername
         );
-        const senderId = await getUserId(tAccessToken);
+        const senderId = await getUserId(tAccessToken, email);
 
         if (!broadcasterId || !senderId) {
             return null;
@@ -118,6 +120,7 @@ export async function sendChatMessage(
         }
     } catch (error) {
         console.error(`Error sending chat message : ${error}`);
+        await refreshTwitchToken(email, tRefreshToken);
         return false;
     }
 }

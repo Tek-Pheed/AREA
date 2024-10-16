@@ -327,6 +327,27 @@ export class ApiService {
         }
     }
 
+    deleteUserConfigs(token: string, id:string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+
+        try {
+            return this.http.delete<any>(`${this.API_URL}/api/users/configs/${id}`, {
+                headers: headers,
+            });
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
     getAllConnections(token: string): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
@@ -451,6 +472,27 @@ export class ApiService {
             return this.http.put<any>(
                 `${this.API_URL}/api/users/configs/${id}`,
                 JSON.stringify(body),
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    getLogs(token: string, email: any, service: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.get<any>(
+                `${this.API_URL}/api/logs/${email}/${service == '' ? 'all' : service}`,
                 { headers }
             );
         } catch (error) {
