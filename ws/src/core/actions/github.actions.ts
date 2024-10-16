@@ -22,7 +22,9 @@ export async function whenNewCommitByMe(
     await createVariable(key);
     const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
     if (result.length === 0) {
-        log.warn('No commit on this repositories');
+        log.warn(
+            `email:${email} service:Github No commit on this repositories`
+        );
     } else if (result !== false) {
         if (!storage[key].commit_sha) {
             if (storage[key].commit_sha !== result[0].value) {
@@ -53,7 +55,7 @@ export async function whenLastWorkflowFailed(
     await createVariable(key);
     const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
     if (result.length === 0) {
-        log.warn('No workflow have failed');
+        log.warn(`email:${email} service:Github No workflow have failed`);
     } else if (result !== false) {
         if (!storage[key].lastWorkflowKoID) {
             if (storage[key].lastWorkflowKoID !== result[0].value) {
@@ -83,7 +85,7 @@ export async function whenLastWorkflowSuccess(
     const key: string = `${email}-${data[0]}-${data[1]}`;
     const storage = await createVariable(key);
     if (result.length === 0) {
-        log.warn('No workflow success');
+        log.warn(`email:${email} service:Github No workflow success`);
     } else if (result !== false) {
         if (!storage[key].lastWorkflowOkID) {
             if (storage[key].lastWorkflowOkID !== result[0].value) {
@@ -113,7 +115,9 @@ export async function whenLastWorkflowInProgress(
     const key: string = `${email}-${data[0]}-${data[1]}`;
     const storage = await createVariable(key);
     if (result.length === 0) {
-        log.warn('No workflow in progress currently');
+        log.warn(
+            `email:${email} service:Github No workflow in progress currently`
+        );
     } else if (result !== false) {
         if (!storage[key].lastWorkflowInProgressID) {
             if (storage[key].lastWorkflowInProgressID !== result[0].value) {

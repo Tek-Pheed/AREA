@@ -21,10 +21,9 @@ export async function likePhoto(email: string, photo_id: string): Promise<any> {
             return false;
         }
     } catch (error) {
-        /*log.error(
+      log.error(
             `email:${email} service:Unsplash Error liking photo ${error}`
-        );*/
-        console.log(error);
+        );
         return false;
     }
 }

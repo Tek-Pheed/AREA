@@ -23,7 +23,7 @@ export async function getSongURL(
         }
         return response.data.tracks.items[0].external_urls.spotify;
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} service:Spotify ${e}`);
         await refreshSpotifyToken(email, refresh_token);
         return false;
     }
@@ -105,7 +105,7 @@ export async function getSpecificSong(
             ];
         } else return false;
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} service:Spotify ${e}`);
         await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }

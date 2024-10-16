@@ -26,7 +26,7 @@ export async function launchAction(
     email: string,
     reaction: any
 ) {
-    log.info(`When ${func}`);
+    log.info(`email:${email} When ${func}`);
     switch (func) {
         case 'Listen specific sound':
             await whenListenSpecificSound(params, email, reaction);

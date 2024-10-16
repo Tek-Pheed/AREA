@@ -43,6 +43,12 @@ export class DashboardPage implements OnInit {
     searchText: string = '';
     token: string = '';
 
+    currentLogs: string[] = [];
+    isModalOpen = false;
+    selectedLogs: string = '';
+    logInterval: any = null;
+    autoScroll: boolean = true;
+
     navigateToIntegrations() {
         if (this.platform.is('ios') || this.platform.is('android')) {
             this.router.navigate(['/tabs/integrations']);
@@ -151,8 +157,7 @@ export class DashboardPage implements OnInit {
             JSON.stringify(localStorage.getItem('Token')) as string
         );
 
-        if (!confirm("Confirm suppression ?"))
-            return;
+        if (!confirm('Confirm suppression ?')) return;
         this.service.deleteUserConfigs(this.token, id).subscribe(
             (res) => {
                 location.reload();
@@ -164,6 +169,54 @@ export class DashboardPage implements OnInit {
         );
     }
 
+    selectServices(str: string, update: boolean) {
+        this.selectedLogs = str;
+        if (update) {
+            this.getLogs();
+        }
+    }
+
+    getLogs() {
+        if (!this.isModalOpen) return;
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        let email = JSON.parse(
+            JSON.stringify(localStorage.getItem('Email')) as string
+        );
+        this.service.getLogs(token, email, this.selectedLogs).subscribe(
+            (res) => {
+                this.currentLogs = res.logs;
+                let objDiv = document.getElementById('codeDiv');
+                if (objDiv == null) {
+                    return;
+                }
+                if (this.autoScroll)
+                    objDiv.scrollTop = objDiv.scrollHeight;
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    setOpen(isOpen: boolean) {
+        this.isModalOpen = isOpen;
+        if (this.isModalOpen) {
+            this.selectedLogs = '';
+        }
+    }
+
+    getColor(str: string) {
+        if (str.includes('INFO'))
+            return ("green")
+        if (str.includes('ERROR'))
+            return ("red")
+        if (str.includes('WARN'))
+            return ("orange")
+        return ('black');
+    }
+
     ngOnInit(): void {
         this.token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string
@@ -172,5 +225,6 @@ export class DashboardPage implements OnInit {
             this.router.navigate(['/home']);
         }
         this.getApis();
+        this.logInterval = setInterval(this.getLogs.bind(this), 2000);
     }
 }

@@ -484,4 +484,25 @@ export class ApiService {
             });
         }
     }
+
+    getLogs(token: string, email: any, service: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+        try {
+            return this.http.get<any>(
+                `${this.API_URL}/api/logs/${email}/${service == '' ? 'all' : service}`,
+                { headers }
+            );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 }
