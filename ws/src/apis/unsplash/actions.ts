@@ -41,7 +41,42 @@ export async function getMonthsStats(
             return null;
         }
     } catch (error) {
-        log.error('Error fetching monthly stats', error);
+        log.error(
+            `email:${email} service:Unsplash Error fetching monthly stats ${error}`
+        );
+        return null;
+    }
+}
+
+export async function getUserLastPictures(
+    email: string,
+    username: string
+): Promise<any> {
+    const token = await getUnsplashToken(email);
+    try {
+        const response = await axios.get(
+            `https://api.unsplash.com/users/${username}/photos`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        //check if response.data[0].id != de celui stocké
+        return [
+            {
+                name: 'link',
+                value: response.data[0].urls.raw,
+            },
+            {
+                name: 'likes',
+                value: response.data[0].likes,
+            },
+        ];
+    } catch (error) {
+        log.error(
+            `email:${email} service:Unsplash Error fetching photos of user ${error}`
+        );
         return null;
     }
 }
