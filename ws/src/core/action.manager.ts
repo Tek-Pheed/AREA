@@ -1,6 +1,6 @@
 import { IBody } from '../utils/data.model';
 import log from '../utils/logger';
-import { whenListenSpecificSound } from './actions/spotify.actions';
+import { whenListen, whenListenSpecificSound } from './actions/spotify.actions';
 import {
     getCurrentGameOfStreamer,
     getMostViewedCategory,
@@ -18,6 +18,7 @@ import {
     whenLastWorkflowSuccess,
     whenNewCommitByMe,
 } from './actions/github.actions';
+import { whenPostPhoto } from './actions/unsplash.actions';
 
 export async function launchAction(
     func: string,
@@ -62,6 +63,12 @@ export async function launchAction(
             break;
         case 'Event today':
             await whenThereIsAEventToday(params, email, reaction);
+            break;
+        case 'Post a picture':
+            await whenPostPhoto(params, email, reaction);
+            break;
+        case 'Listen to music':
+            await whenListen(params, email, reaction);
             break;
         default:
             break;
