@@ -19,48 +19,6 @@ const SPOTIFY_SCOPES = [
 
 export const spotifyRouter = Router();
 
-/*export async function getCurrentSong(token: string): Promise<any> {
-    const response = await axios.get(
-        'https://api.spotify.com/v1/me/player/currently-playing',
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
-
-    if (!response.data) {
-        return null;
-    }
-    return response.data.item.name || null;
-}*/
-
-export async function refreshSpotifyToken(
-    refreshToken: string
-): Promise<string> {
-    if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
-        throw new Error('Missing Spotify Client ID or Client Secret');
-    }
-
-    const response = await axios.post(
-        'https://accounts.spotify.com/api/token',
-        new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            client_id: SPOTIFY_CLIENT_ID,
-            client_secret: SPOTIFY_CLIENT_SECRET,
-        }).toString(),
-        {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        }
-    );
-
-    const newAccessToken = response.data.access_token;
-    return newAccessToken;
-}
-
 spotifyRouter.use(
     session({
         secret: process.env.SESSION_SECRET || 'default_secret',
@@ -111,26 +69,6 @@ spotifyRouter.get(
         /*
                 #swagger.tags   = ['Spotify OAuth']
             */
-    }
-);
-
-spotifyRouter.get(
-    '/login/mobile/ios',
-    passport.authenticate('spotify', {
-        state: JSON.stringify({ platform: 'ios' }),
-    }),
-    async (req: Request, res: Response) => {
-        //#swagger.tags = ['Spotify OAuth']
-    }
-);
-
-spotifyRouter.get(
-    '/login/mobile/android',
-    passport.authenticate('spotify', {
-        state: JSON.stringify({ platform: 'android' }),
-    }),
-    async (req: Request, res: Response) => {
-        //#swagger.tags = ['Spotify OAuth']
     }
 );
 

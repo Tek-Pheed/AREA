@@ -17,6 +17,8 @@ import {
     reRunFailedWorkflow,
     reRunWorkflow,
 } from './reactions/github.reactions';
+import { setEventInCalendar } from './reactions/google.reactions';
+import { likePhotoReaction } from './reactions/unsplash.reaction';
 
 export function replaceLabel(
     label: string,
@@ -45,7 +47,7 @@ export async function launchReaction(
             }
         }
     }
-    log.info(`Reaction: ${func}`);
+    log.info(`email:${email} Reaction: ${func}`);
     switch (func) {
         case 'Skip to next':
             await skipToNextMusic(email);
@@ -79,6 +81,12 @@ export async function launchReaction(
             break;
         case 'Re-run a workflow':
             await reRunFailedWorkflow(params, email);
+            break;
+        case 'Add event':
+            await setEventInCalendar(params, email);
+            break;
+        case 'Like a photo':
+            await likePhotoReaction(params, email);
             break;
         default:
             break;

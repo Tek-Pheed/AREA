@@ -23,7 +23,7 @@ export async function getSongURL(
         }
         return response.data.tracks.items[0].external_urls.spotify;
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} service:Spotify ${e}`);
         await refreshSpotifyToken(email, refresh_token);
         return false;
     }
@@ -46,18 +46,16 @@ export async function isPlaying(email: string): Promise<any> {
         if (!response.data) {
             return false;
         }
-        if (response.data.context.external_urls.spotify) {
-            return [
-                {
-                    name: 'artistsName',
-                    value: response.data.item.artists[0].name,
-                },
-                {
-                    name: 'songName',
-                    value: response.data.item.name,
-                },
-            ];
-        } else return false;
+        return [
+            {
+                name: 'artistsName',
+                value: response.data.item.artists[0].name,
+            },
+            {
+                name: 'songName',
+                value: response.data.item.name,
+            },
+        ];
     } catch (e) {
         log.error(e);
         await refreshSpotifyToken(email, sRefreshToken);
@@ -107,7 +105,7 @@ export async function getSpecificSong(
             ];
         } else return false;
     } catch (e) {
-        log.error(e);
+        log.error(`email:${email} service:Spotify ${e}`);
         await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }

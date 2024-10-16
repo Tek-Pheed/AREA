@@ -40,6 +40,7 @@ export async function getEvents(email: string) {
         }
         return false;
     } catch (err: any) {
+        log.error(`getEvents ${err.status}`);
         return false;
     }
 }

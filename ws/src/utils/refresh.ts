@@ -19,7 +19,7 @@ export async function refreshSpotifyToken(
             throw new Error('Missing Spotify Client ID or Client Secret');
         }
 
-        if (refreshToken === null) {
+        if (refreshToken === null || refreshToken === undefined) {
             log.warn(`Spotify refresh token for ${email} is null`);
             return false;
         }
@@ -63,19 +63,22 @@ export async function refreshDiscordToken(
     }
 
     try {
+        const qs = require('qs');
+        let data = qs.stringify({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+            client_id: DISCORD_CLIENT_ID,
+            client_secret: DISCORD_CLIENT_SECRET,
+        });
+
         const response = await axios.post(
-            'https://discord.com/api/oauth2/token',
-            new URLSearchParams({
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken,
-                client_id: DISCORD_CLIENT_ID,
-                client_secret: DISCORD_CLIENT_SECRET,
-            }).toString(),
+            'https://discord.com/api/v10/oauth2/token',
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-            }
+            },
+            data
         );
         if (response.data.access_token) {
             await refreshAccessTokeninDB(

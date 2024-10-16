@@ -40,7 +40,7 @@ export async function startPlaybackSong(
 ): Promise<boolean> {
     const { sAccessToken, sRefreshToken } = await getSpotifyToken(email);
     try {
-        const song_id = await getSongID(track, sAccessToken);
+        const song_id = await getSongID(track.replace('|', ''), sAccessToken);
         if (!song_id) {
             return false;
         }
@@ -58,9 +58,13 @@ export async function startPlaybackSong(
         } else return false;
     } catch (e: any) {
         if (e.status === 404) {
-            log.warn('No device found to launch music');
+            log.warn(
+                `email:${email} service:Spotify No device found to launch music`
+            );
         } else {
-            log.error('startPlaybackSong ' + e.status);
+            log.error(
+                `email:${email} service:Spotify startPlaybackSong ${e.status}`
+            );
             await refreshSpotifyToken(email, sRefreshToken);
         }
         return false;
@@ -83,7 +87,7 @@ export async function skipToNextSong(email: string): Promise<boolean> {
             return true;
         } else return false;
     } catch (e: any) {
-        log.error('skipToNextSong ' + e.status);
+        log.error(`email:${email} service:Spotify skipToNextSong ${e.status}`);
         await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }
@@ -103,7 +107,7 @@ export async function skipToPreviousSong(email: string): Promise<boolean> {
         );
         return response.status === 204;
     } catch (e: any) {
-        log.error('skipToNextSong ' + e.status);
+        log.error(`email:${email} service:Spotify skipToNextSong ${e.status}`);
         await refreshSpotifyToken(email, sRefreshToken);
         return false;
     }
