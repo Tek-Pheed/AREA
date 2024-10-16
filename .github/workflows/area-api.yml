@@ -3,8 +3,8 @@ name: API - Pipeline
 on:
   push:
     pull_request:
-      branches-ignore:
-        - 'ga-ignore-*'
+      branches:
+        - dev
 
 jobs:
   api_compile_test:
@@ -21,7 +21,7 @@ jobs:
         run: |
           cd api
           npm i
-      - name: Build website
+      - name: Build
         run: |
           cd api/
           npm run build
