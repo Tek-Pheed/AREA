@@ -58,7 +58,8 @@ export class ProfilePage implements OnInit {
             (res) => {
                 this.data.Email = res.data[0].email;
                 this.data.Name = res.data[0].username;
-                this.data.picture_url = res.data[0].picture_url
+                if (res.data[0].picture_url != "")
+                    this.data.picture_url = res.data[0].picture_url
                 console.warn(this.data);
                 console.warn(this.data.picture_url);
                 this.servicesData = res.data;
