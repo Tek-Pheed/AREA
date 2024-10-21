@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import log from '../../utils/logger';
+import API from '../../middlewares/api';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -82,28 +83,23 @@ spotifyRouter.get(
         //#swagger.tags = ['Spotify OAuth']
         const token: any = req.user;
         const origin = req.headers['user-agent'];
-        console.log(origin);
-        if (origin?.toLowerCase().includes('android')) {
-            log.warn(
-                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
-            res.redirect(
-                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
-        } else if (origin?.toLowerCase().includes('iphone')) {
-            log.warn(
-                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
-            res.redirect(
-                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+        /*if (
+            origin?.toLowerCase().includes('android') ||
+            origin?.toLowerCase().includes('iphone')
+        ) {
+            res.status(200).json(
+                API(200, false, '', {
+                    accessToken: token.accessTokenSpotify,
+                    refreshToken: token.refreshTokenSpotify,
+                })
             );
         } else {
-            log.warn(
-                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
             res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+                `${process.env.WEB_HOST}/dashboard/profile?api=spotify&refresh_token=${token.refreshTokenSpotify}&access_token=${token.accessTokenSpotify}`
             );
-        }
+        }*/
+        res.redirect(
+            `${process.env.WEB_HOST}/dashboard/profile?api=spotify&refresh_token=${token.refreshTokenSpotify}&access_token=${token.accessTokenSpotify}`
+        );
     }
 );
