@@ -11,6 +11,7 @@ export class ProfilCardComponent implements OnInit {
     @Input() name: string = '';
     @Input() email: string = '';
     @Input() username: string = '';
+    @Input() creationDate: string = '';
     @Input() background_color: string = '';
     @Input() image: string = '';
 

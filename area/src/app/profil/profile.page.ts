@@ -47,6 +47,7 @@ export class ProfilePage implements OnInit {
         Name: 'Name',
         Email: 'email@example.com',
         picture_url: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        create_at: new Date().toDateString()
     };
 
     servicesData: APIServices[] = [];
@@ -60,6 +61,7 @@ export class ProfilePage implements OnInit {
                 this.data.Name = res.data[0].username;
                 if (res.data[0].picture_url != ""  && res.data[0].picture_url != null )
                     this.data.picture_url = res.data[0].picture_url
+                this.data.create_at = new Date(res.data[0].create_at).toLocaleDateString();
                 this.servicesData = res.data;
                 this.loaded = true;
                 if (this.current_oauth_api.length > 0) {
