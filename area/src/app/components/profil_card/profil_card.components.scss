@@ -29,6 +29,11 @@
     object-fit: cover;
 }
 
+.circle-image:hover {
+    cursor: pointer;
+    filter: brightness(1.2);
+}
+
 p {
     vertical-align: middle;
     margin: 0px;

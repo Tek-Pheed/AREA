@@ -55,7 +55,7 @@ export interface APIServices {
 export interface ProfileData {
     Name: string;
     Email: string;
-    ImgSrc: string;
+    picture_url: string;
 }
 
 export interface IAreaPair {

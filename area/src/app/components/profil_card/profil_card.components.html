@@ -1,6 +1,7 @@
 <div class="card-container" [style.backgroundColor]="background_color">
     <div class="topContent">
-        <img class="circle-image" [src]="image" alt="profile_image" />
+        <img class="circle-image" [src]="image" alt="profile_image" (click)="changeImage()"
+            title="Click to change your profile picture" />
         <div class="title-description">
             <div class="card-title">
                 <p>{{ name }}</p>

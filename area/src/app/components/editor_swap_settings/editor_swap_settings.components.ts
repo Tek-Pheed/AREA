@@ -14,6 +14,7 @@ import {
 } from 'src/app/utils/data.models';
 import { CommonModule } from '@angular/common';
 import { ActionsCardsCompactComponent } from '../action_cards_compact/actions_cards_compact.components';
+import { NavigationStart, Router } from '@angular/router';
 
 @Component({
     selector: 'editor-swap-settings',
@@ -71,5 +72,14 @@ export class EditorSawpSettingsComponent {
         this.modal?.dismiss(this.selectedElementID, 'confirm');
     }
 
-    constructor() {}
+    @ViewChild('editModal') editModal: IonModal | null = null;
+    constructor(private router: Router) {
+        this.router.events.subscribe((event: any): void => {
+            if (event instanceof NavigationStart) {
+                if (event.navigationTrigger === 'popstate') {
+                    if (this.editModal != null) this.editModal.dismiss();
+                }
+            }
+        });
+    }
 }

@@ -5,6 +5,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { IonModal } from '@ionic/angular';
 import {
     IHeaderProperties,
@@ -51,5 +52,16 @@ export class EditorSettingsComponent {
         this.modal?.dismiss(this.fields, 'confirm');
     }
 
-    constructor() {}
+
+    @ViewChild('editModal') editModal: IonModal | null = null;
+    constructor(private router: Router) {
+        this.router.events.subscribe((event: any): void => {
+            if (event instanceof NavigationStart) {
+                if (event.navigationTrigger === 'popstate') {
+                    if (this.editModal != null)
+                            this.editModal.dismiss();
+                }
+            }
+        });
+    }
 }
