@@ -130,7 +130,8 @@ export class DashboardPage implements OnInit {
                 (elm) => elm.id === element.actions_id
             );
             let reaction = this.reactions.find(
-                (elm) => elm.id === element.reaction_id
+                // Replace here with array
+                (elm) => elm.id === (element as any).reaction_id
             );
             let apiA = this.apis.find((elm) => elm.name == action?.api_name);
             let apiB = this.apis.find((elm) => elm.name == reaction?.api_name);

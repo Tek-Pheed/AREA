@@ -69,7 +69,7 @@ describe('EditeurPage', () => {
     it('should call getAllData on init', () => {
         spyOn(component, 'getAllData');
         component.ngOnInit();
-        expect(component.getAllData).toHaveBeenCalled();
+        expect(component.getAllIntegrations).toHaveBeenCalled();
     });
 
     it('should open action modal with correct properties', () => {
@@ -141,26 +141,26 @@ describe('EditeurPage', () => {
 
     it('should swap reaction and update reactionID', () => {
         component.swapReactionSave('123');
-        expect(component.reactionID).toBe('123');
+        expect(component.reactionIDs).toBe('123');
     });
 
     it('should call getAllDatas with correct parameters', () => {
         spyOn(component, 'getAllDatas');
         component.swapActionSave('123');
-        expect(component.getAllDatas).toHaveBeenCalledWith(true, false);
+        expect(component.getConfigDatas).toHaveBeenCalledWith(true, false);
     });
 
     it('should call getAllDatas with correct parameters for reaction', () => {
         spyOn(component, 'getAllDatas');
         component.swapReactionSave('123');
-        expect(component.getAllDatas).toHaveBeenCalledWith(false, true);
+        expect(component.getConfigDatas).toHaveBeenCalledWith(false, true);
     });
 
     it('should load values from config correctly', () => {
         component.loadedConfig = {
             id: '1',
             actions_id: 1,
-            reaction_id: 1,
+            reaction_ids: 1,
             headers: {
                 'Content-Type': 'application/json',
             },

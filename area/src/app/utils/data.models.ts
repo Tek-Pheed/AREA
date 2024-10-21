@@ -101,5 +101,5 @@ export interface IUserConfig {
     method: string;
     headers: { 'Content-Type': 'application/json' };
     body: IConfigBody;
-    reaction_id: number;
+    reaction_ids: [number];
 }

@@ -1,8 +1,8 @@
 import {
     Component,
-    ComponentFactoryResolver,
     ElementRef,
     OnInit,
+    ViewChild,
     ViewContainerRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import {
     IActions,
     IHeaderProperties,
     IModalFields,
+    IModalVariables,
     IReactions,
     IUserConfig,
 } from '../utils/data.models';
@@ -27,15 +28,14 @@ import {
 } from '../components/editor_swap_settings/editor_swap_settings.components';
 
 interface ReactionData {
-    reaction: IReactions;
-    properties: IHeaderProperties;
-    reactionFields: IModalFields[];
+    raw: IReactions;
+    fields: IModalFields[];
 }
 
 interface ActionData {
     raw: IActions;
-    properties: IHeaderProperties;
     fields: IModalFields[];
+    labels: IModalVariables[];
 }
 
 @Component({
@@ -44,10 +44,8 @@ interface ActionData {
     styleUrls: ['editeur.page.scss'],
 })
 export class EditeurPage implements OnInit {
-    public actionID: string | null = '';
-    public reactionID: string | null = '';
     private configID: string | null = '';
-    token: string = '';
+    private token: string = '';
 
     // Available Data
     integrations: APIServices[] = [];
@@ -59,7 +57,7 @@ export class EditeurPage implements OnInit {
 
     // Config Variables
     configuredAction: ActionData | undefined = undefined;
-    configuredReactions: ReactionData[] = [];
+    configuredReactions: (ReactionData | undefined)[] = [undefined];
 
     constructor(
         private router: Router,
@@ -73,26 +71,203 @@ export class EditeurPage implements OnInit {
         let url: string = window.location.href;
         const searchParams = new URLSearchParams(url.split('?')[1]);
         this.configID = searchParams.get('configID');
-        this.actionID = searchParams.get('actionID');
+        let actionID = searchParams.get('actionID');
         this.token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string
         );
         if (!this.token) {
             this.router.navigate(['/home']);
         }
-        //this.getAllData();
+        this.getAllIntegrations();
+    }
+
+    selectActionById(id: string | undefined) {
+        if (id == undefined || id == '') {
+            this.configuredAction = undefined;
+            return;
+        }
+        let rawAction = this.actions.find((a) => a.id == Number(id));
+        let actionFields = [];
+        let actionLabels = [];
+        if (rawAction == undefined) return;
+        for (let element of rawAction.input) {
+            actionFields.push({
+                fieldID: element.name,
+                fieldType: element.type,
+                fieldDescription: element.description,
+                fieldValue: '',
+            });
+        }
+        for (let element of rawAction.labels) {
+            actionLabels.push({
+                name: element.name,
+                value: element.value,
+                img_src: this.getimgsrc(rawAction.api_name),
+            });
+        }
+        this.configuredAction = {
+            fields: actionFields,
+            raw: rawAction,
+            labels: actionLabels,
+        };
+    }
+
+    swapReactionById(old_id: string | undefined, new_id: string | undefined) {
+        let oldReactionIndex = this.configuredReactions.findIndex(
+            (a) => a?.raw.id == Number(old_id) || a == old_id
+        );
+        let rawReaction = this.reactions.find((a) => a.id == Number(new_id));
+        let reactionFields = [];
+        if (rawReaction == undefined) return;
+
+        if (
+            this.configuredReactions.find((obj) => obj?.raw.id == new_id) !=
+            undefined
+        ) {
+            alert('Unable to select the same reaction twice !');
+            return;
+        }
+
+        if (rawReaction.input != null) {
+            for (let element of rawReaction.input) {
+                reactionFields.push({
+                    fieldID: element.name,
+                    fieldType: element.type,
+                    fieldDescription: element.description,
+                    fieldValue: '',
+                });
+            }
+        }
+        this.configuredReactions[oldReactionIndex] = {
+            fields: reactionFields,
+            raw: rawReaction,
+        };
+    }
+
+    loadValuesFromConfig() {
+        if (this.loadedConfig == undefined) return;
+        for (const element of this.loadedConfig.body.action) {
+            let field = this.configuredAction?.fields.find(
+                (obj) => obj.fieldID == element.name
+            );
+            if (field == undefined) continue;
+            field.fieldValue = element.value;
+        }
+
+        //TODO: Change that too
+        for (const element of this.loadedConfig.body.reaction) {
+            let rfield = this.configuredReactions.find(
+                (obj) =>
+                    obj?.fields.find((obj) => obj.fieldID == element.name)
+                        ?.fieldID == element.name
+            );
+            if (rfield == undefined) continue;
+            let f = rfield.fields.find((obj) => obj.fieldID == element.name);
+            if (f != undefined) {
+                f.fieldValue = element.value;
+            }
+        }
+    }
+
+    getimgsrc(title: string | undefined) {
+        if (title == undefined) return 'assets/question-mark-round-icon.svg';
+        let res = this.integrations.find(
+            ({ name }) => name === title
+        )?.icon_url;
+        if (res == undefined) return 'assets/favicon.png';
+        return res;
+    }
+    getAllIntegrations() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getAllServices(token).subscribe(
+            (res) => {
+                this.integrations = res.data;
+                this.getAllActions();
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+    getAllActions() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getActions(token).subscribe(
+            (res) => {
+                this.actions = res.data;
+                this.getAllReactions();
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+    getAllReactions() {
+        let token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        this.service.getReactions(token).subscribe(
+            (res) => {
+                this.reactions = res.data;
+                this.loadConfig();
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    loadConfig() {
+        this.service.getUserConfigs(this.token).subscribe(
+            (res) => {
+                if (this.configID != null && this.configID != undefined) {
+                    let config: any = res.data.filter(
+                        (obj: any) => obj.id == this.configID
+                    );
+                    let url: string = window.location.href;
+                    const searchParams = new URLSearchParams(url.split('?')[1]);
+                    if (config != undefined && config[0] != undefined) {
+                        config = config[0];
+                        this.loadedConfig = config;
+                        this.selectActionById(config.actions_id);
+
+                        //TODO: Here replace with array parsing once backend done
+                        this.swapReactionById(undefined, config.reaction_id);
+                    } else if (searchParams.get('configID') != null) {
+                        alert('Unable to find corresponding user config');
+                        if (this.platform.is('desktop')) {
+                            this.router.navigate(['/dashboard']);
+                        } else {
+                            this.router.navigate(['/tabs/home']);
+                        }
+                    }
+                }
+                this.loadValuesFromConfig();
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
     }
 
     openModalConfigureAction(action: ActionData | undefined) {
         if (action == undefined) return;
-        const component = this.viewContainerRef.createComponent(
+        let component = this.viewContainerRef.createComponent(
             EditorSettingsComponent
         );
-        component.setInput('headerProperties', action.properties);
+        component.setInput('headerProperties', {
+            name: action.raw.api_name,
+            description: action.raw.description,
+            img_src: this.getimgsrc(action.raw.api_name),
+        });
         component.setInput('fields', action.fields);
         component.setInput('context', component);
         component.setInput('id', action.raw.id);
         component.instance.onModalClose.subscribe(this.actionEditModalClosed);
+        component.instance.isOpen = true;
     }
 
     actionEditModalClosed(data: EditModalReturnType) {
@@ -106,15 +281,17 @@ export class EditeurPage implements OnInit {
     }
 
     openModalSwapAction(action: ActionData | undefined) {
-        if (action == undefined) return;
-        const component = this.viewContainerRef.createComponent(
+        let component = this.viewContainerRef.createComponent(
             EditorSawpSettingsComponent
         );
         component.setInput('services', this.integrations);
         component.setInput('areas', this.actions);
         component.setInput('context', component);
-        component.setInput('id', action.raw.id);
-        component.instance.onModalClose.subscribe(this.actionSwapModalClosed);
+        component.setInput('id', action?.raw.id);
+        component.instance.onModalClose.subscribe(
+            this.actionSwapModalClosed.bind(this)
+        );
+        component.instance.isOpen = true;
     }
 
     actionSwapModalClosed(data: SwapModalReturnType) {
@@ -122,43 +299,71 @@ export class EditeurPage implements OnInit {
             data.modal?.destroy();
             return;
         }
-        let raw_act = this.actions.find((a) => a.id == Number(data.newId));
-
-        if (raw_act != undefined)
-
-
-            let i = 0;
-            for (let element of this.actionFields) {
-                this.actionFields[i].fieldValue =
-                    element.fieldType == 'datetime' && element.fieldValue == ''
-                        ? this.date.toISOString()
-                        : this.actionFields[i].fieldValue;
-                i++;
-            }
-            this.actionProperties.img_src = this.getimgsrc(
-                this.selectedAction.api_name
-            );
-            this.actionProperties.name = this.selectedAction.api_name;
-            this.actionProperties.description = this.selectedAction.description;
-            this.actionModalShow = true;
-
-
-
-            this.configuredAction = {raw: raw_act, };,
-            
-        }
-        this.configuredAction?.raw = 
+        this.selectActionById(data.newId);
         data.modal?.destroy();
     }
 
-    getimgsrc(title: string | undefined) {
-        if (title == undefined) return 'assets/question-mark-round-icon.svg';
-        let res = this.integrations.find(
-            ({ name }) => name === title
-        )?.icon_url;
-        if (res == undefined) return 'assets/favicon.png';
-        return res;
+    openModalConfigureReaction(reaction: ReactionData | undefined) {
+        if (reaction == undefined) return;
+        let component = this.viewContainerRef.createComponent(
+            EditorSettingsComponent
+        );
+        component.setInput('headerProperties', {
+            name: reaction.raw.api_name,
+            description: reaction.raw.description,
+            img_src: this.getimgsrc(reaction.raw.api_name),
+        });
+        component.setInput('fields', reaction.fields);
+        component.setInput('context', component);
+        component.setInput('id', reaction.raw.id);
+        component.instance.onModalClose.subscribe(
+            this.reactionEditModalClosed.bind(this)
+        );
+        component.instance.isOpen = true;
     }
+
+    reactionEditModalClosed(data: EditModalReturnType) {
+        if (data == undefined || data.fields.length == 0) {
+            data.modal?.destroy();
+            return;
+        }
+        let react = this.configuredReactions.find(
+            (obj) => obj?.raw.id == Number(data.id)
+        );
+        if (react != undefined) react.fields = data.fields;
+        data.modal?.destroy();
+    }
+
+    openModalSwapReaction(reaction: ReactionData | undefined) {
+        let component = this.viewContainerRef.createComponent(
+            EditorSawpSettingsComponent
+        );
+        component.setInput('services', this.integrations);
+        component.setInput('areas', this.reactions);
+        component.setInput('context', component);
+        component.setInput('id', reaction?.raw.id);
+        component.instance.onModalClose.subscribe(
+            this.reactionSwapModalClosed.bind(this)
+        );
+        component.instance.isOpen = true;
+    }
+
+    reactionSwapModalClosed(data: SwapModalReturnType) {
+        if (data == undefined || data.newId == undefined) {
+            data.modal?.destroy();
+            return;
+        }
+        this.swapReactionById(data.id, data.newId);
+        data.modal?.destroy();
+    }
+
+    addNewReaction() {
+        this.configuredReactions.push(undefined);
+    }
+
+    saveConfiguration() {}
+
+    //TOFIX: Parse date
 
     /* 
     openActionModal() {

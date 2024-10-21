@@ -5,7 +5,7 @@
                 icon="chevron-back-outline" />
             <h1>Editor</h1>
         </div>
-<!--         <editor-settings [headerProperties]="actionProperties" [fields]="actionFields" [variables]="[]"
+        <!--         <editor-settings [headerProperties]="actionProperties" [fields]="actionFields" [variables]="[]"
             (onModalClose)="actionModalClosed($event)" [isOpen]="actionModalShow"></editor-settings>
         <editor-settings [headerProperties]="reactionProperties" [fields]="reactionFields" [variables]="actionVariables"
             (onModalClose)="reactionModalClose($event)" [isOpen]="reactionModalShow"></editor-settings>
@@ -15,7 +15,8 @@
             (onModalClose)="swapReactionSave($event)"></editor-swap-settings> -->
         <div class="container">
             <div class="container">
-                <app-actions-cards title="{{(configuredAction == undefined ? 'Unknown Service' : configuredAction.raw.title)}}"
+                <app-actions-cards
+                    title="{{(configuredAction == undefined ? 'Unknown Service' : configuredAction.raw.title)}}"
                     description="{{configuredAction == undefined ? 'Please select an action' : configuredAction.raw.description}}"
                     service="{{configuredAction?.raw?.api_name}}" image="{{getimgsrc(configuredAction?.raw?.api_name)}}"
                     [editable]="true" (onCardClicked)="openModalConfigureAction(configuredAction)"
@@ -23,17 +24,17 @@
                 <img alt="middle separator icon"
                     src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
                 <div class="reactionContainer">
-                    <!-- <app-actions-cards
-                        title="{{(selectedReaction == undefined ? 'Unknown Service' : selectedReaction.title)}}"
-                        description="{{selectedReaction == undefined ? 'Please select a reaction' : selectedReaction.description}}"
-                        service="{{selectedReaction?.api_name}}" image="{{getimgsrc(selectedReaction?.api_name)}}"
-                        [editable]="true" (onCardClicked)="openReactionModal()"
-                        (onEditClicked)="swapReactions()"></app-actions-cards>
-                    <app-actions-cards></app-actions-cards> -->
+                    <app-actions-cards *ngFor="let reaction of this.configuredReactions"
+                        title="{{(reaction == undefined ? 'Unknown Service' : reaction.raw.title)}}"
+                        description="{{reaction == undefined ? 'Please select a reaction' : reaction.raw.description}}"
+                        service="{{reaction?.raw?.api_name}}" image="{{getimgsrc(reaction?.raw?.api_name)}}"
+                        [editable]="true" (onCardClicked)="openModalConfigureReaction(reaction)"
+                        (onEditClicked)="openModalSwapReaction(reaction)"></app-actions-cards>
                 </div>
             </div>
         </div>
         <div class="bottomContainer bottom">
+            <button class="buttonLight" (click)="this.addNewReaction()">Add reaction</button>
             <button class="buttonLight" (click)="this.saveConfiguration()">Save</button>
         </div>
     </div>
