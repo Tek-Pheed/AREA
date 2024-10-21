@@ -11,6 +11,10 @@
     cursor: pointer;
 }
 
+.card-container:hover {
+    filter: drop-shadow(0 0 0.75rem rgb(136, 136, 136));
+}
+
 .small-circle-image {
     border-style: solid;
     border-width: 2px;
