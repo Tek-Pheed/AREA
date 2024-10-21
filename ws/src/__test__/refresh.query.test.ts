@@ -39,9 +39,9 @@ describe('refresh.query.ts', () => {
 
     describe('refreshAccessToken', () => {
         it('should return true', async () => {
-            const email = 'test@example.com';
+            const email = 'testws@example.com';
             const service = 'Spotify';
-            const accessToken = 'testAccessToken';
+            const accessToken = 'tt';
             const result = await refreshAccessTokeninDB(
                 email,
                 service,

@@ -76,7 +76,7 @@ describe('refresh.ts', () => {
             const refresh = tokens.tRefreshToken;
             const result = await refreshTwitchToken(email, refresh!);
             expect(result).toBe(true);
-            await new Promise((r) => setTimeout(r, 4000));
-        }, 5000);
+            await new Promise((r) => setTimeout(r, 5000));
+        }, 6000);
     });
 });

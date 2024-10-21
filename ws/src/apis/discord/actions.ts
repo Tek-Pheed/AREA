@@ -1,4 +1,3 @@
-import log from '../../utils/logger';
 import { refreshDiscordToken } from '../../utils/refresh';
 import { getDiscordToken } from './discord.query';
 import { createVariable, readValue, setItem } from '../../utils/storage';
