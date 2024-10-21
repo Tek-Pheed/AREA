@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
             JSON.stringify(localStorage.getItem('Token')) as string
         );
         this.service.getUserData(this.token).subscribe((res) => {
-            if (res.data[0].picture_url != '')
+            if (res.data[0].picture_url != '' && res.data[0].picture_url != null)
                 this.profileImage = res.data[0].picture_url;
         });
     }
