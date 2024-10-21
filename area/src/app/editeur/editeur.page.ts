@@ -1,8 +1,6 @@
 import {
     Component,
-    ElementRef,
     OnInit,
-    ViewChild,
     ViewContainerRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -71,7 +69,6 @@ export class EditeurPage implements OnInit {
         let url: string = window.location.href;
         const searchParams = new URLSearchParams(url.split('?')[1]);
         this.configID = searchParams.get('configID');
-        let actionID = searchParams.get('actionID');
         this.token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string
         );
@@ -219,15 +216,14 @@ export class EditeurPage implements OnInit {
             }
         );
     }
-
     loadConfig() {
+        let url: string = window.location.href;
         this.service.getUserConfigs(this.token).subscribe(
             (res) => {
                 if (this.configID != null && this.configID != undefined) {
                     let config: any = res.data.filter(
                         (obj: any) => obj.id == this.configID
                     );
-                    let url: string = window.location.href;
                     const searchParams = new URLSearchParams(url.split('?')[1]);
                     if (config != undefined && config[0] != undefined) {
                         config = config[0];
@@ -245,6 +241,10 @@ export class EditeurPage implements OnInit {
                         }
                     }
                 }
+                const searchParams = new URLSearchParams(url.split('?')[1]);
+                let actionID = searchParams.get('actionID');
+                if (actionID != undefined)
+                    this.selectActionById(actionID);
                 this.loadValuesFromConfig();
             },
             (err) => {
@@ -263,6 +263,14 @@ export class EditeurPage implements OnInit {
             description: action.raw.description,
             img_src: this.getimgsrc(action.raw.api_name),
         });
+        let i = 0;
+        for (let element of action.fields) {
+            action.fields[i].fieldValue =
+                element.fieldType == 'datetime' && element.fieldValue == ''
+                    ? this.date.toISOString()
+                    : action.fields[i].fieldValue;
+            i++;
+        }
         component.setInput('fields', action.fields);
         component.setInput('context', component);
         component.setInput('id', action.raw.id);
@@ -313,9 +321,18 @@ export class EditeurPage implements OnInit {
             description: reaction.raw.description,
             img_src: this.getimgsrc(reaction.raw.api_name),
         });
+        let i = 0;
+        for (let element of reaction.fields) {
+            reaction.fields[i].fieldValue =
+                element.fieldType == 'datetime' && element.fieldValue == ''
+                    ? this.date.toISOString()
+                    : reaction.fields[i].fieldValue;
+            i++;
+        }
         component.setInput('fields', reaction.fields);
         component.setInput('context', component);
         component.setInput('id', reaction.raw.id);
+        component.setInput('variables', this.configuredAction?.labels);
         component.instance.onModalClose.subscribe(
             this.reactionEditModalClosed.bind(this)
         );
