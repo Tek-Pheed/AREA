@@ -31,8 +31,50 @@
 
 .circle-image:hover {
     cursor: pointer;
-    filter: brightness(1.2);
+    filter: grayscale(30%);
 }
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.circle-image {
+    aspect-ratio: 1 / 1;
+    width: 12.5%;
+    height: auto;
+    min-width: 110px;
+    max-width: 100px;
+    max-height: 220px;
+    border-radius: 50%;
+    background-color: #fff;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+.image-container:hover .circle-image {
+    cursor: pointer;
+    filter: grayscale(30%);
+}
+
+.edit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    display: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.image-container:hover .edit-icon {
+    display: block;
+    opacity: 1;
+}
+
 
 p {
     vertical-align: middle;
