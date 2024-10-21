@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    Component,
+    ComponentFactoryResolver,
+    ElementRef,
+    OnInit,
+    ViewContainerRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/utils/api.services';
 import { ActivatedRoute } from '@angular/router';
@@ -7,11 +13,30 @@ import {
     IActions,
     IHeaderProperties,
     IModalFields,
-    IModalVariables,
     IReactions,
     IUserConfig,
 } from '../utils/data.models';
 import { Platform } from '@ionic/angular';
+import {
+    EditorSettingsComponent,
+    EditModalReturnType,
+} from '../components/editor_settings/editor_settings.components';
+import {
+    EditorSawpSettingsComponent,
+    SwapModalReturnType,
+} from '../components/editor_swap_settings/editor_swap_settings.components';
+
+interface ReactionData {
+    reaction: IReactions;
+    properties: IHeaderProperties;
+    reactionFields: IModalFields[];
+}
+
+interface ActionData {
+    raw: IActions;
+    properties: IHeaderProperties;
+    fields: IModalFields[];
+}
 
 @Component({
     selector: 'app-editeur',
@@ -22,51 +47,120 @@ export class EditeurPage implements OnInit {
     public actionID: string | null = '';
     public reactionID: string | null = '';
     private configID: string | null = '';
+    token: string = '';
 
+    // Available Data
     integrations: APIServices[] = [];
     actions: IActions[] = [];
     reactions: IReactions[] = [];
 
     loadedConfig: IUserConfig | undefined;
-
-    selectedAction: IActions | undefined = undefined;
-    selectedReaction: IReactions | undefined = undefined;
-    token: string = '';
-
     date = new Date();
 
-    actionModalShow: boolean = false;
-    actionProperties: IHeaderProperties = {
-        name: '',
-        img_src: '',
-        description: '',
-    };
-    actionFields: IModalFields[] = [];
-    actionVariables: IModalVariables[] = [];
+    // Config Variables
+    configuredAction: ActionData | undefined = undefined;
+    configuredReactions: ReactionData[] = [];
 
-    reactionModalShow: boolean = false;
-    reactionProperties: IHeaderProperties = {
-        name: '',
-        img_src: '',
-        description: '',
-    };
-    reactionFields: IModalFields[] = [];
-    reactionVariables: IModalVariables[] = [];
+    constructor(
+        private router: Router,
+        private service: ApiService,
+        private route: ActivatedRoute,
+        private platform: Platform,
+        private viewContainerRef: ViewContainerRef
+    ) {}
 
-    actionSwapModalOpen: boolean = false;
-    reactionSwapModalOpen: boolean = false;
-    component: {
-        api_name: string;
-        description: string;
-        id: number;
-        input: never[];
-    } = {
-        api_name: '',
-        description: '',
-        id: 0,
-        input: [],
-    };
+    ngOnInit(): void {
+        let url: string = window.location.href;
+        const searchParams = new URLSearchParams(url.split('?')[1]);
+        this.configID = searchParams.get('configID');
+        this.actionID = searchParams.get('actionID');
+        this.token = JSON.parse(
+            JSON.stringify(localStorage.getItem('Token')) as string
+        );
+        if (!this.token) {
+            this.router.navigate(['/home']);
+        }
+        //this.getAllData();
+    }
 
+    openModalConfigureAction(action: ActionData | undefined) {
+        if (action == undefined) return;
+        const component = this.viewContainerRef.createComponent(
+            EditorSettingsComponent
+        );
+        component.setInput('headerProperties', action.properties);
+        component.setInput('fields', action.fields);
+        component.setInput('context', component);
+        component.setInput('id', action.raw.id);
+        component.instance.onModalClose.subscribe(this.actionEditModalClosed);
+    }
+
+    actionEditModalClosed(data: EditModalReturnType) {
+        if (data == undefined || data.fields.length == 0) {
+            data.modal?.destroy();
+            return;
+        }
+        if (this.configuredAction != undefined)
+            this.configuredAction.fields = data.fields;
+        data.modal?.destroy();
+    }
+
+    openModalSwapAction(action: ActionData | undefined) {
+        if (action == undefined) return;
+        const component = this.viewContainerRef.createComponent(
+            EditorSawpSettingsComponent
+        );
+        component.setInput('services', this.integrations);
+        component.setInput('areas', this.actions);
+        component.setInput('context', component);
+        component.setInput('id', action.raw.id);
+        component.instance.onModalClose.subscribe(this.actionSwapModalClosed);
+    }
+
+    actionSwapModalClosed(data: SwapModalReturnType) {
+        if (data == undefined || data.newId == undefined) {
+            data.modal?.destroy();
+            return;
+        }
+        let raw_act = this.actions.find((a) => a.id == Number(data.newId));
+
+        if (raw_act != undefined)
+
+
+            let i = 0;
+            for (let element of this.actionFields) {
+                this.actionFields[i].fieldValue =
+                    element.fieldType == 'datetime' && element.fieldValue == ''
+                        ? this.date.toISOString()
+                        : this.actionFields[i].fieldValue;
+                i++;
+            }
+            this.actionProperties.img_src = this.getimgsrc(
+                this.selectedAction.api_name
+            );
+            this.actionProperties.name = this.selectedAction.api_name;
+            this.actionProperties.description = this.selectedAction.description;
+            this.actionModalShow = true;
+
+
+
+            this.configuredAction = {raw: raw_act, };,
+            
+        }
+        this.configuredAction?.raw = 
+        data.modal?.destroy();
+    }
+
+    getimgsrc(title: string | undefined) {
+        if (title == undefined) return 'assets/question-mark-round-icon.svg';
+        let res = this.integrations.find(
+            ({ name }) => name === title
+        )?.icon_url;
+        if (res == undefined) return 'assets/favicon.png';
+        return res;
+    }
+
+    /* 
     openActionModal() {
         if (this.selectedAction != undefined) {
             let i = 0;
@@ -380,25 +474,5 @@ export class EditeurPage implements OnInit {
             field.fieldValue = element.value;
         }
     }
-
-    constructor(
-        private router: Router,
-        private service: ApiService,
-        private route: ActivatedRoute,
-        private platform: Platform
-    ) {}
-
-    ngOnInit(): void {
-        let url: string = window.location.href;
-        const searchParams = new URLSearchParams(url.split('?')[1]);
-        this.configID = searchParams.get('configID');
-        this.actionID = searchParams.get('actionID');
-        this.token = JSON.parse(
-            JSON.stringify(localStorage.getItem('Token')) as string
-        );
-        if (!this.token) {
-            this.router.navigate(['/home']);
-        }
-        this.getAllData();
-    }
+ */
 }

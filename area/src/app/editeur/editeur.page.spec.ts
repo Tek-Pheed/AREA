@@ -115,7 +115,7 @@ describe('EditeurPage', () => {
                 fieldType: 'type',
             },
         ];
-        component.actionModalClosed(data);
+        component.actionEditModalClosed(data);
         expect(component.actionModalShow).toBeFalse();
         expect(component.actionFields).toEqual(data);
     });

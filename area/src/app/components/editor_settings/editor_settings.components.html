@@ -15,7 +15,7 @@
                         <ion-item *ngFor="let f of fields">
                             <ion-label *ngIf="f.fieldType === 'datetime'">{{f.fieldDescription}}</ion-label>
                             <ion-datetime-button [datetime]="f.fieldID"
-                                *ngIf="f.fieldType === 'datetime'" ></ion-datetime-button>
+                                *ngIf="f.fieldType === 'datetime'"></ion-datetime-button>
                             <ion-modal [keepContentsMounted]="true" *ngIf="f.fieldType === 'datetime'"
                                 class="dateminiModal">
                                 <ng-template>

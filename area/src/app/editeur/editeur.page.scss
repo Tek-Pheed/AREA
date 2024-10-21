@@ -12,6 +12,15 @@ ion-content {
     flex-direction: row;
 }
 
+.reactionContainer {
+    height: 75vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+}
+
 .container-editor {
     margin-top: constant(safe-area-inset-top) !important;
     margin-top: env(safe-area-inset-top) !important;

@@ -5,29 +5,32 @@
                 icon="chevron-back-outline" />
             <h1>Editor</h1>
         </div>
-        <editor-settings [headerProperties]="actionProperties" [fields]="actionFields" [variables]="[]"
+<!--         <editor-settings [headerProperties]="actionProperties" [fields]="actionFields" [variables]="[]"
             (onModalClose)="actionModalClosed($event)" [isOpen]="actionModalShow"></editor-settings>
         <editor-settings [headerProperties]="reactionProperties" [fields]="reactionFields" [variables]="actionVariables"
             (onModalClose)="reactionModalClose($event)" [isOpen]="reactionModalShow"></editor-settings>
         <editor-swap-settings [services]="this.integrations" [areas]="this.actions" [isOpen]="actionSwapModalOpen"
             (onModalClose)="swapActionSave($event)"></editor-swap-settings>
         <editor-swap-settings [services]="this.integrations" [areas]="this.reactions" [isOpen]="reactionSwapModalOpen"
-            (onModalClose)="swapReactionSave($event)"></editor-swap-settings>
+            (onModalClose)="swapReactionSave($event)"></editor-swap-settings> -->
         <div class="container">
             <div class="container">
-                <app-actions-cards title="{{(selectedAction == undefined ? 'Unknown Service' : selectedAction.title)}}"
-                    description="{{selectedReaction == undefined ? 'Please select an action' : selectedAction?.description}}"
-                    service="{{selectedAction?.api_name}}" image="{{getimgsrc(selectedAction?.api_name)}}"
-                    [editable]="true" (onCardClicked)="openActionModal()"
-                    (onEditClicked)="swapAction()"></app-actions-cards>
+                <app-actions-cards title="{{(configuredAction == undefined ? 'Unknown Service' : configuredAction.raw.title)}}"
+                    description="{{configuredAction == undefined ? 'Please select an action' : configuredAction.raw.description}}"
+                    service="{{configuredAction?.raw?.api_name}}" image="{{getimgsrc(configuredAction?.raw?.api_name)}}"
+                    [editable]="true" (onCardClicked)="openModalConfigureAction(configuredAction)"
+                    (onEditClicked)="openModalSwapAction(configuredAction)"></app-actions-cards>
                 <img alt="middle separator icon"
                     src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
-                <app-actions-cards
-                    title="{{(selectedReaction == undefined ? 'Unknown Service' : selectedReaction.title)}}"
-                    description="{{selectedReaction == undefined ? 'Please select a reaction' : selectedReaction.description}}"
-                    service="{{selectedReaction?.api_name}}" image="{{getimgsrc(selectedReaction?.api_name)}}"
-                    [editable]="true" (onCardClicked)="openReactionModal()"
-                    (onEditClicked)="swapReactions()"></app-actions-cards>
+                <div class="reactionContainer">
+                    <!-- <app-actions-cards
+                        title="{{(selectedReaction == undefined ? 'Unknown Service' : selectedReaction.title)}}"
+                        description="{{selectedReaction == undefined ? 'Please select a reaction' : selectedReaction.description}}"
+                        service="{{selectedReaction?.api_name}}" image="{{getimgsrc(selectedReaction?.api_name)}}"
+                        [editable]="true" (onCardClicked)="openReactionModal()"
+                        (onEditClicked)="swapReactions()"></app-actions-cards>
+                    <app-actions-cards></app-actions-cards> -->
+                </div>
             </div>
         </div>
         <div class="bottomContainer bottom">
