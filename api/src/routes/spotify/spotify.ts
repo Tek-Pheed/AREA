@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import log from '../../utils/logger';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -79,8 +80,30 @@ spotifyRouter.get(
     }),
     async (req: any, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
-        );
+        const token: any = req.user;
+        const origin = req.headers['user-agent'];
+        console.log(origin);
+        if (origin?.toLowerCase().includes('android')) {
+            log.warn(
+                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+            res.redirect(
+                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        } else if (origin?.toLowerCase().includes('iphone')) {
+            log.warn(
+                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+            res.redirect(
+                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        } else {
+            log.warn(
+                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+            res.redirect(
+                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        }
     }
 );
