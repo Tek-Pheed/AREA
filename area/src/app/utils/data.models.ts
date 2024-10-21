@@ -56,6 +56,7 @@ export interface ProfileData {
     Name: string;
     Email: string;
     picture_url: string;
+    create_at: string;
 }
 
 export interface IAreaPair {
