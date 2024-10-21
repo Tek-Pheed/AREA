@@ -1,4 +1,7 @@
-import { refreshAccessTokeninDB } from './refresh.query';
+import {
+    refreshAccessTokeninDB,
+    refreshAccessTokeninDBDiscord,
+} from './refresh.query';
 import log from './logger';
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -81,10 +84,11 @@ export async function refreshDiscordToken(
             data
         );
         if (response.data.access_token) {
-            await refreshAccessTokeninDB(
+            await refreshAccessTokeninDBDiscord(
                 email,
                 'discord',
-                response.data.access_token
+                response.data.access_token,
+                response.data.refresh_token
             );
             return true;
         }
