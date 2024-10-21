@@ -6,9 +6,9 @@
     />
     <p class="title">{{ app_name }}</p>
     <button
-        class="connect-btn {{connected ? 'red' : 'green'}}"
+        class="connect-btn {{connected ? 'green' : 'red'}}"
         (click)="OAuthLogin(app_name, email, connected)"
     >
-        {{ connected ? "Connect": "Disconnected"}}
+        {{ connected ? "Disconnect": "Connect"}}
     </button>
 </div>
