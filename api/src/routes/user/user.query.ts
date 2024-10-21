@@ -12,7 +12,7 @@ export async function getCurrentUser(token: string): Promise<any> {
         const result: any = await db
             .promise()
             .query(
-                'SELECT id, email, username, create_at FROM users WHERE email=?',
+                'SELECT id, email, username, picture_url, create_at FROM users WHERE email=?',
                 decoded.email
             );
         return result[0];
@@ -34,19 +34,20 @@ export async function updateCurrentUser(
             await db
                 .promise()
                 .query(
-                    `UPDATE users SET username=?, email=?, password=? WHERE email='${decoded.email}'`,
+                    `UPDATE users SET username=?, email=?, password=?, picture_url=? WHERE email='${decoded.email}'`,
                     [
                         body.username,
                         body.email,
                         bcrypt.hashSync(body.password, 10),
+                        body.picture_url,
                     ]
                 );
         } else {
             await db
                 .promise()
                 .query(
-                    `UPDATE users SET username=?, email=? WHERE email='${decoded.email}'`,
-                    [body.username, body.email]
+                    `UPDATE users SET username=?, email=?, picture_url=? WHERE email='${decoded.email}'`,
+                    [body.username, body.email, body.picture_url]
                 );
         }
         return true;
