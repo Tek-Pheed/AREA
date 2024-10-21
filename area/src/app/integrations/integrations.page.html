@@ -21,6 +21,7 @@
                     (onCardClicked)="this.createConfigFromActionId(a.id)">
                 </app-actions-cards>
             </div>
+            <div *ngIf="!platform.is('desktop')" class="bottom"></div>
         </div>
         <div class="bottom-pad"></div>
     </div>
