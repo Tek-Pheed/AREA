@@ -2,7 +2,7 @@
     title="Click to {{connected ? 'connect' : 'disconnect'}} {{app_name}}">
     <img src="assets/icon/{{app_name.toLowerCase()}}.svg" alt="profile" class="profile-img" />
     <p class="title">{{ app_name }}</p>
-    <button class="connect-btn {{connected ? 'green' : 'red'}}">
-        {{ connected ? "Connected": "Disconnected"}}
+    <button class="connect-btn {{connected ? 'red' : 'green'}}">
+        {{ connected ? "Connect": "Disconnect"}}
     </button>
 </div>
