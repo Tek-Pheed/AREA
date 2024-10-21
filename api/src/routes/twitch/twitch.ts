@@ -1,4 +1,5 @@
-import { Response, Router } from 'express';
+import { Response, Request, Router } from 'express';
+import log from '../../utils/logger';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -60,23 +61,53 @@ passport.deserializeUser((obj: any, done: any) => {
     done(null, obj);
 });
 
-twitchRouter.get(
-    '/login',
-    passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE }),
-    function (req, res) {
-        //#swagger.tags   = ['Twitch OAuth']
-    }
-);
+twitchRouter.get('/login', function (req: Request, res: Response) {
+    //#swagger.tags   = ['Twitch OAuth']
+    const origin = req.headers.origin || req.protocol + '://' + req.get('host');
+    const state = Buffer.from(JSON.stringify({ origin })).toString('base64');
+
+    log.info(`Origin: ${req.headers['user-agent']}`);
+    log.info(`State: ${state}`);
+
+    passport.authenticate('twitch', {
+        scope: TWITCH_OAUTH_SCOPE,
+        state: {
+            state,
+        }, // Passer le state encodé
+    })(req, res);
+});
 
 twitchRouter.get(
     '/callback',
     passport.authenticate('twitch', {
         failureRedirect: '/api/oauth/twitch/login',
     }),
-    async (req: any, res: Response) => {
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
-        );
+    async (req: Request, res: Response) => {
+        const token: any = req.user;
+        const origin = req.headers['user-agent'];
+
+        if (origin?.toLowerCase().includes('android')) {
+            log.warn(
+                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+            res.redirect(
+                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        } else if (origin?.toLowerCase().includes('iphone')) {
+            log.warn(
+                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+            res.redirect(
+                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        } else {
+            log.warn(
+                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+            res.redirect(
+                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        }
         //#swagger.tags   = ['Twitch OAuth']
     }
 );
