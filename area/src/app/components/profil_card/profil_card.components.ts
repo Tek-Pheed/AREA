@@ -14,7 +14,6 @@ export class ProfilCardComponent implements OnInit {
     @Input() background_color: string = '';
     @Input() image: string = '';
 
-    showPassword: boolean = false;
     inputName: string = '';
     inputEmail: string = '';
     inputPassword: string = '';
@@ -31,10 +30,6 @@ export class ProfilCardComponent implements OnInit {
             this.inputName = res.data[0].username;
             this.inputEmail = res.data[0].email;
         });
-    }
-
-    togglePasswordVisibility() {
-        this.showPassword = !this.showPassword;
     }
 
     updateName(event: any) {
