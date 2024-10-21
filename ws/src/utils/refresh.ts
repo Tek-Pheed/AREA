@@ -33,7 +33,7 @@ export async function refreshSpotifyToken(
                 },
             }
         );
-        log.info(response);
+        //log.info(response);
         if (response.data.access_token) {
             await refreshAccessTokeninDB(
                 email,
@@ -57,7 +57,7 @@ export async function refreshDiscordToken(
         throw new Error('Missing Discord Client ID or Client Secret');
     }
 
-    if (refreshToken === null) {
+    if (refreshToken === null || refreshToken === undefined) {
         log.warn(`Discord refresh token for ${email} is null`);
         return false;
     }
@@ -102,7 +102,7 @@ export async function refreshTwitchToken(
         throw new Error('Missing Twitch Client ID or Client Secret');
     }
 
-    if (refreshToken === null) {
+    if (refreshToken === null || refreshToken === undefined) {
         log.warn(`Twitch refresh token for ${email} is null`);
         return false;
     }
