@@ -7,7 +7,8 @@ import { ApiService } from 'src/utils/api.services';
     styleUrls: ['navbar.components.scss'],
 })
 export class NavbarComponent implements OnInit {
-    profileImage: string = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+    profileImage: string =
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
 
     token: string = '';
 
@@ -18,7 +19,8 @@ export class NavbarComponent implements OnInit {
             JSON.stringify(localStorage.getItem('Token')) as string
         );
         this.service.getUserData(this.token).subscribe((res) => {
-            this.profileImage = res.data[0].picture_url;
+            if (res.data[0].picture_url != '')
+                this.profileImage = res.data[0].picture_url;
         });
     }
 }
