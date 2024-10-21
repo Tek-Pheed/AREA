@@ -21,3 +21,26 @@ export async function refreshAccessTokeninDB(
         return false;
     }
 }
+
+export async function refreshAccessTokeninDBDiscord(
+    email: string,
+    service: string,
+    accessToken: string,
+    refreshToken: string
+) {
+    try {
+        const result: any = await db
+            .promise()
+            .query(
+                `UPDATE usersToken SET usersToken.${service}AccessToken = '${accessToken}', usersToken.${service}RefreshToken = '${refreshToken}' WHERE usersToken.email = '${email}'`
+            );
+        if (result[0].affectedRows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}

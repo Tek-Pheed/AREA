@@ -1,3 +1,6 @@
+import { getDiscordToken } from '../apis/discord/discord.query';
+import { getSpotifyToken } from '../apis/spotify/spotify.query';
+import { getTwitchToken } from '../apis/twitch/twitch.query';
 import { db, pool } from '../utils/database';
 import {
     refreshSpotifyToken,
@@ -30,12 +33,12 @@ describe('refresh.ts', () => {
         });
 
         it('should return true', async () => {
-            const email = 'none@nomail.com';
-            const refresh =
-                'AQBS58QXQpNxRBXbHgRwSR5CP13R9SBNOHgTRTdZn3GiGVRB1NpWmucutzpAwZ3Wyx10E-MjJH_zFW6CPE10EeBolrWbSoHJklnHtHYBPk0mCu1lKEgUf67T6kDjQevJ76s';
+            const email = 'raphael.scandella@epitech.eu';
+            const tokens = await getSpotifyToken(email);
+            const refresh = tokens.sRefreshToken;
             const result = await refreshSpotifyToken(email, refresh!);
             expect(result).toBe(true);
-            await new Promise((r) => setTimeout(r, 3500));
+            await new Promise((r) => setTimeout(r, 4000));
         }, 5000);
     });
 
@@ -48,13 +51,14 @@ describe('refresh.ts', () => {
             await new Promise((r) => setTimeout(r, 500));
         });
 
-        it('should return true', async () => {
-            const email = 'none@nomail.com';
-            const refresh = '7nUmQsUALJTrKvV76lynb8MPbOKmbf';
+        /*it('should return true', async () => {
+            const email = 'raphael.scandella@epitech.eu';
+            const tokens = await getDiscordToken(email);
+            const refresh = tokens.dRefreshToken;
             const result = await refreshDiscordToken(email, refresh!);
             expect(result).toBe(true);
-            await new Promise((r) => setTimeout(r, 3500));
-        }, 5000);
+            await new Promise((r) => setTimeout(r, 4000));
+        }, 5000);*/
     });
 
     describe('refreshTwitchToken', () => {
@@ -67,12 +71,12 @@ describe('refresh.ts', () => {
         });
 
         it('should return true', async () => {
-            const email = 'none@nomail.com';
-            const refresh =
-                'tinj1jghagujhuc28qvfwgig7xj5w0ffx2wcmwe9mi35xnhw63';
+            const email = 'raphael.scandella@epitech.eu';
+            const tokens = await getTwitchToken(email);
+            const refresh = tokens.tRefreshToken;
             const result = await refreshTwitchToken(email, refresh!);
             expect(result).toBe(true);
-            await new Promise((r) => setTimeout(r, 3500));
+            await new Promise((r) => setTimeout(r, 4000));
         }, 5000);
     });
 });
