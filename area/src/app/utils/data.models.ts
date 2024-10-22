@@ -88,6 +88,7 @@ export interface IModalVariables {
 export interface IConfigContent {
     name: string;
     value: string;
+    reaction: string | undefined
 }
 
 export interface IConfigBody {
@@ -101,5 +102,5 @@ export interface IUserConfig {
     method: string;
     headers: { 'Content-Type': 'application/json' };
     body: IConfigBody;
-    reaction_ids: [number];
+    reaction_id: number;
 }

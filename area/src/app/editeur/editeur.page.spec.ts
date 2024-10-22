@@ -160,7 +160,7 @@ describe('EditeurPage', () => {
         component.loadedConfig = {
             id: '1',
             actions_id: 1,
-            reaction_ids: 1,
+            reaction_id: 1,
             headers: {
                 'Content-Type': 'application/json',
             },

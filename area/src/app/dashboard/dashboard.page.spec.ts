@@ -78,7 +78,7 @@ describe('DashboardPage', () => {
             {
                 id: '1',
                 actions_id: 1,
-                reaction_ids: 2,
+                reaction_id: 2,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
