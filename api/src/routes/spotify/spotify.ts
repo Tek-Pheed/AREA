@@ -1,6 +1,7 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import log from '../../utils/logger';
 import API from '../../middlewares/api';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -75,31 +76,41 @@ spotifyRouter.get(
 );
 
 spotifyRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('spotify', { state: email })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Discord OAuth']
+    }
+);
+
+spotifyRouter.get(
     '/callback',
     passport.authenticate('spotify', {
         failureRedirect: '/api/oauth/spotify/login',
     }),
-    async (req: any, res: Response) => {
+    async (req: Request, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
         const token: any = req.user;
+        const email = req.query.state;
         const origin = req.headers['user-agent'];
-        /*if (
+        if (
             origin?.toLowerCase().includes('android') ||
             origin?.toLowerCase().includes('iphone')
         ) {
-            res.status(200).json(
-                API(200, false, '', {
-                    accessToken: token.accessTokenSpotify,
-                    refreshToken: token.refreshTokenSpotify,
-                })
+            await insertTokeninDb(
+                'spotify',
+                token.accessTokenSpotify,
+                token.refreshTokenSpotify,
+                `${email}`
             );
+            res.send('You are connected close this modal !');
         } else {
             res.redirect(
                 `${process.env.WEB_HOST}/dashboard/profile?api=spotify&refresh_token=${token.refreshTokenSpotify}&access_token=${token.accessTokenSpotify}`
             );
-        }*/
-        res.redirect(
-            `${process.env.WEB_HOST}/dashboard/profile?api=spotify&refresh_token=${token.refreshTokenSpotify}&access_token=${token.accessTokenSpotify}`
-        );
+        }
     }
 );

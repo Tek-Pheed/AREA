@@ -1,4 +1,5 @@
 import { Response, Router } from 'express';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -72,9 +73,26 @@ unsplashRouter.get(
         failureRedirect: '/api/oauth/unsplash/login',
     }),
     async (req: any, res: Response) => {
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=unsplash&refresh_token=${req.user.refreshTokenUnsplash}&access_token=${req.user.accessTokenUnsplash}`
-        );
+        const token: any = req.user;
+        const email = req.query.state;
+        console.log(email);
+        const origin = req.headers['user-agent'];
+        if (
+            origin?.toLowerCase().includes('android') ||
+            origin?.toLowerCase().includes('iphone')
+        ) {
+            await insertTokeninDb(
+                'unsplash',
+                token.accessTokenUnsplash,
+                token.refreshTokenUnsplash,
+                `${email}`
+            );
+            res.send('You are connected close this modal !');
+        } else {
+            res.redirect(
+                `${process.env.WEB_HOST}/dashboard/profile?api=unsplash&refresh_token=${req.user.refreshTokenUnsplash}&access_token=${req.user.accessTokenUnsplash}`
+            );
+        }
         //res.redirect('http://localhost:8080/api/oauth/unsplash/get_random_img');
         //#swagger.tags   = ['Unsplash OAuth']
     }

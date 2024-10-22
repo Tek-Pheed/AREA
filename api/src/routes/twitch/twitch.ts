@@ -1,8 +1,8 @@
-import { Response, Request, Router } from 'express';
-import log from '../../utils/logger';
+import { Response, Request, Router, NextFunction } from 'express';
+import { insertTokeninDb } from '../oauth/oauth.query';
+import { spotifyRouter } from '../spotify/spotify';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
-const axios = require('axios');
 const session = require('express-session');
 const passport: any = require('passport');
 
@@ -34,7 +34,6 @@ passport.use(
             clientID: TWITCH_CLIENT_ID,
             clientSecret: TWITCH_CLIENT_SECRET,
             callbackURL: TWITCH_REDIRECT_URI,
-            state: true,
             scope: TWITCH_OAUTH_SCOPE,
         },
         function (
@@ -61,21 +60,31 @@ passport.deserializeUser((obj: any, done: any) => {
     done(null, obj);
 });
 
-twitchRouter.get('/login', function (req: Request, res: Response) {
-    //#swagger.tags   = ['Twitch OAuth']
-    const origin = req.headers.origin || req.protocol + '://' + req.get('host');
-    const state = Buffer.from(JSON.stringify({ origin })).toString('base64');
-
-    log.info(`Origin: ${req.headers['user-agent']}`);
-    log.info(`State: ${state}`);
-
+twitchRouter.get(
+    '/login',
     passport.authenticate('twitch', {
         scope: TWITCH_OAUTH_SCOPE,
-        state: {
-            state,
-        }, // Passer le state encodé
-    })(req, res);
-});
+    }),
+    function (req, res) {
+        /*
+                #swagger.tags   = ['Twitch OAuth']
+            */
+    }
+);
+
+twitchRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('twitch', {
+            scope: TWITCH_OAUTH_SCOPE,
+            state: email,
+        })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Twitch OAuth']
+    }
+);
 
 twitchRouter.get(
     '/callback',
@@ -84,26 +93,21 @@ twitchRouter.get(
     }),
     async (req: Request, res: Response) => {
         const token: any = req.user;
+        const email = req.query.state;
+        console.log(email);
         const origin = req.headers['user-agent'];
-
-        if (origin?.toLowerCase().includes('android')) {
-            log.warn(
-                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+        if (
+            origin?.toLowerCase().includes('android') ||
+            origin?.toLowerCase().includes('iphone')
+        ) {
+            await insertTokeninDb(
+                'twitch',
+                token.accessTokenTwitch,
+                token.refreshTokenTwitch,
+                `${email}`
             );
-            res.redirect(
-                `http://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
-        } else if (origin?.toLowerCase().includes('iphone')) {
-            log.warn(
-                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
-            res.redirect(
-                `capacitor://localhost/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
+            res.send('You are connected close this modal !');
         } else {
-            log.warn(
-                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
             res.redirect(
                 `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
             );
