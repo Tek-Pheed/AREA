@@ -146,9 +146,6 @@ export class EditeurPage implements OnInit {
             if (field == undefined) continue;
             field.fieldValue = element.value;
         }
-
-        //TODO: Change that too
-        console.warn(this.loadedConfig);
         for (const element of this.loadedConfig.body.reaction) {
             let rfield = this.configuredReactions.find(
                 (obj) =>
@@ -474,11 +471,10 @@ export class EditeurPage implements OnInit {
                     }
                 },
                 (err) => {
-                    alert(
-                        'Unable to save the configuration: ' +
-                            err.response.error
-                    );
                     console.error(err);
+                    alert(
+                        'Unable to save the configuration: ' + err.error.message
+                    );
                 }
             );
         } else {
