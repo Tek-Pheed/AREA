@@ -5,14 +5,6 @@
                 icon="chevron-back-outline" />
             <h1>Editor</h1>
         </div>
-        <!--         <editor-settings [headerProperties]="actionProperties" [fields]="actionFields" [variables]="[]"
-            (onModalClose)="actionModalClosed($event)" [isOpen]="actionModalShow"></editor-settings>
-        <editor-settings [headerProperties]="reactionProperties" [fields]="reactionFields" [variables]="actionVariables"
-            (onModalClose)="reactionModalClose($event)" [isOpen]="reactionModalShow"></editor-settings>
-        <editor-swap-settings [services]="this.integrations" [areas]="this.actions" [isOpen]="actionSwapModalOpen"
-            (onModalClose)="swapActionSave($event)"></editor-swap-settings>
-        <editor-swap-settings [services]="this.integrations" [areas]="this.reactions" [isOpen]="reactionSwapModalOpen"
-            (onModalClose)="swapReactionSave($event)"></editor-swap-settings> -->
         <div class="container">
             <div class="container">
                 <app-actions-cards
@@ -25,11 +17,13 @@
                     src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
                 <div class="reactionContainer">
                     <app-actions-cards *ngFor="let reaction of this.configuredReactions"
+                        [deletable]=true
                         title="{{(reaction == undefined ? 'Unknown Service' : reaction.raw.title)}}"
                         description="{{reaction == undefined ? 'Please select a reaction' : reaction.raw.description}}"
                         service="{{reaction?.raw?.api_name}}" image="{{getimgsrc(reaction?.raw?.api_name)}}"
                         [editable]="true" (onCardClicked)="openModalConfigureReaction(reaction)"
-                        (onEditClicked)="openModalSwapReaction(reaction)"></app-actions-cards>
+                        (onEditClicked)="openModalSwapReaction(reaction)"
+                        (onCardDeleted)="deleteReactionById($event)"></app-actions-cards>
                 </div>
             </div>
         </div>

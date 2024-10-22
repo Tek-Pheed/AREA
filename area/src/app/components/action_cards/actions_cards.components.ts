@@ -16,9 +16,11 @@ export class ActionsCardsComponent {
     @Input() service: string = '';
     @Input() editable: boolean = false;
     @Input() id: string = '';
+    @Input() deletable: boolean = false;
 
     @Output() onCardClicked = new EventEmitter<string>();
     @Output() onEditClicked = new EventEmitter<string>();
+    @Output() onCardDeleted = new EventEmitter<string>();
 
     getServiceColor(): string {
         switch (this.service) {
@@ -46,5 +48,9 @@ export class ActionsCardsComponent {
 
     editClicked() {
         this.onEditClicked.emit(this.id);
+    }
+
+    deleteCard() {
+        this.onCardDeleted.emit(this.id);
     }
 }

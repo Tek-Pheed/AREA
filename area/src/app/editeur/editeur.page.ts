@@ -378,9 +378,14 @@ export class EditeurPage implements OnInit {
         this.configuredReactions.push(undefined);
     }
 
+    deleteReactionById(id: string) {
+        let rindex = this.configuredReactions.findIndex((obj) => (obj?.raw.id == Number(id)))
+        this.configuredReactions.splice(rindex, 1);
+    }
+
     saveConfiguration() {}
 
-    //TOFIX: Parse date
+    //TODO: Add delete button for reactions
 
     /* 
     openActionModal() {
