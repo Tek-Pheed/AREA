@@ -1,4 +1,7 @@
-import { refreshAccessTokeninDB } from './refresh.query';
+import {
+    refreshAccessTokeninDB,
+    refreshAccessTokeninDBDiscord,
+} from './refresh.query';
 import log from './logger';
 
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -33,7 +36,7 @@ export async function refreshSpotifyToken(
                 },
             }
         );
-        log.info(response);
+        //log.info(response);
         if (response.data.access_token) {
             await refreshAccessTokeninDB(
                 email,
@@ -57,7 +60,7 @@ export async function refreshDiscordToken(
         throw new Error('Missing Discord Client ID or Client Secret');
     }
 
-    if (refreshToken === null) {
+    if (refreshToken === null || refreshToken === undefined) {
         log.warn(`Discord refresh token for ${email} is null`);
         return false;
     }
@@ -81,10 +84,11 @@ export async function refreshDiscordToken(
             data
         );
         if (response.data.access_token) {
-            await refreshAccessTokeninDB(
+            await refreshAccessTokeninDBDiscord(
                 email,
                 'discord',
-                response.data.access_token
+                response.data.access_token,
+                response.data.refresh_token
             );
             return true;
         }
@@ -102,7 +106,7 @@ export async function refreshTwitchToken(
         throw new Error('Missing Twitch Client ID or Client Secret');
     }
 
-    if (refreshToken === null) {
+    if (refreshToken === null || refreshToken === undefined) {
         log.warn(`Twitch refresh token for ${email} is null`);
         return false;
     }

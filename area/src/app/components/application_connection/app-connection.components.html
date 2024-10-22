@@ -1,10 +1,8 @@
-<div class="container">
-    <img [src]="app_icon" alt="profile" class="profile-img" />
+<div class="container {{app_name.toLowerCase()}}" (click)="OAuthLogin(app_name, email, connected)"
+    title="Click to {{connected ? 'connect' : 'disconnect'}} {{app_name}}">
+    <img src="assets/icon/{{app_name.toLowerCase()}}.svg" alt="profile" class="profile-img" />
     <p class="title">{{ app_name }}</p>
-    <button
-        class="connect-btn {{connected ? 'red' : 'green'}}"
-        (click)="OAuthLogin(app_name, email, connected)"
-    >
-        {{ connected ? "✖️" : "Connect"}}
+    <button class="connect-btn {{connected ? 'red' : 'green'}}">
+        {{ connected ? "Disconnect": "Connect"}}
     </button>
 </div>

@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { toLower } from 'ionicons/dist/types/components/icon/utils';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { Platform } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+import { Browser } from '@capacitor/browser';
+import { App } from '@capacitor/app';
 
 @Component({
     selector: 'app-connection-card',
@@ -23,7 +24,7 @@ export class AppConnectedCardComponent {
         private router: Router
     ) {}
 
-    OAuthLogin(name: string, email: string, connected: boolean) {
+    async OAuthLogin(name: string, email: string, connected: boolean) {
         if (connected) {
             let token = JSON.parse(
                 JSON.stringify(localStorage.getItem('Token')) as string
@@ -32,18 +33,24 @@ export class AppConnectedCardComponent {
                 .logoutService(token, email, name.toLowerCase())
                 .subscribe(
                     (res) => {
-                        if (this.platform.is('mobile')) {
-                            this.router.navigate(['/tabs/profile']);
-                        } else {
-                            location.href = "/dashboard/profile";
-                        }
+                        this.connected = false;
                     },
                     (err) => {
                         console.error(err);
                     }
                 );
         } else {
-            location.href = `http://localhost:8080/api/oauth/${name.toLowerCase()}/login`;
+            if (this.platform.is('desktop')) {
+                location.href = `${environment.API_URL}/api/oauth/${name.toLowerCase()}/login`;
+            } else {
+                await Browser.open({
+                    url: `${environment.API_URL}/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem('Email')}`,
+                });
+
+                await Browser.addListener('browserFinished', () => {
+                    window.location.reload();
+                });
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
-import { Response, Router } from 'express';
+import { Response, Request, Router, NextFunction } from 'express';
+import { insertTokeninDb } from '../oauth/oauth.query';
+import { spotifyRouter } from '../spotify/spotify';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
-const axios = require('axios');
 const session = require('express-session');
 const passport: any = require('passport');
 
@@ -15,65 +16,6 @@ const TWITCH_OAUTH_SCOPE = [
 ];
 
 export const twitchRouter = Router();
-
-export async function getUserId(token: string): Promise<any> {
-    const response = await axios.get('https://api.twitch.tv/helix/users/', {
-        headers: {
-            'Client-ID': TWITCH_CLIENT_ID,
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    if (response.data && response.data.data.length > 0) {
-        return response.data.data[0].id;
-    } else {
-        return null;
-    }
-}
-
-export async function getUserLogin(
-    token: string,
-    username: string
-): Promise<any> {
-    const response = await axios.get('https://api.twitch.tv/helix/users', {
-        headers: {
-            'Client-ID': TWITCH_CLIENT_ID,
-            Authorization: `Bearer ${token}`,
-        },
-        params: {
-            login: username,
-        },
-    });
-
-    if (response.data && response.data.data.length > 0) {
-        return response.data.data[0].login;
-    } else {
-        return null;
-    }
-}
-
-async function refreshTwitchToken(refreshToken: string): Promise<string> {
-    if (!TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET) {
-        throw new Error('Missing Twitch Client ID or Client Secret');
-    }
-
-    const response = await axios.post(
-        'https://id.twitch.tv/oauth2/token',
-        new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            client_id: TWITCH_CLIENT_ID,
-            client_secret: TWITCH_CLIENT_SECRET,
-        }).toString(),
-        {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        }
-    );
-
-    const newAccessToken = response.data.access_token;
-    return newAccessToken;
-}
 
 twitchRouter.use(
     session({
@@ -92,7 +34,6 @@ passport.use(
             clientID: TWITCH_CLIENT_ID,
             clientSecret: TWITCH_CLIENT_SECRET,
             callbackURL: TWITCH_REDIRECT_URI,
-            state: true,
             scope: TWITCH_OAUTH_SCOPE,
         },
         function (
@@ -121,9 +62,27 @@ passport.deserializeUser((obj: any, done: any) => {
 
 twitchRouter.get(
     '/login',
-    passport.authenticate('twitch', { scope: TWITCH_OAUTH_SCOPE }),
+    passport.authenticate('twitch', {
+        scope: TWITCH_OAUTH_SCOPE,
+    }),
     function (req, res) {
-        //#swagger.tags   = ['Twitch OAuth']
+        /*
+                #swagger.tags   = ['Twitch OAuth']
+            */
+    }
+);
+
+twitchRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('twitch', {
+            scope: TWITCH_OAUTH_SCOPE,
+            state: email,
+        })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Twitch OAuth']
     }
 );
 
@@ -132,10 +91,27 @@ twitchRouter.get(
     passport.authenticate('twitch', {
         failureRedirect: '/api/oauth/twitch/login',
     }),
-    async (req: any, res: Response) => {
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=twitch&refresh_token=${req.user.refreshTokenTwitch}&access_token=${req.user.accessTokenTwitch}`
-        );
+    async (req: Request, res: Response) => {
+        const token: any = req.user;
+        const email = req.query.state;
+        console.log(email);
+        const origin = req.headers['user-agent'];
+        if (
+            origin?.toLowerCase().includes('android') ||
+            origin?.toLowerCase().includes('iphone')
+        ) {
+            await insertTokeninDb(
+                'twitch',
+                token.accessTokenTwitch,
+                token.refreshTokenTwitch,
+                `${email}`
+            );
+            res.send('You are connected close this modal !');
+        } else {
+            res.redirect(
+                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
+            );
+        }
         //#swagger.tags   = ['Twitch OAuth']
     }
 );

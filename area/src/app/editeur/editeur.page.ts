@@ -19,8 +19,8 @@ import { Platform } from '@ionic/angular';
     styleUrls: ['editeur.page.scss'],
 })
 export class EditeurPage implements OnInit {
-    private actionID: string | null = '';
-    private reactionID: string | null = '';
+    public actionID: string | null = '';
+    public reactionID: string | null = '';
     private configID: string | null = '';
 
     integrations: APIServices[] = [];
@@ -55,13 +55,27 @@ export class EditeurPage implements OnInit {
 
     actionSwapModalOpen: boolean = false;
     reactionSwapModalOpen: boolean = false;
+    component: {
+        api_name: string;
+        description: string;
+        id: number;
+        input: never[];
+    } = {
+        api_name: '',
+        description: '',
+        id: 0,
+        input: [],
+    };
 
     openActionModal() {
         if (this.selectedAction != undefined) {
             let i = 0;
-            for (let  element of this.actionFields) {
-                this.actionFields[i].fieldValue = (element.fieldType == 'datetime' && element.fieldValue == '' ? this.date.toISOString() : this.actionFields[i].fieldValue);
-                i++
+            for (let element of this.actionFields) {
+                this.actionFields[i].fieldValue =
+                    element.fieldType == 'datetime' && element.fieldValue == ''
+                        ? this.date.toISOString()
+                        : this.actionFields[i].fieldValue;
+                i++;
             }
             this.actionProperties.img_src = this.getimgsrc(
                 this.selectedAction.api_name
@@ -75,9 +89,12 @@ export class EditeurPage implements OnInit {
     openReactionModal() {
         if (this.selectedReaction != undefined) {
             let i = 0;
-            for (let  element of this.reactionFields) {
-                this.reactionFields[i].fieldValue = (element.fieldType == 'datetime' && element.fieldValue == '' ? this.date.toISOString() : this.reactionFields[i].fieldValue);
-                i++
+            for (let element of this.reactionFields) {
+                this.reactionFields[i].fieldValue =
+                    element.fieldType == 'datetime' && element.fieldValue == ''
+                        ? this.date.toISOString()
+                        : this.reactionFields[i].fieldValue;
+                i++;
             }
             this.reactionProperties.img_src = this.getimgsrc(
                 this.selectedReaction.api_name

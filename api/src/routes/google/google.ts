@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction, Express, Router } from 'express';
 import { isAuthenticatedGoogle } from '../../middlewares/oauth';
 import qs from 'qs';
+import { discordRouter } from '../discord/discord';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -59,6 +61,20 @@ googleRouter.get(
     }
 );
 
+googleRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('google', {
+            accessType: 'offline',
+            state: email,
+        })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Google OAuth']
+    }
+);
+
 googleRouter.use(
     session({
         secret: process.env.SESSION_SECRET || 'default_secret',
@@ -73,10 +89,26 @@ googleRouter.get(
         failureRedirect: '/api/oauth/google/login',
     }),
     async (req: any, res: Response) => {
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
-        );
-        //res.redirect('http://localhost:8080/api/oauth/google/getCalendars');
+        const token: any = req.user;
+        const email = req.query.state;
+        console.log(email);
+        const origin = req.headers['user-agent'];
+        if (
+            origin?.toLowerCase().includes('android') ||
+            origin?.toLowerCase().includes('iphone')
+        ) {
+            await insertTokeninDb(
+                'google',
+                token.accessTokenGoogle,
+                token.refreshTokenGoogle,
+                `${email}`
+            );
+            res.send('You are connected close this modal !');
+        } else {
+            res.redirect(
+                `${process.env.WEB_HOST}/dashboard/profile?api=google&refresh_token=${req.user.refreshTokenGoogle}&access_token=${req.user.accessTokenGoogle}`
+            );
+        }
         // #swagger.tags   = ['Google OAuth']
     }
 );

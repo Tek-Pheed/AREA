@@ -1,56 +1,84 @@
 .container {
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    height: 60px;
-    width: 100%;
+    border-radius: 20px;
+    height: 230px;
+    width: 190px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    justify-content: space-between;
+    justify-content: center;
+    cursor: pointer;
+    margin: 10px;
+}
 
-    .profile-img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
+.profile-img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
 
-    .title {
-        flex-grow: 1;
-        margin-left: 10px;
-        font-weight: bold;
-    }
+.title {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.4rem;
+    color: white;
+}
 
-    .connect-btn {
-        color: white;
-        border: none;
-        border-radius: 13px;
-        width: 80px;
-        height: 35px;
-        font-size: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-    }
+.connect-btn {
+    color: white;
+    border: none;
+    border-radius: 20px;
+    width: 140px;
+    height: 20px;
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+}
 
-    .red {
-        background-color: red;
-    }
+.red {
+    background-color: #e32727;
+}
 
-    .green {
-        background-color: green;
-    }
+.green {
+    background-color: #1db954;
 }
 
 @media (prefers-color-scheme: dark) {
     .container {
         background: black;
+        box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.432);
     }
+}
 
-    .profile-img {
-        background: white;
-    }
+.github {
+    background: linear-gradient(217deg, #000000, #5b42f3);
+}
+
+.twitch {
+    background: linear-gradient(217deg, #af40ff, #5b42f3);
+}
+
+.spotify {
+    background: linear-gradient(217deg, #1db954, #5b42f3);
+}
+
+.unsplash {
+    background: linear-gradient(217deg, #ffffff, #5b42f3);
+}
+
+.discord {
+    background: linear-gradient(217deg, #7289da, #5b42f3);
+}
+
+.google {
+    background: linear-gradient(217deg, #e66465, #5b42f3);
+}
+
+.container:hover {
+    filter: drop-shadow(0 0 0.75rem rgb(136, 136, 136));
 }

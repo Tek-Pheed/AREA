@@ -1,10 +1,18 @@
 <div class="contain">
     <div class="login-container">
-        <h1>AREA</h1>
+        <img src="assets/nexus-nobg.png">
         <form>
-            <input #emailInput type="email" placeholder="email" required>
-            <input #passwordInput type="password" placeholder="password" required>
-            <button type="submit" (click)="loginRequest()">login</button>
+            <h1>Login to your Nexus account</h1>
+            <ion-input #emailInput labelPlacement="stacked" type="email" label="Email" placeholder="Your email"
+                required>
+                <ion-icon slot="start" name="mail" aria-hidden="true"></ion-icon>
+            </ion-input>
+            <ion-input #passwordInput labelPlacement="stacked" type="password" label="Password" placeholder="Password"
+                required>
+                <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+                <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+            <button type="submit" (click)="loginRequest()">Login</button>
         </form>
         <span class="link">You don't have a account ? <a href="register">Sign up here</a></span>
     </div>

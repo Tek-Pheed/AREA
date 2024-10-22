@@ -9,14 +9,26 @@ export async function insertTokeninDb(
     refreshToken: any,
     email: string
 ) {
-    try {
-        await db
-            .promise()
-            .query(
-                `UPDATE usersToken SET ${provider}AccessToken='${accessToken}', ${provider}RefreshToken='${refreshToken}' WHERE email='${email}'`
-            );
-    } catch (e) {
-        log.error(e);
+    if (refreshToken == null || refreshToken == undefined) {
+        try {
+            await db
+                .promise()
+                .query(
+                    `UPDATE usersToken SET ${provider}AccessToken='${accessToken}', ${provider}RefreshToken=NULL WHERE email='${email}'`
+                );
+        } catch (e) {
+            log.error(e);
+        }
+    } else {
+        try {
+            await db
+                .promise()
+                .query(
+                    `UPDATE usersToken SET ${provider}AccessToken='${accessToken}', ${provider}RefreshToken='${refreshToken}' WHERE email='${email}'`
+                );
+        } catch (e) {
+            log.error(e);
+        }
     }
 }
 

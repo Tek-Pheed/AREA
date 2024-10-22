@@ -66,6 +66,13 @@ describe('actions', () => {
                 .expect(200);
         });
 
+        it('Get specific action', async () => {
+            await supertest(app)
+                .get('/api/actions/15')
+                .set('Authorization', `Bearer ${token}`)
+                .expect(200);
+        });
+
         it('Get all actions api', async () => {
             await supertest(app)
                 .get('/api/actions/api')

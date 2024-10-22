@@ -1,5 +1,6 @@
 .card-container {
     width: 40vh;
+    max-width: 300px;
     height: 200px;
     border-radius: 30px;
     padding: 16px;
@@ -8,6 +9,10 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
+}
+
+.card-container:hover {
+    filter: drop-shadow(0 0 0.75rem rgb(136, 136, 136));
 }
 
 .small-circle-image {
@@ -70,15 +75,19 @@
 
 .bottom-left-circles {
     position: absolute;
-    bottom: 24px;
-    left: 24px;
+    bottom: 16px;
+    left: 16px;
     display: flex;
-    gap: 8px;
+    width: 48px;
+    height: 48px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 50%;
 }
 
 .deleteBin {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 .small-circle-image {

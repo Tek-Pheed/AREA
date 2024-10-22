@@ -1,11 +1,11 @@
 <app-navbar *ngIf="platform.is('desktop')"></app-navbar>
 <div class="container">
     <div class="leftSide">
-        <app-profil-card name="{{data.Name}}" [image]="data.ImgSrc" email="{{data.Email}}"></app-profil-card>
+        <app-profil-card name="{{data.Name}}" creationDate="{{data.create_at}}" [image]="data.picture_url" email="{{data.Email}}"></app-profil-card>
     </div>
-    <div class="rightSide" *ngIf="loaded && platform.is('desktop')">
-        <app-connection-card *ngFor="let s of servicesData" class="serviceCard"
-        email="{{this.data.Email}}" app_name="{{s.name}}" app_icon="{{s.icon_url}}" [connected]="s.connected"></app-connection-card>
+    <div class="rightSide">
+        <app-connection-card *ngFor="let s of servicesData" class="serviceCard" email="{{this.data.Email}}"
+            app_name="{{s.name}}" app_icon="{{s.icon_url}}" [connected]="s.connected"></app-connection-card>
     </div>
     <div style="margin-bottom: 55px" *ngIf="!platform.is('desktop')"></div>
 </div>

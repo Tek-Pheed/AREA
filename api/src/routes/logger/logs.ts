@@ -6,7 +6,8 @@ export const logsRouter = Router();
 
 logsRouter.get('/:email/:service', (req, res) => {
     const { email, service } = req.params;
-    const logFilePath = path.join(__dirname, '../../../../ws/logs/app.log');
+    const log_path = process.env.LOG_FILE!;
+    const logFilePath = path.join(__dirname, log_path);
 
     fs.readFile(logFilePath, 'utf8', (err, data) => {
         if (err) {

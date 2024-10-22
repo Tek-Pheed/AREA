@@ -1,6 +1,8 @@
-import { Response, Router } from 'express';
+import { NextFunction, Response, Router } from 'express';
 import { isAuthenticatedDiscord } from '../../middlewares/oauth';
 import log from '../../utils/logger';
+import { insertTokeninDb } from '../oauth/oauth.query';
+import { spotifyRouter } from '../spotify/spotify';
 
 const axios = require('axios');
 const passport: any = require('passport');
@@ -62,14 +64,42 @@ discordRouter.get(
 );
 
 discordRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('discord', { state: email })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Discord OAuth']
+    }
+);
+
+discordRouter.get(
     '/callback',
     passport.authenticate('discord', {
         failureRedirect: '/api/oauth/discord/login',
     }),
     async function (req: any, res: Response) {
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
-        );
+        const token: any = req.user;
+        const email = req.query.state;
+        console.log(email);
+        const origin = req.headers['user-agent'];
+        if (
+            origin?.toLowerCase().includes('android') ||
+            origin?.toLowerCase().includes('iphone')
+        ) {
+            await insertTokeninDb(
+                'discord',
+                token.accessTokenDiscord,
+                token.refreshTokenDiscord,
+                `${email}`
+            );
+            res.send('You are connected close this modal !');
+        } else {
+            res.redirect(
+                `${process.env.WEB_HOST}/dashboard/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
+            );
+        }
         //#swagger.tags   = ['Discord OAuth']
     }
 );

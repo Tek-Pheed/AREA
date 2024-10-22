@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import {
     IActions,
@@ -7,15 +7,15 @@ import {
     IReactions,
     IUserConfig,
 } from '../utils/data.models';
-import { Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { IonModal, Platform } from '@ionic/angular';
+import { NavigationStart, Router } from '@angular/router';
 
 interface activeArea {
     name: string;
     actionAPILogoUrl: string;
     reactionAPILogoUrl: string;
     configID: string | null;
-    apiname: string,
+    apiname: string;
 }
 
 @Component({
@@ -24,6 +24,7 @@ interface activeArea {
     styleUrls: ['dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+    @ViewChild('editModal') editModal: IonModal | null = null;
     items: string[] = [];
     loadItems(loadItems: any) {
         throw new Error('Method not implemented.');
@@ -32,7 +33,15 @@ export class DashboardPage implements OnInit {
         private service: ApiService,
         protected platform: Platform,
         private router: Router
-    ) {}
+    ) {
+        this.router.events.subscribe((event: any): void => {
+            if (event instanceof NavigationStart) {
+                if (event.navigationTrigger === 'popstate') {
+                    if (this.editModal != null) this.editModal.dismiss();
+                }
+            }
+        });
+    }
 
     userConfigs: IUserConfig[] = [];
     actions: IActions[] = [];
@@ -137,7 +146,7 @@ export class DashboardPage implements OnInit {
                 actionAPILogoUrl: apiA.icon_url,
                 reactionAPILogoUrl: apiB.icon_url,
                 configID: element.id,
-                apiname: apiA.name
+                apiname: apiA.name,
             });
         }
         this.showActiveArea = this.datas.slice();
@@ -191,8 +200,7 @@ export class DashboardPage implements OnInit {
                 if (objDiv == null) {
                     return;
                 }
-                if (this.autoScroll)
-                    objDiv.scrollTop = objDiv.scrollHeight;
+                if (this.autoScroll) objDiv.scrollTop = objDiv.scrollHeight;
             },
             (err) => {
                 console.error(err);
@@ -208,13 +216,10 @@ export class DashboardPage implements OnInit {
     }
 
     getColor(str: string) {
-        if (str.includes('INFO'))
-            return ("green")
-        if (str.includes('ERROR'))
-            return ("red")
-        if (str.includes('WARN'))
-            return ("orange")
-        return ('black');
+        if (str.includes('INFO')) return 'green';
+        if (str.includes('ERROR')) return 'red';
+        if (str.includes('WARN')) return 'orange';
+        return 'black';
     }
 
     ngOnInit(): void {
