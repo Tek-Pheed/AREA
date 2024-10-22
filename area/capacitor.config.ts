@@ -4,8 +4,11 @@ const config: CapacitorConfig = {
     appId: 'com.tekpheed.nexus',
     appName: 'Nexus',
     webDir: 'www',
-    ios: {
-        scheme: 'capacitor',
+
+    plugins: {
+        CapacitorHttp: {
+            enabled: true,
+        },
     },
 };
 
