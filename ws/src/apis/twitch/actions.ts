@@ -280,11 +280,11 @@ export async function getTopGame(email: any): Promise<any> {
                 },
             ];
         } else {
-            return null;
+            return false;
         }
     } catch (e: any) {
         log.error(`email:${email} service:Twitch getTopGame ${e}`);
         await refreshTwitchToken(email, token.tRefreshToken);
-        return null;
+        return false;
     }
 }
