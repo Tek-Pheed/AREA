@@ -423,12 +423,11 @@ export class EditeurPage implements OnInit {
     }
 
     deleteReactionById(id: number | undefined) {
-        console.warn(id);
         let rindex = this.configuredReactions.findIndex(
             (obj) => obj?.raw.id == id
         );
         if (rindex == -1) return;
-        if (confirm("Delete this reaction ?"))
+        if (confirm('Delete this reaction ?'))
             this.configuredReactions.splice(rindex, 1);
     }
 

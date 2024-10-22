@@ -16,8 +16,7 @@
                 <img alt="middle separator icon"
                     src="https://uxwing.com/wp-content/themes/uxwing/download/arrow-direction/caret-right-outline-icon.png">
                 <div class="reactionContainer">
-                    <app-actions-cards *ngFor="let reaction of this.configuredReactions"
-                        [deletable]=true
+                    <app-actions-cards *ngFor="let reaction of this.configuredReactions" [deletable]=true
                         title="{{(reaction == undefined ? 'Unknown Service' : reaction.raw.title)}}"
                         description="{{reaction == undefined ? 'Please select a reaction' : reaction.raw.description}}"
                         service="{{reaction?.raw?.api_name}}" image="{{getimgsrc(reaction?.raw?.api_name)}}"
