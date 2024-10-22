@@ -81,7 +81,7 @@ export class ProfilCardComponent implements OnInit {
     }
 
     changeImage() {
-        let url = prompt('Url of an image: ');
+        let url = prompt('Url of an image: ', this.image);
 
         if (url != null) {
             if (url.length > 2500) {
