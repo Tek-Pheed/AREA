@@ -88,12 +88,11 @@ export interface IModalVariables {
 export interface IConfigContent {
     name: string;
     value: string;
-    reaction: string | undefined
 }
 
 export interface IConfigBody {
-    action: IConfigContent[];
-    reaction: IConfigContent[];
+    action: IConfigContent[] | any;
+    reaction: IConfigContent[] | any;
 }
 
 export interface IUserConfig {

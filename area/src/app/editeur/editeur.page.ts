@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
     APIServices,
     IActions,
+    IConfigContent,
     IModalFields,
     IModalVariables,
     IReactions,
@@ -147,6 +148,7 @@ export class EditeurPage implements OnInit {
         }
 
         //TODO: Change that too
+        console.warn(this.loadedConfig);
         for (const element of this.loadedConfig.body.reaction) {
             let rfield = this.configuredReactions.find(
                 (obj) =>
@@ -416,14 +418,18 @@ export class EditeurPage implements OnInit {
             });
         }
         for (const reaction of this.configuredReactions) {
+            let obj: Object[] = [];
             if (reaction == undefined) continue;
+            let params: IConfigContent[] = [];
             for (let element of reaction.fields) {
-                conf.body.reaction.push({
-                    reaction: reaction.raw.title,
+                obj
+                params.push({
                     name: element.fieldID,
                     value: String(element.fieldValue),
                 });
             }
+            obj.push({"reaction": reaction?.raw.title, "params": params});
+            conf.body.reaction.push(obj);
         }
         if (URLconfigID == null || URLconfigID == undefined) {
             this.service.createNewUserConfig(this.token, conf).subscribe(
