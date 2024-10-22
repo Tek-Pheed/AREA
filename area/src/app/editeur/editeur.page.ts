@@ -228,7 +228,14 @@ export class EditeurPage implements OnInit {
                         this.selectActionById(config.actions_id);
 
                         //TODO: Here replace with array parsing once backend done
+
+                        /* if (config.reaction_id == 0) {
+                            for (const element of config.) {
+                                
+                            }
+                        } else { */
                         this.swapReactionById(undefined, config.reaction_id);
+                        //}
                     } else if (searchParams.get('configID') != null) {
                         alert('Unable to find corresponding user config');
                         if (this.platform.is('desktop')) {
@@ -418,18 +425,18 @@ export class EditeurPage implements OnInit {
             });
         }
         for (const reaction of this.configuredReactions) {
-            let obj: Object[] = [];
             if (reaction == undefined) continue;
             let params: IConfigContent[] = [];
             for (let element of reaction.fields) {
-                obj
                 params.push({
                     name: element.fieldID,
                     value: String(element.fieldValue),
                 });
             }
-            obj.push({"reaction": reaction?.raw.title, "params": params});
-            conf.body.reaction.push(obj);
+            conf.body.reaction.push({
+                reaction: reaction?.raw.title,
+                params: params,
+            });
         }
         if (URLconfigID == null || URLconfigID == undefined) {
             this.service.createNewUserConfig(this.token, conf).subscribe(
