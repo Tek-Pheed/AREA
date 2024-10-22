@@ -6,14 +6,36 @@
 .contain {
     font-family: Arial, sans-serif;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+ion-input {
+    margin: 0.2vh;
+    height: 70px;
+    margin-bottom: 10px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #ccc;
+}
+
+ion-button {
+    margin: 1vh;
+    margin-left: 0px;
+    margin-right: 0px;
+    align-items: center;
+    align-self: center;
+    --border-radius: 10px;
+    width : 33%;
+    margin-left: 8.25%;
+    margin-right: 8.25%;
+    margin-top: 2%;
+}
+
 .login-container {
-    width: 100%;
+    width: 50%;
     height: 100vh;
     border-radius: 8px;
     display: flex;
@@ -26,6 +48,7 @@ img {
     width: 25vh;
     height: 25vh;
     margin: 10vh;
+    margin-top: 0px;
 }
 
 h1 {
@@ -38,7 +61,7 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    width: 40%;
+    width: 100%;
     align-items: center;
 }
 

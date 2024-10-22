@@ -7,25 +7,53 @@ img {
     width: 25vh;
     height: 25vh;
     margin: 10vh;
+    margin-top: 0px;
 }
+
+.bottomButton {
+    margin-top: 4vh;
+}
+
 
 .contain {
     font-family: Arial, sans-serif;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
 }
 
 .register-container {
-    width: 100%;
-    height: 100vh;
+    width: 50%;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+ion-input {
+    margin: 0.2vh;
+    height: 70px;
+    margin-bottom: 10px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #ccc;
+}
+
+ion-button {
+    margin: 1vh;
+    margin-left: 0px;
+    margin-right: 0px;
+    align-items: center;
+    align-self: center;
+    --border-radius: 10px;
+    width: 33%;
+    margin-left: 8.25%;
+    margin-right: 8.25%;
+    margin-top: 2%;
 }
 
 h1 {
@@ -74,10 +102,13 @@ button {
     font-size: 20px;
 }
 
-
 @media (max-width: 700px) {
     .register-container {
         width: 70%;
+    }
+
+    .bottomButton {
+        margin-top: 2vh;
     }
 
     h1 {
@@ -92,8 +123,9 @@ button {
     }
 
     img {
-        width: 17vh;
-        height: 17vh;
-        margin: 2vh;
+        width: 21vh;
+        height: 21vh;
+        margin: 1vh;
+        margin-top: 0px;
     }
 }
