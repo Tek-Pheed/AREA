@@ -227,15 +227,41 @@ export class EditeurPage implements OnInit {
                         this.loadedConfig = config;
                         this.selectActionById(config.actions_id);
 
-                        //TODO: Here replace with array parsing once backend done
-
-                        /* if (config.reaction_id == 0) {
-                            for (const element of config.) {
-                                
+                        if (config.reaction_id == 0) {
+                            this.configuredReactions = [];
+                            for (const element of config.body.reaction) {
+                                let rawreact = this.reactions.find(
+                                    (elm) => elm.title == element.reaction
+                                );
+                                if (rawreact == undefined) continue;
+                                let inputs = [];
+                                if (
+                                    rawreact.input != undefined &&
+                                    rawreact.input != null
+                                ) {
+                                    for (let elm of rawreact.input) {
+                                        inputs.push({
+                                            fieldID: elm.name,
+                                            fieldType: elm.type,
+                                            fieldDescription: elm.description,
+                                            fieldValue: element.params.find(
+                                                (el: any) => el.name == elm.name
+                                            )?.value,
+                                        });
+                                    }
+                                }
+                                this.configuredReactions.push({
+                                    raw: rawreact,
+                                    fields: inputs,
+                                });
+                                element.reaction;
                             }
-                        } else { */
-                        this.swapReactionById(undefined, config.reaction_id);
-                        //}
+                        } else {
+                            this.swapReactionById(
+                                undefined,
+                                config.reaction_id
+                            );
+                        }
                     } else if (searchParams.get('configID') != null) {
                         alert('Unable to find corresponding user config');
                         if (this.platform.is('desktop')) {
