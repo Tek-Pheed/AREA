@@ -6,6 +6,8 @@
     height: 100%;
     overflow-y: auto;
     background-color: --ion-background-color;
+    margin-top: constant(safe-area-inset-top) !important;
+    margin-top: env(safe-area-inset-top) !important;
 }
 
 .leftSide {
