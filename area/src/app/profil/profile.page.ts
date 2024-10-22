@@ -154,6 +154,7 @@ export class ProfilePage implements OnInit {
         this.service.getAllServices(this.token).subscribe(
             (res) => {
                 this.servicesData = res.data;
+                this.servicesData.splice(this.servicesData.findIndex((elm) => (elm.name.toLowerCase() == 'nexus')), 1);
             },
             (err) => {
                 console.error(err);
