@@ -175,7 +175,12 @@ export class EditeurPage implements OnInit {
         this.service.getAllServices(token).subscribe(
             (res) => {
                 this.integrations = res.data;
-                this.integrations.splice(this.integrations.findIndex((elm) => (elm.name.toLowerCase() == 'nexus')), 1);
+                this.integrations.splice(
+                    this.integrations.findIndex(
+                        (elm) => elm.name.toLowerCase() == 'nexus'
+                    ),
+                    1
+                );
                 this.getAllActions();
             },
             (err) => {
@@ -190,7 +195,12 @@ export class EditeurPage implements OnInit {
         this.service.getActions(token).subscribe(
             (res) => {
                 this.actions = res.data;
-                this.actions.splice(this.actions.findIndex((elm) => (elm.api_name.toLowerCase() == 'nexus')), 1);
+                this.actions.splice(
+                    this.actions.findIndex(
+                        (elm) => elm.api_name.toLowerCase() == 'nexus'
+                    ),
+                    1
+                );
                 this.getAllReactions();
             },
             (err) => {
@@ -205,7 +215,12 @@ export class EditeurPage implements OnInit {
         this.service.getReactions(token).subscribe(
             (res) => {
                 this.reactions = res.data;
-                this.reactions.splice(this.reactions.findIndex((elm) => (elm.api_name.toLowerCase() == 'nexus')), 1);
+                this.reactions.splice(
+                    this.reactions.findIndex(
+                        (elm) => elm.api_name.toLowerCase() == 'nexus'
+                    ),
+                    1
+                );
                 this.loadConfig();
             },
             (err) => {
@@ -407,11 +422,14 @@ export class EditeurPage implements OnInit {
         this.configuredReactions.push(undefined);
     }
 
-    deleteReactionById(id: string) {
+    deleteReactionById(id: number | undefined) {
+        console.warn(id);
         let rindex = this.configuredReactions.findIndex(
-            (obj) => obj?.raw.id == Number(id)
+            (obj) => obj?.raw.id == id
         );
-        this.configuredReactions.splice(rindex, 1);
+        if (rindex == -1) return;
+        if (confirm("Delete this reaction ?"))
+            this.configuredReactions.splice(rindex, 1);
     }
 
     saveConfiguration() {

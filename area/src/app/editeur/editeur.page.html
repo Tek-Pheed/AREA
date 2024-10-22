@@ -23,7 +23,7 @@
                         service="{{reaction?.raw?.api_name}}" image="{{getimgsrc(reaction?.raw?.api_name)}}"
                         [editable]="true" (onCardClicked)="openModalConfigureReaction(reaction)"
                         (onEditClicked)="openModalSwapReaction(reaction)"
-                        (onCardDeleted)="deleteReactionById($event)"></app-actions-cards>
+                        (onCardDeleted)="deleteReactionById(reaction?.raw?.id)"></app-actions-cards>
                 </div>
             </div>
         </div>
