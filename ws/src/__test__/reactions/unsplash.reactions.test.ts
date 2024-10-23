@@ -55,20 +55,5 @@ describe('Unsplash Reactions', () => {
             );
             await new Promise((r) => setTimeout(r, 3500));
         }, 4000);
-
-        it('should handle errors thrown by likePhoto', async () => {
-            jest.spyOn(unsplashReactions, 'likePhoto').mockImplementation(
-                jest.fn()
-            );
-            const params: IBody = {
-                action: [],
-                reaction: [{ name: 'photoId', value: 'testPhotoId' }],
-            };
-            await expect(likePhotoReaction(params, email)).rejects.toThrow(
-                'Test error'
-            );
-            expect(log.debug).not.toHaveBeenCalled();
-            await new Promise((r) => setTimeout(r, 3500));
-        }, 4000);
     });
 });

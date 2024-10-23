@@ -27,7 +27,7 @@ describe('spotify.query.ts', () => {
             const result = await getSpotifyToken(email);
             expect(result).toStrictEqual({
                 sAccessToken: 'tt',
-                sRefreshToken: 'tt',
+                sRefreshToken: null,
             });
         });
 

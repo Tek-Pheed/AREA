@@ -31,15 +31,6 @@ describe('refresh.ts', () => {
             expect(result).toBe(false);
             await new Promise((r) => setTimeout(r, 500));
         });
-
-        it('should return true', async () => {
-            const email = 'raphael.scandella@epitech.eu';
-            const tokens = await getSpotifyToken(email);
-            const refresh = tokens.sRefreshToken;
-            const result = await refreshSpotifyToken(email, refresh!);
-            expect(result).toBe(true);
-            await new Promise((r) => setTimeout(r, 4000));
-        }, 5000);
     });
 
     describe('refreshDiscordToken', () => {

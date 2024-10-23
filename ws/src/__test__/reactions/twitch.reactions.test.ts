@@ -14,28 +14,27 @@ describe('Twitch Reactions', () => {
     });
 
     afterAll(async () => {
-        await Promise.all([
-            new Promise<void>((resolve, reject) => {
-                db.end((err) => {
-                    if (err) {
-                        console.error('Error closing the connection:', err);
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            }),
-            new Promise<void>((resolve, reject) => {
-                pool.end((err) => {
-                    if (err) {
-                        console.error('Error closing pool connections:', err);
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            }),
-        ]);
+        await new Promise<void>((resolve, reject) => {
+            db.end((err) => {
+                if (err) {
+                    console.error('Error closing the connection:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+
+        await new Promise<void>((resolve, reject) => {
+            pool.end((err) => {
+                if (err) {
+                    console.error('Error closing pool connections:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
     }, 30000);
 
     const email = 'raphael.scandella@epitech.eu';

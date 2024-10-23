@@ -13,15 +13,26 @@ describe('google.reactions.ts', () => {
     });
 
     afterAll(async () => {
-        db.end((err) => {
-            if (err) {
-                console.error('Error closing the connection:', err);
-            }
+        await new Promise<void>((resolve, reject) => {
+            db.end((err) => {
+                if (err) {
+                    console.error('Error closing the connection:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
-        pool.end((err) => {
-            if (err) {
-                console.error('Error closing pool connections:', err);
-            }
+
+        await new Promise<void>((resolve, reject) => {
+            pool.end((err) => {
+                if (err) {
+                    console.error('Error closing pool connections:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
     });
 
@@ -46,5 +57,6 @@ describe('google.reactions.ts', () => {
             'value3',
             'value4'
         );
+        await new Promise((r) => setTimeout(r, 500));
     });
 });

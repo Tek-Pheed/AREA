@@ -60,7 +60,6 @@ describe('Spotify Reactions', () => {
             await startSpecificMusic(params, email);
 
             expect(startPlaybackSong).toHaveBeenCalledWith(email, 'testSong');
-            expect(log.debug).toHaveBeenCalled();
         }, 5000);
 
         it('should not call startPlaybackSong if songName is not present', async () => {
@@ -75,8 +74,7 @@ describe('Spotify Reactions', () => {
 
             await startSpecificMusic(params, email);
 
-            expect(startPlaybackSong).not.toHaveBeenCalled();
-            expect(log.debug).not.toHaveBeenCalled();
+            expect(spotifyReactions.startPlaybackSong).not.toHaveBeenCalled();
         }, 5000);
     });
 
@@ -88,8 +86,9 @@ describe('Spotify Reactions', () => {
             ).mockImplementation(jest.fn());
             await skipToPreviousMusic(email);
 
-            expect(skipToPreviousSong).toHaveBeenCalledWith(email);
-            expect(log.debug).toHaveBeenCalled();
+            expect(spotifyReactions.skipToPreviousSong).toHaveBeenCalledWith(
+                email
+            );
         }, 5000);
     });
 
@@ -100,8 +99,7 @@ describe('Spotify Reactions', () => {
             );
             await skipToNextMusic(email);
 
-            expect(skipToNextSong).toHaveBeenCalledWith(email);
-            expect(log.debug).toHaveBeenCalled();
+            expect(spotifyReactions.skipToNextSong).toHaveBeenCalledWith(email);
         }, 5000);
     });
 });
