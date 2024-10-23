@@ -106,6 +106,8 @@ export async function refreshTwitchToken(
         throw new Error('Missing Twitch Client ID or Client Secret');
     }
 
+    log.info(refreshToken);
+
     if (refreshToken === null || refreshToken === undefined) {
         log.warn(`Twitch refresh token for ${email} is null`);
         return false;

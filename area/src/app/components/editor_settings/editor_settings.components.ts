@@ -1,5 +1,6 @@
 import {
     Component,
+    ComponentRef,
     EventEmitter,
     Input,
     Output,
@@ -12,6 +13,12 @@ import {
     IModalFields,
     IModalVariables,
 } from 'src/app/utils/data.models';
+
+export interface EditModalReturnType {
+    id: string,
+    fields: IModalFields[];
+    modal: ComponentRef<EditorSettingsComponent> | undefined;
+}
 
 @Component({
     selector: 'editor-settings',
@@ -32,9 +39,11 @@ export class EditorSettingsComponent {
     @Input('fields') fields: IModalFields[] = [];
 
     @Input('variables') variables: IModalVariables[] = [];
+    @Input('id') id: string = "";
+    @Input('context') context: ComponentRef<EditorSettingsComponent> | undefined;
 
     @Input('isOpen') isOpen: boolean = false;
-    @Output('onModalClose') onModalClose = new EventEmitter<IModalFields[]>();
+    @Output('onModalClose') onModalClose = new EventEmitter<EditModalReturnType>();
 
     setFocusElement(element: IModalFields) {
         this.focusedElementId = element;
@@ -47,7 +56,7 @@ export class EditorSettingsComponent {
     }
 
     confirm() {
-        this.onModalClose.emit(this.fields);
+        this.onModalClose.emit({fields: this.fields, id: this.id, modal: this.context});
         this.isOpen = false;
         this.modal?.dismiss(this.fields, 'confirm');
     }

@@ -1,20 +1,20 @@
 import {
     Component,
+    ComponentRef,
     EventEmitter,
     Input,
     Output,
     ViewChild,
 } from '@angular/core';
-import { IonicModule, IonModal } from '@ionic/angular';
-import {
-    IActions,
-    IReactions,
-    IApi,
-    APIServices,
-} from 'src/app/utils/data.models';
-import { CommonModule } from '@angular/common';
-import { ActionsCardsCompactComponent } from '../action_cards_compact/actions_cards_compact.components';
+import { IonModal } from '@ionic/angular';
+import { IActions, IReactions, APIServices } from 'src/app/utils/data.models';
 import { NavigationStart, Router } from '@angular/router';
+
+export interface SwapModalReturnType {
+    id: string;
+    newId: string | undefined;
+    modal: ComponentRef<EditorSawpSettingsComponent> | undefined;
+}
 
 @Component({
     selector: 'editor-swap-settings',
@@ -29,10 +29,14 @@ export class EditorSawpSettingsComponent {
     @Input('services') services: APIServices[] = [];
     @Input('areas') areas: IActions[] | IReactions[] = [];
 
+    @Input('id') id: string = '';
+    @Input('context') context:
+        | ComponentRef<EditorSawpSettingsComponent>
+        | undefined;
+
     @Input('isOpen') isOpen: boolean = false;
-    @Output('onModalClose') onModalClose = new EventEmitter<
-        string | undefined
-    >();
+    @Output('onModalClose') onModalClose =
+        new EventEmitter<SwapModalReturnType>();
 
     actionResults: IActions[] = [];
     inSearch: boolean = false;
@@ -61,13 +65,21 @@ export class EditorSawpSettingsComponent {
 
     cancel() {
         this.isOpen = false;
-        this.onModalClose.emit(undefined);
+        this.onModalClose.emit({
+            id: this.id,
+            modal: this.context,
+            newId: undefined,
+        });
         this.modal?.dismiss(null, 'cancel');
     }
 
     confirm(id: string) {
         this.selectedElementID = id;
-        this.onModalClose.emit(this.selectedElementID);
+        this.onModalClose.emit({
+            id: this.id,
+            modal: this.context,
+            newId: this.selectedElementID,
+        });
         this.isOpen = false;
         this.modal?.dismiss(this.selectedElementID, 'confirm');
     }
