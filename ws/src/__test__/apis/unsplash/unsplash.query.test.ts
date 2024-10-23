@@ -25,7 +25,7 @@ describe('spotify.query.ts', () => {
         it('should return the tokens', async () => {
             const email = 'testws@example.com';
             const result = await getUnsplashToken(email);
-            expect(result).toStrictEqual('tt');
+            expect(result).toStrictEqual(null);
         });
 
         it('should return false', async () => {

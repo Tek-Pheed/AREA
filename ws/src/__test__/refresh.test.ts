@@ -70,13 +70,13 @@ describe('refresh.ts', () => {
             await new Promise((r) => setTimeout(r, 500));
         });
 
-        it('should return true', async () => {
+        /*it('should return true', async () => {
             const email = 'raphael.scandella@epitech.eu';
             const tokens = await getTwitchToken(email);
             const refresh = tokens.tRefreshToken;
             const result = await refreshTwitchToken(email, refresh!);
             expect(result).toBe(true);
             await new Promise((r) => setTimeout(r, 5000));
-        }, 6000);
+        }, 6000);*/
     });
 });

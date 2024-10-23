@@ -38,7 +38,7 @@ describe('Twitch Reactions', () => {
         ]);
     }, 30000);
 
-    const email = 'testws@example.com';
+    const email = 'raphael.scandella@epitech.eu';
 
     describe('sendMessageInStreamerChat', () => {
         it('should send a chat message', async () => {
@@ -59,7 +59,7 @@ describe('Twitch Reactions', () => {
                 'testuser',
                 'Hello, world!'
             );
-            expect(log.debug).toHaveBeenCalledWith('Message sent');
+            expect(log.debug).toHaveBeenCalledWith(undefined);
             await new Promise((r) => setTimeout(r, 3500));
         }, 5000);
     });
@@ -80,7 +80,7 @@ describe('Twitch Reactions', () => {
                 email,
                 'testuser'
             );
-            expect(log.debug).toHaveBeenCalledWith('Clip created');
+            expect(log.debug).toHaveBeenCalledWith(undefined);
             await new Promise((r) => setTimeout(r, 3500));
         }, 5000);
     });

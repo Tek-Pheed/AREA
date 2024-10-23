@@ -25,7 +25,7 @@ describe('google.reactions.ts', () => {
         });
     });
 
-    const email = 'testws@example.com';
+    const email = 'raphael.scandella@epitech.eu';
     const params: IBody = {
         reaction: [
             { value: 'value1', name: 'param1' },

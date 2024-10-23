@@ -56,7 +56,7 @@ describe('reaction.manager.ts', () => {
             const actionParam: IBodySpecific[] = [
                 { name: 'username', value: 'Alice' },
             ];
-            const email = 'testws@example.com';
+            const email = 'raphael.scandella@epitech.eu';
 
             it('should call skipToNextMusic for "Skip to next"', async () => {
                 jest.spyOn(

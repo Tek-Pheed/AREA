@@ -39,7 +39,7 @@ describe('refresh.query.ts', () => {
 
     describe('refreshAccessToken', () => {
         it('should return true', async () => {
-            const email = 'testws@example.com';
+            const email = 'raphael.scandella@epitech.eu';
             const service = 'Spotify';
             const accessToken = 'tt';
             const result = await refreshAccessTokeninDB(

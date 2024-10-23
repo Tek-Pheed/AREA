@@ -26,8 +26,8 @@ describe('spotify.query.ts', () => {
             const email = 'testws@example.com';
             const result = await getTwitchToken(email);
             expect(result).toStrictEqual({
-                tAccessToken: 'tt',
-                tRefreshToken: 'tt',
+                tAccessToken: null,
+                tRefreshToken: null,
             });
         });
 

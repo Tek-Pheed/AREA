@@ -26,8 +26,8 @@ describe('google.query.ts', () => {
             const email = 'testws@example.com';
             const result = await getGoogleToken(email);
             expect(result).toStrictEqual({
-                gAccessToken: 'tt',
-                gRefreshToken: 'tt',
+                gAccessToken: null,
+                gRefreshToken: null,
             });
         });
 

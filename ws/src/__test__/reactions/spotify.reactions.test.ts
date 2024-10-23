@@ -14,7 +14,7 @@ import { IBody } from '../../utils/data.model';
 import { db, pool } from '../../utils/database';
 
 describe('Spotify Reactions', () => {
-    const email = 'testws@example.com';
+    const email = 'raphael.scandella@epitech.eu';
     jest.mock('../../apis/spotify/reactions');
     jest.mock('../../utils/logger');
 

@@ -34,7 +34,7 @@ describe('Unsplash Reactions', () => {
         });
     });
 
-    const email = 'testws@example.com';
+    const email = 'raphael.scandella@epitech.eu';
 
     describe('likePhotoReaction', () => {
         it('should call likePhoto with correct parameters and log the result', async () => {

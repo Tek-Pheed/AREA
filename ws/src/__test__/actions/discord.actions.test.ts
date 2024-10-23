@@ -7,7 +7,7 @@ import { IBody, IBodySpecific } from '../../utils/data.model';
 
 describe('discord.actions.ts', () => {
     const params = { reaction: [], action: [] };
-    const email = 'test@example.com';
+    const email = 'raphael.scandella@epitech.eu';
     const reaction = [{ title: 'Test Reaction' }];
     afterEach(() => {
         jest.clearAllMocks();
