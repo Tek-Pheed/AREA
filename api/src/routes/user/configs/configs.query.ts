@@ -50,7 +50,11 @@ export async function updateUserConfig(
     id: string
 ): Promise<boolean> {
     const { actions_id, method, headers, body, reaction_id } = req_body;
-    if (!actions_id || !method || !headers || !body || !reaction_id)
+    log.warn(req_body);
+    if (
+        (!actions_id || !method || !headers || !body || !reaction_id) &&
+        reaction_id != 0
+    )
         return false;
     try {
         const data = [
