@@ -278,7 +278,6 @@ export class EditeurPage implements OnInit {
                                 element.reaction;
                             }
                         } else {
-                            console.error(config.body.reaction[0].params);
                             this.swapReactionById(
                                 undefined,
                                 config.reaction_id,
