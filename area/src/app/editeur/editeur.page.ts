@@ -484,10 +484,14 @@ export class EditeurPage implements OnInit {
                     value: String(element.fieldValue),
                 });
             }
-            conf.body.reaction.push({
-                reaction: reaction?.raw.title,
-                params: params,
-            });
+            if (this.configuredReactions.length > 1) {
+                conf.body.reaction.push({
+                    reaction: reaction?.raw.title,
+                    params: params,
+                });
+            } else {
+                conf.body.reaction = params;
+            }
         }
         if (URLconfigID == null || URLconfigID == undefined) {
             this.service.createNewUserConfig(this.token, conf).subscribe(
