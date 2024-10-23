@@ -34,13 +34,6 @@ export class DashboardPage implements OnInit {
         protected platform: Platform,
         private router: Router
     ) {
-        this.router.events.subscribe((event: any): void => {
-            if (event instanceof NavigationStart) {
-                if (event.navigationTrigger === 'popstate') {
-                    if (this.editModal != null) this.editModal.dismiss();
-                }
-            }
-        });
     }
 
     userConfigs: IUserConfig[] = [];
@@ -130,7 +123,7 @@ export class DashboardPage implements OnInit {
                 (elm) => elm.id === element.actions_id
             );
             let reaction = this.reactions.find(
-                (elm) => elm.id === element.reaction_id
+                (elm) => elm.id === (element as any).reaction_id
             );
             let apiA = this.apis.find((elm) => elm.name == action?.api_name);
             let apiB = this.apis.find((elm) => elm.name == reaction?.api_name);

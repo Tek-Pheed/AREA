@@ -67,8 +67,8 @@ export class IntegrationsPage implements OnInit {
         );
         this.service.getAllServices(token).subscribe(
             (res) => {
-                console.warn(res.data);
                 this.integrations = res.data;
+                this.integrations.splice(this.integrations.findIndex((elm) => (elm.name.toLowerCase() == 'nexus')), 1);
             },
             (err) => {
                 console.error(err);

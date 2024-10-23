@@ -75,25 +75,21 @@ unsplashRouter.get(
     async (req: any, res: Response) => {
         const token: any = req.user;
         const email = req.query.state;
-        console.log(email);
+        await insertTokeninDb(
+            'unsplash',
+            token.accessTokenUnsplash,
+            token.refreshTokenUnsplash,
+            `${email}`
+        );
         const origin = req.headers['user-agent'];
         if (
-            origin?.toLowerCase().includes('android') ||
-            origin?.toLowerCase().includes('iphone')
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
         ) {
-            await insertTokeninDb(
-                'unsplash',
-                token.accessTokenUnsplash,
-                token.refreshTokenUnsplash,
-                `${email}`
-            );
             res.send('You are connected close this modal !');
         } else {
-            res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile?api=unsplash&refresh_token=${req.user.refreshTokenUnsplash}&access_token=${req.user.accessTokenUnsplash}`
-            );
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        //res.redirect('http://localhost:8080/api/oauth/unsplash/get_random_img');
         //#swagger.tags   = ['Unsplash OAuth']
     }
 );

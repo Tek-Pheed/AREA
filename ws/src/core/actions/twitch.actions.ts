@@ -76,16 +76,18 @@ export async function getMostViewedCategory(
     log.debug(mResult);
     const key = `${email}-twitch`;
     await createVariable(key);
-    if (mResult[0].value === most[0]) {
-        if ((await readValue(key))[`mostViewedCategory`] !== most[0]) {
-            await setItem(key, `mostViewedCategory`, most[0]);
-            const actionsLabels: IBodySpecific[] = mResult;
-            await launchReaction(
-                reaction[0].title,
-                params,
-                actionsLabels,
-                email
-            );
+    if (mResult !== false) {
+        if (mResult[0].value === most[0]) {
+            if ((await readValue(key))[`mostViewedCategory`] !== most[0]) {
+                await setItem(key, `mostViewedCategory`, most[0]);
+                const actionsLabels: IBodySpecific[] = mResult;
+                await launchReaction(
+                    reaction[0].title,
+                    params,
+                    actionsLabels,
+                    email
+                );
+            }
         }
     }
 }

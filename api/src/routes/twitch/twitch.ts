@@ -91,26 +91,23 @@ twitchRouter.get(
     passport.authenticate('twitch', {
         failureRedirect: '/api/oauth/twitch/login',
     }),
-    async (req: Request, res: Response) => {
+    async (req: any, res: Response) => {
         const token: any = req.user;
         const email = req.query.state;
-        console.log(email);
+        await insertTokeninDb(
+            'twitch',
+            token.accessTokenTwitch,
+            token.refreshTokenTwitch,
+            `${email}`
+        );
         const origin = req.headers['user-agent'];
         if (
-            origin?.toLowerCase().includes('android') ||
-            origin?.toLowerCase().includes('iphone')
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
         ) {
-            await insertTokeninDb(
-                'twitch',
-                token.accessTokenTwitch,
-                token.refreshTokenTwitch,
-                `${email}`
-            );
             res.send('You are connected close this modal !');
         } else {
-            res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile?api=twitch&refresh_token=${token.refreshTokenTwitch}&access_token=${token.accessTokenTwitch}`
-            );
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
         //#swagger.tags   = ['Twitch OAuth']
     }
