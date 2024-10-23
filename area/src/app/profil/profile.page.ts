@@ -36,11 +36,6 @@ export class ProfilePage implements OnInit {
         }
         this.getAllServices();
         this.getProfileData();
-        let url: string = window.location.href;
-        const searchParams = new URLSearchParams(url.split('?')[1]);
-        this.current_access_oauth_token = `${searchParams.get('access_token')}`;
-        this.current_refresh_oauth_token = `${searchParams.get('refresh_token')}`;
-        this.current_oauth_api = `${searchParams.get('api')}`;
     }
 
     data: ProfileData = {
@@ -52,8 +47,6 @@ export class ProfilePage implements OnInit {
     };
 
     servicesData: APIServices[] = [];
-
-    loaded: boolean = false;
 
     getProfileData() {
         this.service.getUserData(this.token).subscribe(
@@ -68,11 +61,6 @@ export class ProfilePage implements OnInit {
                 this.data.create_at = new Date(
                     res.data[0].create_at
                 ).toLocaleDateString();
-                this.servicesData = res.data;
-                this.loaded = true;
-                if (this.current_oauth_api.length > 0) {
-                    this.updateAPIBackend();
-                }
             },
             (err) => {
                 console.error(err);
@@ -161,7 +149,6 @@ export class ProfilePage implements OnInit {
                             location.href = '/tabs/home/profile';
                         }
                     } else {
-                        this.getAllServices();
                     }
                 },
                 (err) => {
