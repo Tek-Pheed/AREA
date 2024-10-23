@@ -34,13 +34,6 @@ export class DashboardPage implements OnInit {
         protected platform: Platform,
         private router: Router
     ) {
-/*         this.router.events.subscribe((event: any): void => {
-            if (event instanceof NavigationStart) {
-                if (event.navigationTrigger === 'popstate') {
-                    if (this.editModal != null) this.editModal.dismiss();
-                }
-            }
-        }); */
     }
 
     userConfigs: IUserConfig[] = [];
