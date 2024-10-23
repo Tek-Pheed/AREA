@@ -377,7 +377,9 @@ export class EditeurPage implements OnInit {
             reaction.fields[i].fieldValue =
                 element.fieldType == 'datetime' && element.fieldValue == ''
                     ? this.date.toISOString()
-                    : reaction.fields[i].fieldValue;
+                    : reaction.fields[i].fieldValue == undefined
+                      ? ''
+                      : reaction.fields[i].fieldValue;
             i++;
         }
         component.setInput('fields', reaction.fields);
