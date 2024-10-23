@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'com.tekpheed.nexus',
+    appId: 'com.epitech.tekpheed.nexus',
     appName: 'Nexus',
     webDir: 'www',
 
