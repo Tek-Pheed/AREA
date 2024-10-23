@@ -33,10 +33,9 @@
     width: 50px;
     height: 50px;
     padding: 0px;
-    display: contents;
 }
 
-a {
+.link {
     color: black;
     font-size: 1.3rem;
     border-radius: 50px;
@@ -44,7 +43,7 @@ a {
     text-decoration: none;
 }
 
-a:hover {
+.link:hover {
     text-decoration: underline;
 }
 
@@ -71,8 +70,8 @@ a:hover {
 
 img {
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
     object-fit: cover;
 }
 
