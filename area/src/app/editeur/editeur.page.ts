@@ -105,7 +105,11 @@ export class EditeurPage implements OnInit {
         };
     }
 
-    swapReactionById(old_id: string | undefined, new_id: string | undefined) {
+    swapReactionById(
+        old_id: string | undefined,
+        new_id: string | undefined,
+        values: any[] = []
+    ) {
         let oldReactionIndex = this.configuredReactions.findIndex(
             (a) => a?.raw.id == Number(old_id) || a == old_id
         );
@@ -127,7 +131,9 @@ export class EditeurPage implements OnInit {
                     fieldID: element.name,
                     fieldType: element.type,
                     fieldDescription: element.description,
-                    fieldValue: '',
+                    fieldValue: values.find(
+                        (el: any) => el.name == element.name
+                    )?.value,
                 });
             }
         }
@@ -272,9 +278,11 @@ export class EditeurPage implements OnInit {
                                 element.reaction;
                             }
                         } else {
+                            console.error(config.body.reaction[0].params);
                             this.swapReactionById(
                                 undefined,
-                                config.reaction_id
+                                config.reaction_id,
+                                config.body.reaction[0].params
                             );
                         }
                     } else if (searchParams.get('configID') != null) {
