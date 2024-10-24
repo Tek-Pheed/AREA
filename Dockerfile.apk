@@ -1,0 +1,52 @@
+FROM node:20 AS ionic-build
+
+RUN apt-get update && apt-get install -y default-jdk wget unzip
+
+RUN mkdir -p /opt/android-sdk && \
+    cd /opt/android-sdk && \
+    wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip && \
+    unzip commandlinetools-linux-9477386_latest.zip -d cmdline-tools && \
+    rm commandlinetools-linux-9477386_latest.zip && \
+    mv cmdline-tools/cmdline-tools cmdline-tools/tools
+
+ENV ANDROID_HOME /opt/android-sdk
+ENV PATH="${ANDROID_HOME}/cmdline-tools/tools/bin:${ANDROID_HOME}/platform-tools:${PATH}:${ANDROID_HOME}/build-tools/32.0.0/"
+
+RUN yes | sdkmanager --licenses && \
+    sdkmanager "platform-tools" "platforms;android-32" "build-tools;32.0.0"
+
+RUN npm install -g @ionic/cli
+
+WORKDIR /app
+COPY ./ /app
+
+RUN npm install @capacitor/android
+RUN npm install --save-dev @capacitor/assets
+RUN npm install
+
+RUN npx cap add android
+
+RUN ionic capacitor build android
+
+RUN npx @capacitor/assets generate
+
+WORKDIR /app/android
+
+COPY android_build.sh /app/android_build.sh
+
+USER root
+RUN mkdir /output
+
+VOLUME /output
+
+RUN ./gradlew assembleRelease
+
+RUN keytool -genkey -alias replserver \
+    -keyalg RSA -keystore my.keystore \
+    -dname "CN=TekPheedCert, OU=R&D, O=TekPheed, L=Toulouse, S=Occitanie, C=FR" \
+    -storepass password -keypass password
+
+RUN zipalign -p 4 /app/android/app/build/outputs/apk/release/app-release-unsigned.apk /app/android/app/build/outputs/apk/release/area.apk
+RUN apksigner sign --ks my.keystore --ks-pass pass:password --key-pass pass:password /app/android/app/build/outputs/apk/release/area.apk
+RUN apksigner verify /app/android/app/build/outputs/apk/release/area.apk
+CMD [ "cp", "/app/android/app/build/outputs/apk/release/area.apk", "/output/area.apk"]
