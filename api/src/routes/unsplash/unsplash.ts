@@ -1,5 +1,6 @@
-import { Response, Router } from 'express';
+import { NextFunction, Response, Router } from 'express';
 import { insertTokeninDb } from '../oauth/oauth.query';
+import { googleRouter } from '../google/google';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -64,6 +65,20 @@ unsplashRouter.get(
     passport.authenticate('unsplash', { scope: UNSPLASH_SCOPE }),
     function (req, res) {
         //#swagger.tags   = ['Unsplash OAuth']
+    }
+);
+
+unsplashRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('unsplash', {
+            scope: UNSPLASH_SCOPE,
+            state: email,
+        })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Google OAuth']
     }
 );
 
