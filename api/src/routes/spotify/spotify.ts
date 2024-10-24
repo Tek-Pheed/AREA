@@ -82,7 +82,7 @@ spotifyRouter.get(
         passport.authenticate('spotify', { state: email })(req, res, next);
     },
     async (req: any, res: Response) => {
-        //#swagger.tags = ['Discord OAuth']
+        //#swagger.tags = ['Spotify OAuth']
     }
 );
 

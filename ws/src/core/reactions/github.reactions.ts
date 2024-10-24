@@ -10,9 +10,9 @@ import {
 } from '../../apis/github/reactions';
 
 export async function createIssueOnRepo(params: IBody, email: string) {
-    let data = [];
+    let data: any[] = [];
     for (const param of params.reaction) data.push(param.value);
-    log.debug(data);
+    log.info(data);
     const result = await createIssue(
         email,
         data[0],
@@ -20,7 +20,7 @@ export async function createIssueOnRepo(params: IBody, email: string) {
         data[2],
         data[3],
         data[4],
-        data[5].split(' ')
+        data[5].length > 0 ? data[5].split(' ') : data[5]
     );
     log.debug(result);
 }

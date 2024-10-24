@@ -27,7 +27,6 @@ passport.use(
                 'https://www.googleapis.com/auth/userinfo.email',
                 'https://www.googleapis.com/auth/userinfo.profile',
             ],
-            state: true,
         },
         function verify(
             accessTokenGoogle: string,
