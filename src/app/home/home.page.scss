@@ -1,0 +1,226 @@
+#container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+:host {
+  background-color: #4d4d4d;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/image.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: 50% 250%;
+  margin-top: constant(safe-area-inset-top) !important;
+  margin-top: env(safe-area-inset-top) !important;
+}
+
+.center {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 800;
+  padding-left: 1rem;
+}
+
+h2 {
+  font-size: 5rem;
+  color: white;
+  font-weight: 800;
+  width: 50%;
+  text-justify: distribute-all-lines;
+  text-align: center;
+  height: 50%;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+}
+
+.androidBtn {
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  font-weight: 800;
+  background-color: #1a1a1a;
+  padding: 20px 10px 20px 10px;
+  border-radius: 15px;
+}
+
+.rightPart {
+  height: auto;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.link {
+  margin: 0 20px 0 20px;
+  text-decoration: none;
+  color: white;
+  font-size: 25px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+  transition: 0.1s all ease-in-out;
+}
+
+.link:hover {
+  border-bottom: 3px solid white;
+  transition: 0.1s all ease-in-out;
+}
+
+.button {
+  padding: 10px 30px 10px 30px;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+  font-size: 15px;
+  border-radius: 5px;
+}
+
+@media (max-width: 769px) {
+  .androidBtn {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .buttonContainer {
+    display: none;
+  }
+
+  .topBar .rightPart {
+    display: flex;
+    align-items: center;
+  }
+
+  .buttonLogin {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2) url("../../assets/image.png") no-repeat;
+    background-size: cover;
+  }
+
+  .center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .buttonLight {
+    display: none;
+  }
+
+  .topBar .buttonLogin {
+    display: none;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-top: 10px;
+    width: 90%;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 30%;
+    align-items: center;
+  }
+
+  .button {
+    height: 50px;
+    padding: 0 35px;
+    width: 200px;
+    color: black;
+    font-size: large;
+    font-family:  system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .buttonLogin {
+    background: black;
+    color: white;
+  }
+
+  .button:hover {
+    background: gainsboro;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-top: 40%;
+    width: 90%;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .button {
+    font-size: 20px;
+    padding: 0 15px;
+  }
+}

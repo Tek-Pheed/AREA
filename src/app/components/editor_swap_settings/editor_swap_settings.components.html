@@ -1,0 +1,25 @@
+<ion-content class="ion-padding">
+    <ion-modal #editModal [isOpen]="isOpen" animated="false" [backdropDismiss]="false" [animated]="false">
+        <ng-template>
+            <ion-header>
+                <h4>Choose an element</h4>
+            </ion-header>
+            <ion-content>
+                <div class="chooseClass">
+                    <div class="list">
+                        <app-actions-cards *ngFor="let a of areas"
+                            title="{{(a.api_name == '' ? 'Unknown Service' : a.api_name)}}" service="{{a.api_name}}"
+                            description="{{a.description}}" image={{getimgsrc(a.api_name)}} id="{{a.id}}"
+                            (onCardClicked)="confirm($event)">
+                        </app-actions-cards>
+                    </div>
+                </div>
+            </ion-content>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="cancel()">Cancel</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ng-template>
+    </ion-modal>
+</ion-content>

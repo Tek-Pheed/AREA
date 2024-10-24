@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="topBar">
+        <h1>AREA</h1>
+        <div class="rightPart">
+            <a *ngIf="false" class="link" href="/integrations">Integration</a>
+            <a *ngIf="platform.is('desktop')" class="button" href="/login">{{ token ? "Account" : "Login"}}</a>
+        </div>
+    </div>
+    <div class="center">
+        <h2>Integrations for your business or your self.<br>
+            <a class="androidBtn" href="/client.apk">Download The App</a>
+        </h2>
+        <div class="buttonContainer">
+            <a class="button" href="/register">Register</a>
+            <a class="button buttonLogin" href="/login">Login</a>
+        </div>
+    </div>
+</div>

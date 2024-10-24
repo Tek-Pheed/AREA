@@ -1,0 +1,78 @@
+.container {
+    display: flex;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: --ion-background-color;
+    margin-top: constant(safe-area-inset-top) !important;
+    margin-top: env(safe-area-inset-top) !important;
+}
+
+.leftSide {
+    height: 100%;
+    flex: 1;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+
+app-profil-card {
+    width: 80vh;
+    min-width: 500px;
+}
+
+.rightSide {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+app-profil-card {
+    align-content: center;
+}
+
+@media screen and (max-width: 1365px) {
+    app-profil-card {
+        min-width: 80vw;
+    }
+
+    .container {
+        width: 100%;
+        height: auto;
+        display: block;
+        overflow-y: scroll;
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+
+    .leftSide {
+        display: block;
+        width: 100%;
+        margin-left: 0%;
+        margin-right: 0%;
+        height: auto;
+        flex: 1;
+        margin-bottom: 20px;
+    }
+
+    .rightSide {
+        width: 100%;
+        margin-left: 0%;
+        margin-right: 0%;
+        align-content: start;
+        justify-content: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        height: auto;
+    }
+}
