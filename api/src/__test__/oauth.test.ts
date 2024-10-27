@@ -111,6 +111,68 @@ describe('actions', () => {
         });
     });
 
+    describe('return 302', () => {
+        it('Spotify login route with email', async () => {
+            await supertest(app)
+                .get('/api/oauth/spotify/login/test@example.com')
+                .expect(302);
+        });
+
+        it('Spotify login route without email', async () => {
+            await supertest(app).get('/api/oauth/spotify/login').expect(302);
+        });
+
+        it('Google login route with email', async () => {
+            await supertest(app)
+                .get('/api/oauth/google/login/test@example.com')
+                .expect(302);
+        });
+
+        it('Google login route without email', async () => {
+            await supertest(app).get('/api/oauth/google/login').expect(302);
+        });
+
+        it('Twitch login route with email', async () => {
+            await supertest(app)
+                .get('/api/oauth/twitch/login/test@example.com')
+                .expect(302);
+        });
+
+        it('Twitch login route without email', async () => {
+            await supertest(app).get('/api/oauth/twitch/login').expect(302);
+        });
+
+        it('Unsplash login route with email', async () => {
+            await supertest(app)
+                .get('/api/oauth/unsplash/login/test@example.com')
+                .expect(302);
+        });
+
+        it('Unsplash login route without email', async () => {
+            await supertest(app).get('/api/oauth/unsplash/login').expect(302);
+        });
+
+        it('Discord login route with email', async () => {
+            await supertest(app)
+                .get('/api/oauth/discord/login/test@example.com')
+                .expect(302);
+        });
+
+        it('Discord login route without email', async () => {
+            await supertest(app).get('/api/oauth/discord/login').expect(302);
+        });
+
+        it('Github login route with email', async () => {
+            await supertest(app)
+                .get('/api/oauth/github/login/test@example.com')
+                .expect(302);
+        });
+
+        it('Github login route without email', async () => {
+            await supertest(app).get('/api/oauth/github/login').expect(302);
+        });
+    });
+
     afterAll(async () => {
         pool.end((err) => {
             if (err) {
