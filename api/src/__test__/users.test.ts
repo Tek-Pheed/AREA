@@ -8,6 +8,7 @@ import {
     createUserConfig,
     getAllUserConfigs,
     removeUserConfig,
+    updateUserConfig,
 } from '../routes/user/configs/configs.query';
 import log from '../utils/logger';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
@@ -29,74 +30,6 @@ describe('users', () => {
                 log.info('Connexion au pool MySQL réussie.');
                 connection.release();
             }
-        });
-    });
-
-    describe('configs', () => {
-        describe('return 200', () => {
-            it('Get all user configs', async () => {
-                await supertest(app)
-                    .get(`/api/users/configs/`)
-                    .set(
-                        'Authorization',
-                        `Bearer ${generateToken('alexandre.ricard@epitech.eu')}`
-                    )
-                    .expect(200);
-            });
-
-            it('Update user config', async () => {
-                await supertest(app)
-                    .put(`/api/users/configs/8`)
-                    .send({
-                        actions_id: 6,
-                        method: 'GET',
-                        headers: 'json',
-                        body: 'json',
-                        reaction_id: 6,
-                    })
-                    .set(
-                        'Authorization',
-                        `Bearer ${generateToken('test@example.com')}`
-                    )
-                    .expect(200);
-            });
-
-            it('Delete user config', async () => {
-                await supertest(app)
-                    .delete(`/api/users/configs/8`)
-                    .set(
-                        'Authorization',
-                        `Bearer ${generateToken('test@example.com')}`
-                    )
-                    .expect(200);
-            });
-        });
-
-        describe('return 500', () => {
-            it('Update user config', async () => {
-                await supertest(app)
-                    .put('/api/users/configs/8')
-                    .set(
-                        'Authorization',
-                        `Bearer ${generateToken('test@example.com')}`
-                    )
-                    .expect(500);
-            });
-
-            it('Create config without token', async () => {
-                const result = await createUserConfig(null, '');
-                expect(result).toBe(null);
-            });
-
-            it('Get config without token', async () => {
-                const result = await getAllUserConfigs('');
-                expect(result).toBe(null);
-            });
-
-            it('Remove config without token', async () => {
-                const result = await removeUserConfig('0', '');
-                expect(result).toBe(false);
-            });
         });
     });
 
@@ -188,6 +121,108 @@ describe('users', () => {
                 `${generateToken('abcd@gmail.com')}`
             );
             expect(result).toBe(null);
+        });
+    });
+
+    describe('configs', () => {
+        describe('return 200', () => {
+            it('Get all user configs', async () => {
+                await supertest(app)
+                    .get(`/api/users/configs/`)
+                    .set(
+                        'Authorization',
+                        `Bearer ${generateToken('alexandre.ricard@epitech.eu')}`
+                    )
+                    .expect(200);
+            });
+
+            it('Update user config', async () => {
+                await supertest(app)
+                    .put(`/api/users/configs/8`)
+                    .send({
+                        actions_id: 6,
+                        method: 'GET',
+                        headers: 'json',
+                        body: 'json',
+                        reaction_id: 6,
+                    })
+                    .set(
+                        'Authorization',
+                        `Bearer ${generateToken('test@example.com')}`
+                    )
+                    .expect(200);
+            });
+
+            it('Delete user config', async () => {
+                await supertest(app)
+                    .delete(`/api/users/configs/8`)
+                    .set(
+                        'Authorization',
+                        `Bearer ${generateToken('test@example.com')}`
+                    )
+                    .expect(200);
+            });
+        });
+
+        describe('return 500', () => {
+            it('Update user config', async () => {
+                await supertest(app)
+                    .put('/api/users/configs/8')
+                    .set(
+                        'Authorization',
+                        `Bearer ${generateToken('test@example.com')}`
+                    )
+                    .expect(500);
+            });
+
+            it('Create config without token', async () => {
+                const result = await createUserConfig(null, '');
+                expect(result).toBe(null);
+            });
+
+            it('Get config without token', async () => {
+                const result = await getAllUserConfigs('');
+                expect(result).toBe(null);
+            });
+
+            it('Remove config without token', async () => {
+                const result = await removeUserConfig('0', '');
+                expect(result).toBe(false);
+            });
+
+            it('Get all user configs db KO', async () => {
+                db.end();
+                await supertest(app)
+                    .get(`/api/users/configs/`)
+                    .set(
+                        'Authorization',
+                        `Bearer ${generateToken('test@example.com')}`
+                    )
+                    .expect(500);
+            });
+
+            it('Update user config db KO', async () => {
+                db.end();
+                const result = await updateUserConfig(
+                    {
+                        actions_id: 0,
+                        method: 'GET',
+                        headers: '',
+                        body: '',
+                        reaction_id: 0,
+                    },
+                    '8'
+                );
+                expect(result).toBe(false);
+            });
+
+            it('Delete user config db KO', async () => {
+                const result = await removeUserConfig(
+                    '1000',
+                    generateToken('test@example.com')
+                );
+                expect(result).toBe(false);
+            });
         });
     });
 

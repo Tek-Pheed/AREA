@@ -3,6 +3,12 @@ import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import log from '../utils/logger';
 import { generateToken } from '../routes/auth/auth';
+import {
+    getAllConnections,
+    insertTokeninDb,
+    logoutService,
+} from '../routes/oauth/oauth.query';
+import exp = require('node:constants');
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
 );
@@ -196,6 +202,42 @@ describe('actions', () => {
 
         it('Github callback', async () => {
             await supertest(app).get('/api/oauth/github/callback').expect(302);
+        });
+    });
+
+    describe('return null', () => {
+        it('getAllConnections when token is null', async () => {
+            const result = await getAllConnections('');
+            expect(result).toBeNull();
+        });
+
+        it('getAllConnections when db KO', async () => {
+            db.end();
+            const result = await getAllConnections(
+                generateToken('test@example.com')
+            );
+            expect(result).toBeNull();
+        });
+
+        it('logoutService when db KO', async () => {
+            db.end();
+            const result = await logoutService('test@example.com', 'spotify');
+            expect(result).toBeNull();
+        });
+
+        it('logoutService when db KO', async () => {
+            const result = await logoutService('test@example.com', 'spotify');
+            expect(result).toBeNull();
+        });
+
+        it('insertTokeninDb when refresh_token is null', async () => {
+            const result = await insertTokeninDb('spotify', '', null, '');
+            expect(result).toBeUndefined();
+        });
+
+        it('insertTokeninDb when refresh_token is ok', async () => {
+            const result = await insertTokeninDb('spotify', '', '', '');
+            expect(result).toBeUndefined();
         });
     });
 
