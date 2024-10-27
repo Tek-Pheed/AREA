@@ -18,6 +18,7 @@ export async function getUserId(token: any, email: string): Promise<any> {
         }
     } catch (error) {
         log.error(`Error : ${error}`);
+        log.info(token);
         await refreshTwitchToken(email, token.tRefreshToken);
         return null;
     }
@@ -280,11 +281,11 @@ export async function getTopGame(email: any): Promise<any> {
                 },
             ];
         } else {
-            return null;
+            return false;
         }
     } catch (e: any) {
         log.error(`email:${email} service:Twitch getTopGame ${e}`);
         await refreshTwitchToken(email, token.tRefreshToken);
-        return null;
+        return false;
     }
 }

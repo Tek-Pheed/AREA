@@ -1,11 +1,14 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'com.tekpheed.nexus',
+    appId: 'com.epitech.tekpheed.area',
     appName: 'Nexus',
     webDir: 'www',
-    ios: {
-        scheme: 'capacitor',
+
+    plugins: {
+        CapacitorHttp: {
+            enabled: true,
+        },
     },
 };
 

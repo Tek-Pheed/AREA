@@ -134,7 +134,7 @@ code {
 .lighButton {
     background: rgb(145, 145, 145);
     text-decoration: none;
-    height: 75%;
+    height: 60%;
     width: auto;
     border-radius: 10px;
     color: white;
@@ -147,7 +147,8 @@ code {
     justify-content: center;
     align-self: center;
     align-content: center;
-    margin: 5vh;
+    margin: 5vw;
+    min-height: 45px;
 }
 
 .lighButton:hover {

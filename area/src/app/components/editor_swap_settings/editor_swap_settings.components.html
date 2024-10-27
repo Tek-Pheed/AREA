@@ -1,5 +1,5 @@
 <ion-content class="ion-padding">
-    <ion-modal [isOpen]="isOpen" [backdropDismiss]="false" [animated]="false">
+    <ion-modal #editModal [isOpen]="isOpen" animated="false" [backdropDismiss]="false" [animated]="false">
         <ng-template>
             <ion-header>
                 <h4>Choose an element</h4>
@@ -15,7 +15,6 @@
                     </div>
                 </div>
             </ion-content>
-
             <ion-toolbar>
                 <ion-buttons slot="end">
                     <ion-button (click)="cancel()">Cancel</ion-button>

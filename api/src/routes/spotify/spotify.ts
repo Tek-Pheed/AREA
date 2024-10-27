@@ -1,4 +1,7 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
+import log from '../../utils/logger';
+import API from '../../middlewares/api';
+import { insertTokeninDb } from '../oauth/oauth.query';
 
 const axios = require('axios');
 const session = require('express-session');
@@ -73,14 +76,39 @@ spotifyRouter.get(
 );
 
 spotifyRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('spotify', { state: email })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Spotify OAuth']
+    }
+);
+
+spotifyRouter.get(
     '/callback',
     passport.authenticate('spotify', {
         failureRedirect: '/api/oauth/spotify/login',
     }),
     async (req: any, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
-        res.redirect(
-            `http://localhost:8081/dashboard/profile?api=spotify&refresh_token=${req.user.refreshTokenSpotify}&access_token=${req.user.accessTokenSpotify}`
+        const token: any = req.user;
+        const email = req.query.state;
+        await insertTokeninDb(
+            'spotify',
+            token.accessTokenSpotify,
+            token.refreshTokenSpotify,
+            `${email}`
         );
+        const origin = req.headers['user-agent'];
+        if (
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
+        ) {
+            res.send('You are connected close this modal !');
+        } else {
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
+        }
     }
 );

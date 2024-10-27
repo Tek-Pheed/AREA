@@ -21,7 +21,7 @@
     </div>
 </ion-content>
 
-<ion-modal [isOpen]="isModalOpen" (willDismiss)="setOpen(false)">
+<ion-modal #editModal [isOpen]="isModalOpen" (willDismiss)="setOpen(false)">
     <ng-template>
         <ion-header>
             <ion-toolbar>

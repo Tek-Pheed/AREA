@@ -8,7 +8,9 @@ const TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 
 export async function getBroadcasterId(
     token: string,
-    username: string
+    username: string,
+    refresh_token: string,
+    email: string
 ): Promise<any> {
     try {
         const resp = await axios.get(
@@ -32,6 +34,7 @@ export async function getBroadcasterId(
             `Error fetching broadcaster ID for username : ${username}`,
             error
         );
+        await refreshTwitchToken(email, refresh_token);
         return null;
     }
 }
@@ -44,7 +47,9 @@ export async function createClip(
     try {
         const broadcasterId = await getBroadcasterId(
             tAccessToken,
-            broadcasterUsername
+            broadcasterUsername,
+            tRefreshToken,
+            email
         );
 
         if (!broadcasterId) {
@@ -86,9 +91,14 @@ export async function sendChatMessage(
     try {
         const broadcasterId = await getBroadcasterId(
             tAccessToken,
-            broadcasterUsername
+            broadcasterUsername,
+            tRefreshToken,
+            email
         );
-        const senderId = await getUserId(tAccessToken, email);
+        const senderId = await getUserId(
+            { tAccessToken, tRefreshToken },
+            email
+        );
 
         if (!broadcasterId || !senderId) {
             return null;
@@ -113,13 +123,14 @@ export async function sendChatMessage(
         if (response.status === 200) {
             return true;
         } else {
-            console.error(
+            log.error(
                 `Failed to send message. Status code : ${response.status}`
             );
             return false;
         }
     } catch (error) {
-        console.error(`Error sending chat message : ${error}`);
+        log.error(`Error sending chat message : ${error}`);
+        log.info(tRefreshToken);
         await refreshTwitchToken(email, tRefreshToken);
         return false;
     }

@@ -5,6 +5,8 @@ export interface IHeaders {
 export interface IBodySpecific {
     name: string;
     value: string;
+    reaction?: string;
+    params?: IBodySpecific[];
 }
 
 export interface IBody {

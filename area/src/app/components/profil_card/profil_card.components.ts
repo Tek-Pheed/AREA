@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from '../../../utils/api.services';
 import { Router } from '@angular/router';
 
@@ -11,8 +11,11 @@ export class ProfilCardComponent implements OnInit {
     @Input() name: string = '';
     @Input() email: string = '';
     @Input() username: string = '';
+    @Input() creationDate: string = '';
     @Input() background_color: string = '';
     @Input() image: string = '';
+
+    @Output('onImageChanges') onImageChanges = new EventEmitter<any>();
 
     inputName: string = '';
     inputEmail: string = '';
@@ -20,7 +23,10 @@ export class ProfilCardComponent implements OnInit {
 
     token: string = '';
 
-    constructor(private service: ApiService, private router: Router) {}
+    constructor(
+        private service: ApiService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this.token = JSON.parse(
@@ -54,6 +60,7 @@ export class ProfilCardComponent implements OnInit {
             username: this.inputName,
             email: this.inputEmail,
             password: this.inputPassword,
+            picture_url: this.image,
         };
 
         if (body.password.length > 0 && body.password.length < 12) {
@@ -71,5 +78,17 @@ export class ProfilCardComponent implements OnInit {
                 alert('Error when update account');
             }
         );
+    }
+
+    changeImage() {
+        let url = prompt('Url of an image: ', this.image);
+
+        if (url != null) {
+            if (url.length > 2500) {
+                alert('The url is too long, please try again');
+                return;
+            }
+            this.image = url;
+        }
     }
 }

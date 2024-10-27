@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
-import { Platform } from '@ionic/angular';
+import { IonInput, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,10 +9,10 @@ import { Router } from '@angular/router';
     styleUrls: ['register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-    @ViewChild('inputName') inputName: ElementRef | undefined;
-    @ViewChild('inputEmail') inputEmail: ElementRef | undefined;
-    @ViewChild('inputPassword') inputPassword: ElementRef | undefined;
-    @ViewChild('inputPassword2') inputPassword2: ElementRef | undefined;
+    @ViewChild('inputName') inputName: IonInput | undefined;
+    @ViewChild('inputEmail') inputEmail: IonInput | undefined;
+    @ViewChild('inputPassword') inputPassword: IonInput | undefined;
+    @ViewChild('inputPassword2') inputPassword2: IonInput | undefined;
 
     constructor(
         private service: ApiService,
@@ -43,14 +43,14 @@ export class RegisterPage implements OnInit {
         let password: string = '';
         let password2: string = '';
 
-        if (this.inputName?.nativeElement != undefined)
-            name = this.inputName.nativeElement.value;
-        if (this.inputEmail?.nativeElement != undefined)
-            email = this.inputEmail.nativeElement.value;
-        if (this.inputPassword?.nativeElement != undefined)
-            password = this.inputPassword.nativeElement.value;
-        if (this.inputPassword2?.nativeElement != undefined)
-            password2 = this.inputPassword2.nativeElement.value;
+        if (this.inputName != undefined && this.inputName.value != undefined)
+            name = String(this.inputName.value);
+        if (this.inputEmail != undefined && this.inputEmail.value != undefined)
+            email = String(this.inputEmail.value);
+        if (this.inputPassword != undefined && this.inputPassword.value != undefined)
+            password = String(this.inputPassword.value);
+        if (this.inputPassword2 != undefined && this.inputPassword2.value != undefined)
+            password2 = String(this.inputPassword2.value);
 
         if (password !== password2) {
             alert('Passwords are not the same !');

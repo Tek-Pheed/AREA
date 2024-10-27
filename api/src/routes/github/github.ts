@@ -1,6 +1,8 @@
-import { Response, Router } from 'express';
+import { NextFunction, Response, Router } from 'express';
 import { isAuthenticatedGithub } from '../../middlewares/oauth';
 import log from '../../utils/logger';
+import { insertTokeninDb } from '../oauth/oauth.query';
+import { twitchRouter } from '../twitch/twitch';
 
 const GitHubStrategy = require('passport-github2').Strategy;
 const axios = require('axios');
@@ -62,14 +64,42 @@ githubRouter.get(
 );
 
 githubRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('github', {
+            scope: ['user, repo'],
+            state: email,
+        })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Github OAuth']
+    }
+);
+
+githubRouter.get(
     '/callback',
     passport.authenticate('github', {
         failureRedirect: '/api/oauth/github/login',
     }),
     async function (req: any, res) {
-        res.redirect(
-            `http://localhost:8081/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
+        const token: any = req.user;
+        const email = req.query.state;
+        await insertTokeninDb(
+            'github',
+            token.accessTokenGithub,
+            null,
+            `${email}`
         );
+        const origin = req.headers['user-agent'];
+        if (
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
+        ) {
+            res.send('You are connected close this modal !');
+        } else {
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
+        }
         //#swagger.tags   = ['Github OAuth']
     }
 );

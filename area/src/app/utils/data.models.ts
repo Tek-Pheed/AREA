@@ -55,7 +55,8 @@ export interface APIServices {
 export interface ProfileData {
     Name: string;
     Email: string;
-    ImgSrc: string;
+    picture_url: string;
+    create_at: string;
 }
 
 export interface IAreaPair {
@@ -90,8 +91,8 @@ export interface IConfigContent {
 }
 
 export interface IConfigBody {
-    action: IConfigContent[];
-    reaction: IConfigContent[];
+    action: IConfigContent[] | any;
+    reaction: IConfigContent[] | any;
 }
 
 export interface IUserConfig {
