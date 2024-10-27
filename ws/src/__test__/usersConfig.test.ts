@@ -115,16 +115,13 @@ describe('usersConfig', () => {
         it('should return UsersConfigs', async () => {
             const actions = await getUsersConfigs();
             expect(actions[0]).toEqual({
-                actions_id: 6,
-                body: {
-                    action: [{ name: 'StreamUsername', value: 'otplol_' }],
-                    reaction: [{ name: 'songName', value: '{{game_name}}' }],
-                },
+                actions_id: 20,
+                body: {},
                 email: 'test@example.com',
                 headers: { 'Content-Type': 'application/json' },
-                id: 1,
+                id: 0,
                 method: 'GET',
-                reaction_id: 9,
+                reaction_id: 22,
             });
         });
     });
