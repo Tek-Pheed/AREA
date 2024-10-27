@@ -122,6 +122,10 @@ describe('actions', () => {
             await supertest(app).get('/api/oauth/spotify/login').expect(302);
         });
 
+        it('Spotify callback', async () => {
+            await supertest(app).get('/api/oauth/spotify/callback').expect(302);
+        });
+
         it('Google login route with email', async () => {
             await supertest(app)
                 .get('/api/oauth/google/login/test@example.com')
@@ -130,6 +134,10 @@ describe('actions', () => {
 
         it('Google login route without email', async () => {
             await supertest(app).get('/api/oauth/google/login').expect(302);
+        });
+
+        it('Google callback', async () => {
+            await supertest(app).get('/api/oauth/google/callback').expect(302);
         });
 
         it('Twitch login route with email', async () => {
@@ -142,6 +150,10 @@ describe('actions', () => {
             await supertest(app).get('/api/oauth/twitch/login').expect(302);
         });
 
+        it('Twitch callback', async () => {
+            await supertest(app).get('/api/oauth/twitch/callback').expect(302);
+        });
+
         it('Unsplash login route with email', async () => {
             await supertest(app)
                 .get('/api/oauth/unsplash/login/test@example.com')
@@ -152,10 +164,20 @@ describe('actions', () => {
             await supertest(app).get('/api/oauth/unsplash/login').expect(302);
         });
 
+        it('Unsplash callback', async () => {
+            await supertest(app)
+                .get('/api/oauth/unsplash/callback')
+                .expect(302);
+        });
+
         it('Discord login route with email', async () => {
             await supertest(app)
                 .get('/api/oauth/discord/login/test@example.com')
                 .expect(302);
+        });
+
+        it('Discord callback', async () => {
+            await supertest(app).get('/api/oauth/discord/callback').expect(302);
         });
 
         it('Discord login route without email', async () => {
@@ -170,6 +192,10 @@ describe('actions', () => {
 
         it('Github login route without email', async () => {
             await supertest(app).get('/api/oauth/github/login').expect(302);
+        });
+
+        it('Github callback', async () => {
+            await supertest(app).get('/api/oauth/github/callback').expect(302);
         });
     });
 

@@ -2,7 +2,11 @@ import supertest from 'supertest';
 import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import { generateToken } from '../routes/auth/auth';
-import { getActionsAPI, getAllActions } from '../routes/actions/action.query';
+import {
+    getActionsAPI,
+    getAllActions,
+    getSpecificAction,
+} from '../routes/actions/action.query';
 import {
     getAllReactions,
     getReactionAPI,
@@ -82,16 +86,24 @@ describe('actions', () => {
     });
 
     describe('return 500', () => {
-        beforeEach(async () => {
-            db.end();
+        it("Error when call specific action function doesn't exist", async () => {
+            const result = await getSpecificAction('0');
+            expect(result).toBe(null);
         });
 
         it('Error when call action function', async () => {
+            db.end();
             const result = await getAllActions();
             expect(result).toBe(null);
         });
 
+        it('Error when call specific action function', async () => {
+            const result = await getSpecificAction('0');
+            expect(result).toBe(null);
+        });
+
         it('Error when call action function api', async () => {
+            db.end();
             const result = await getActionsAPI();
             expect(result).toBe(null);
         });
