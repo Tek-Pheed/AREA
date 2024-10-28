@@ -9,17 +9,19 @@
                 <p>Choose a service</p>
                 <div class="integrationList">
                     <app-actions-cards-compact *ngFor="let i of integrations" action_name="{{i.name}}"
-                        iconUrl="{{i.icon_url}}" (click)="selectIntegration(i.name)" />
+                        iconUrl="{{i.icon_url}}" [connected]="i.connected" (click)="selectIntegration(i.name, i.connected)" />
                 </div>
             </div>
         </ng-container>
         <div class="chooseClass">
             <p>Choose an action</p>
             <div class="integrationListSmall">
-                <app-actions-cards *ngFor="let a of actionResults" title="{{a.api_name}}" service="{{a.api_name}}"
-                    description="{{a.description}}" image={{getimgsrc(a.api_name)}}
-                    (onCardClicked)="this.createConfigFromActionId(a.id)">
-                </app-actions-cards>
+                <ng-container *ngFor="let a of actionResults">
+                    <app-actions-cards *ngIf="isServiceConnected(a.api_name)" title="{{a.api_name}}"
+                        service="{{a.api_name}}" description="{{a.description}}" image={{getimgsrc(a.api_name)}}
+                        (onCardClicked)="this.createConfigFromActionId(a.id)">
+                    </app-actions-cards>
+                </ng-container>
             </div>
             <div *ngIf="!platform.is('desktop')" class="bottom"></div>
         </div>

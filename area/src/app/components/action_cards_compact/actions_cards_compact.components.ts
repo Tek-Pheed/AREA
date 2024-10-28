@@ -11,6 +11,7 @@ import {Component, Input} from '@angular/core';
 export class ActionsCardsCompactComponent {
 
   @Input() action_name: string = "";
+  @Input() connected: boolean = true;
   @Input() iconUrl: string = "assets/icon/favicon.png";
 
   constructor() {}

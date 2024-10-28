@@ -166,6 +166,15 @@ export class EditeurPage implements OnInit {
         }
     }
 
+    isServiceConnected(api_name: string) {
+        let int = this.integrations.find((elm) => elm.name == api_name);
+        if (int != undefined) {
+            return int.connected;
+        } else {
+            return false;
+        }
+    }
+
     getimgsrc(title: string | undefined) {
         if (title == undefined) return 'assets/question-mark-round-icon.svg';
         let res = this.integrations.find(
@@ -187,6 +196,58 @@ export class EditeurPage implements OnInit {
                     ),
                     1
                 );
+                this.service.getAllConnections(this.token).subscribe((res) => {
+                    let data = res.data[0];
+                    for (let i = 0; i < this.integrations.length; i++) {
+                        if (
+                            data.githubAccessToken != null &&
+                            this.integrations[i].name.toLowerCase() === 'github'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.spotifyAccessToken != null &&
+                            data.spotifyRefreshToken != null &&
+                            this.integrations[i].name.toLowerCase() ===
+                                'spotify'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.twitchAccessToken != null &&
+                            data.twitchRefreshToken != null &&
+                            this.integrations[i].name.toLowerCase() === 'twitch'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.googleAccessToken != null &&
+                            this.integrations[i].name.toLowerCase() === 'google'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.unsplashAccessToken != null &&
+                            this.integrations[i].name.toLowerCase() ===
+                                'unsplash'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.discordAccessToken != null &&
+                            data.discordRefreshToken != null &&
+                            this.integrations[i].name.toLowerCase() ===
+                                'discord'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+                    }
+                });
                 this.getAllActions();
             },
             (err) => {
@@ -343,8 +404,8 @@ export class EditeurPage implements OnInit {
         let component = this.viewContainerRef.createComponent(
             EditorSawpSettingsComponent
         );
-        component.setInput('services', this.integrations);
-        component.setInput('areas', this.actions);
+        component.setInput('services', this.integrations.filter((elm) => (elm.connected)));
+        component.setInput('areas', this.actions.filter((elm) => (this.isServiceConnected(elm.api_name))));
         component.setInput('context', component);
         component.setInput('id', action?.raw.id);
         component.instance.onModalClose.subscribe(
@@ -408,8 +469,8 @@ export class EditeurPage implements OnInit {
         let component = this.viewContainerRef.createComponent(
             EditorSawpSettingsComponent
         );
-        component.setInput('services', this.integrations);
-        component.setInput('areas', this.reactions);
+        component.setInput('services', this.integrations.filter((elm) => (elm.connected)));
+        component.setInput('areas', this.reactions.filter((elm) => (this.isServiceConnected(elm.api_name))));
         component.setInput('context', component);
         component.setInput('id', reaction?.raw.id);
         component.instance.onModalClose.subscribe(
