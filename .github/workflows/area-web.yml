@@ -81,5 +81,5 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           local_path: "./area/www/*"
-          remote_path: "./area-www/"
+          remote_path: "/var/www/area-www/"
           sftpArgs: "-o ConnectTimeout=5"
