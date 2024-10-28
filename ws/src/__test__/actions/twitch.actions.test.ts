@@ -1,4 +1,3 @@
-import request from 'supertest';
 import {
     liveStart,
     getCurrentGameOfStreamer,
