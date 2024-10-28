@@ -96,6 +96,12 @@ p {
     }
 }
 
+@media screen and (max-width: 700px) {
+    .circle-image {
+        margin-right: 20px;
+    }
+}
+
 .buttonContainer {
     display: flex;
 }
