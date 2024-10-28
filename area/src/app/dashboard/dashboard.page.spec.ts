@@ -58,12 +58,14 @@ describe('DashboardPage', () => {
                 actionAPILogoUrl: '',
                 reactionAPILogoUrl: '',
                 configID: '1',
+                apiname: '',
             },
             {
                 name: 'Example2',
                 actionAPILogoUrl: '',
                 reactionAPILogoUrl: '',
                 configID: '2',
+                apiname: '',
             },
         ];
         console.log(component.datas.length);
