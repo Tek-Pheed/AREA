@@ -2,6 +2,7 @@ import supertest from 'supertest';
 import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import log from '../utils/logger';
+import { login } from '../routes/auth/auth.query';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
 );
@@ -87,6 +88,17 @@ describe('auth', () => {
                     username: 'Hello world',
                 })
                 .expect(500);
+        });
+
+        it('Login with wrong credentials', async () => {
+            const result = await login('', '');
+            expect(result).toBe(false);
+        });
+
+        it('Login with good credentials but db not responding', async () => {
+            db.end();
+            const result = await login('test@example.com', 'test');
+            expect(result).toBe(false);
         });
     });
 
