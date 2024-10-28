@@ -13,16 +13,26 @@ describe('refresh.query.ts', () => {
     });
 
     afterAll(async () => {
-        db.end((err) => {
-            if (err) {
-                console.error('Error closing the connection:', err);
-            }
+        await new Promise<void>((resolve, reject) => {
+            db.end((err) => {
+                if (err) {
+                    console.error('Error closing the connection:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
 
-        pool.end((err) => {
-            if (err) {
-                console.error('Error closing pool connections:', err);
-            }
+        await new Promise<void>((resolve, reject) => {
+            pool.end((err) => {
+                if (err) {
+                    console.error('Error closing pool connections:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
     });
 
@@ -52,7 +62,7 @@ describe('refresh.query.ts', () => {
         });
     });
 
-    describe('refreshAccessToken', () => {
+    describe('refreshAccessTokenDiscord', () => {
         it('should return false', async () => {
             const email = 'none@nomail.com';
             const service = 'Discord';

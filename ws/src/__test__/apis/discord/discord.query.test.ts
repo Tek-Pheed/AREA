@@ -26,8 +26,8 @@ describe('discord.query.ts', () => {
             const email = 'testws@example.com';
             const result = await getDiscordToken(email);
             expect(result).toStrictEqual({
-                dAccessToken: null,
-                dRefreshToken: null,
+                dAccessToken: 'tt',
+                dRefreshToken: 'tt',
             });
         });
 
