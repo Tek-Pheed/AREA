@@ -72,7 +72,7 @@ jobs:
       - name: Build website
         run: |
           cd area/
-          npm run build
+          ionic build --prod --release
       - name: Deploy
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
