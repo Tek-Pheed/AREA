@@ -12,6 +12,7 @@ export class DashboardCardsComponent {
     @Input() image_2: string = "";
     @Input() id: string = "";
     @Input() service: string = '';
+    @Input() example: boolean = false;
 
     @Output('onDeleteClicked') onDeleteClicked = new EventEmitter<string>();
     @Output('onCardClicked') onCardClicked = new EventEmitter<any>();

@@ -356,7 +356,9 @@ export class EditeurPage implements OnInit {
                 }
                 const searchParams = new URLSearchParams(url.split('?')[1]);
                 let actionID = searchParams.get('actionID');
+                let reactionID = searchParams.get('reactionID');
                 if (actionID != undefined) this.selectActionById(actionID);
+                if (reactionID != undefined) this.swapReactionById(undefined, reactionID);
                 this.loadValuesFromConfig();
             },
             (err) => {
