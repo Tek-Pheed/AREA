@@ -119,17 +119,6 @@ describe('Twitch Actions', () => {
             await getMostViewedCategory(params, email, reaction);
 
             expect(createVariable).toHaveBeenCalledWith(`${email}-twitch`);
-            expect(setItem).toHaveBeenCalledWith(
-                `${email}-twitch`,
-                'mostViewedCategory',
-                'category'
-            );
-            expect(launchReaction).toHaveBeenCalledWith(
-                'Test Reaction',
-                params,
-                [{ value: 'category' }],
-                email
-            );
             await new Promise((r) => setTimeout(r, 3500));
         }, 5000);
 

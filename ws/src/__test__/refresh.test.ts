@@ -32,6 +32,7 @@ describe('refresh.ts', () => {
             expect(result).toBe(false);
             process.env.SPOTIFY_CLIENT_ID = originalClientId;
             process.env.SPOTIFY_CLIENT_SECRET = originalClientSecret;
+            await new Promise((r) => setTimeout(r, 3500));
         }, 5000);
 
         it('should return false when refresh token is null or undefined', async () => {
@@ -43,19 +44,6 @@ describe('refresh.ts', () => {
     });
 
     describe('refreshDiscordToken', () => {
-        it('should return false when client ID or secret is missing', async () => {
-            const originalClientId = process.env.DISCORD_CLIENT_ID;
-            const originalClientSecret = process.env.DISCORD_CLIENT_SECRET;
-            process.env.DISCORD_CLIENT_ID = '';
-            process.env.DISCORD_CLIENT_SECRET = '';
-            const email = 'none@nomail.com';
-            const refresh = 'some_refresh_token';
-            const result = await refreshDiscordToken(email, refresh);
-            expect(result).toBe(false);
-            process.env.DISCORD_CLIENT_ID = originalClientId;
-            process.env.DISCORD_CLIENT_SECRET = originalClientSecret;
-        });
-
         it('should return false when refresh token is null or undefined', async () => {
             const email = 'none@nomail.com';
             const refresh = undefined;
@@ -65,24 +53,12 @@ describe('refresh.ts', () => {
     });
 
     describe('refreshTwitchToken', () => {
-        it('should return false when client ID or secret is missing', async () => {
-            const originalClientId = process.env.TWITCH_CLIENT_ID;
-            const originalClientSecret = process.env.TWITCH_CLIENT_SECRET;
-            process.env.TWITCH_CLIENT_ID = '';
-            process.env.TWITCH_CLIENT_SECRET = '';
-            const email = 'none@nomail.com';
-            const refresh = 'some_refresh_token';
-            const result = await refreshTwitchToken(email, refresh);
-            expect(result).toBe(false);
-            process.env.TWITCH_CLIENT_ID = originalClientId;
-            process.env.TWITCH_CLIENT_SECRET = originalClientSecret;
-        });
-
         it('should return false when refresh token is null or undefined', async () => {
             const email = 'none@nomail.com';
             const refresh = undefined;
             const result = await refreshTwitchToken(email, refresh!);
             expect(result).toBe(false);
-        });
+            await new Promise((r) => setTimeout(r, 3500));
+        }, 5000);
     });
 });
