@@ -42,7 +42,7 @@ describe('action.manager.ts', () => {
             const actionParam: IBodySpecific[] = [
                 { name: 'username', value: 'Alice' },
             ];
-            const email = 'test@example.com';
+            const email = 'raphael.scandella@epitech.eu';
             const reaction = 'test';
 
             it('should call whenListenSpecificSound for "Listen specific sound"', async () => {
