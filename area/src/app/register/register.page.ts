@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
 import { IonInput, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-Register',
@@ -47,9 +48,15 @@ export class RegisterPage implements OnInit {
             name = String(this.inputName.value);
         if (this.inputEmail != undefined && this.inputEmail.value != undefined)
             email = String(this.inputEmail.value);
-        if (this.inputPassword != undefined && this.inputPassword.value != undefined)
+        if (
+            this.inputPassword != undefined &&
+            this.inputPassword.value != undefined
+        )
             password = String(this.inputPassword.value);
-        if (this.inputPassword2 != undefined && this.inputPassword2.value != undefined)
+        if (
+            this.inputPassword2 != undefined &&
+            this.inputPassword2.value != undefined
+        )
             password2 = String(this.inputPassword2.value);
 
         if (password !== password2) {
@@ -79,5 +86,23 @@ export class RegisterPage implements OnInit {
         } else {
             this.router.navigate(['/tabs/home']);
         }
+    }
+
+    changeAPIURL() {
+        const value = window.prompt(
+            'Enter your api url like http://localhost:8080',
+            localStorage.getItem('api_url')
+                ? `${localStorage.getItem('api_url')}`
+                : environment.API_URL
+        );
+
+        if (`${value}`.length == 0 || value === null) {
+            localStorage.removeItem('api_url');
+        } else {
+            localStorage.setItem('api_url', `${value}`);
+        }
+        this.service.API_URL = localStorage.getItem('api_url')
+            ? `${localStorage.getItem('api_url')}`
+            : environment.API_URL;
     }
 }

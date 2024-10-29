@@ -237,7 +237,7 @@ export class ProfilePage implements OnInit {
                 : environment.API_URL
         );
 
-        if (`${value}`.length == 0) {
+        if (`${value}`.length == 0 || value === null) {
             localStorage.removeItem('api_url');
         } else {
             localStorage.setItem('api_url', `${value}`);
