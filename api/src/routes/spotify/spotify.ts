@@ -82,7 +82,7 @@ spotifyRouter.get(
         passport.authenticate('spotify', { state: email })(req, res, next);
     },
     async (req: any, res: Response) => {
-        //#swagger.tags = ['Discord OAuth']
+        //#swagger.tags = ['Spotify OAuth']
     }
 );
 
@@ -91,26 +91,24 @@ spotifyRouter.get(
     passport.authenticate('spotify', {
         failureRedirect: '/api/oauth/spotify/login',
     }),
-    async (req: Request, res: Response) => {
+    async (req: any, res: Response) => {
         //#swagger.tags = ['Spotify OAuth']
         const token: any = req.user;
         const email = req.query.state;
+        await insertTokeninDb(
+            'spotify',
+            token.accessTokenSpotify,
+            token.refreshTokenSpotify,
+            `${email}`
+        );
         const origin = req.headers['user-agent'];
         if (
-            origin?.toLowerCase().includes('android') ||
-            origin?.toLowerCase().includes('iphone')
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
         ) {
-            await insertTokeninDb(
-                'spotify',
-                token.accessTokenSpotify,
-                token.refreshTokenSpotify,
-                `${email}`
-            );
             res.send('You are connected close this modal !');
         } else {
-            res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile?api=spotify&refresh_token=${token.refreshTokenSpotify}&access_token=${token.accessTokenSpotify}`
-            );
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
     }
 );

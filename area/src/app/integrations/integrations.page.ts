@@ -32,7 +32,15 @@ export class IntegrationsPage implements OnInit {
         return res;
     }
 
-    selectIntegration(str: string) {
+    selectIntegration(str: string, connected: boolean) {
+        if (!connected) {
+            if (this.platform.is('desktop')) {
+                this.router.navigate(['/dashboard/profile']);
+            } else {
+                this.router.navigate(['/tabs/profile']);
+            }
+            return;
+        }
         this.inSearch = true;
         this.searchText = str.toLowerCase();
         this.actionResults = this.actions.filter(
@@ -61,17 +69,81 @@ export class IntegrationsPage implements OnInit {
         );
     }
 
+    isServiceConnected(api_name: string) {
+        let int = this.integrations.find((elm) => (elm.name == api_name));
+        if (int != undefined) {
+            return (int.connected);
+        } else {
+            return (false);
+        }
+    }
+
     getAllServices() {
         let token = JSON.parse(
             JSON.stringify(localStorage.getItem('Token')) as string
         );
         this.service.getAllServices(token).subscribe(
             (res) => {
-                console.warn(res.data);
                 this.integrations = res.data;
+                console.log(this.integrations);
+                this.integrations.splice(this.integrations.findIndex((elm) => (elm.name.toLowerCase() == 'nexus')), 1);
             },
             (err) => {
                 console.error(err);
+            },
+            () => {
+                this.service.getAllConnections(this.token).subscribe((res) => {
+                    let data = res.data[0];
+                    for (let i = 0; i < this.integrations.length; i++) {
+                        if (
+                            data.githubAccessToken != null &&
+                            this.integrations[i].name.toLowerCase() === 'github'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.spotifyAccessToken != null &&
+                            data.spotifyRefreshToken != null &&
+                            this.integrations[i].name.toLowerCase() ===
+                                'spotify'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.twitchAccessToken != null &&
+                            data.twitchRefreshToken != null &&
+                            this.integrations[i].name.toLowerCase() === 'twitch'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.googleAccessToken != null &&
+                            this.integrations[i].name.toLowerCase() === 'google'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.unsplashAccessToken != null &&
+                            this.integrations[i].name.toLowerCase() ===
+                                'unsplash'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+
+                        if (
+                            data.discordAccessToken != null &&
+                            data.discordRefreshToken != null &&
+                            this.integrations[i].name.toLowerCase() ===
+                                'discord'
+                        ) {
+                            this.integrations[i].connected = true;
+                        }
+                    }
+                });
             }
         );
     }
