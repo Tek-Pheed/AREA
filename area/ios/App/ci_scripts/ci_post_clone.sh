@@ -22,4 +22,4 @@ PLIST_PATH="/Volumes/workspace/repository/area/ios/App/App/Info.plist"
 /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" "$PLIST_PATH" || \
 /usr/libexec/PlistBuddy -c "Set :ITSAppUsesNonExemptEncryption false" "$PLIST_PATH"
 
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString 1.3" "$PLIST_PATH"
+/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString 2.0" "$PLIST_PATH"
