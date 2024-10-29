@@ -170,3 +170,12 @@ code {
         --box-shadow: 0px 1px 2px 0px #f1f1f1;
     }
 }
+
+app-dashboard-cards {
+    transition: 0.3s all ease-in-out;
+}
+
+app-dashboard-cards:hover {
+    transform: scale(1.1);
+    transition: 0.3s all ease-in-out;
+}

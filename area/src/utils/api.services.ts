@@ -9,12 +9,11 @@ import { Platform } from '@ionic/angular';
     providedIn: 'root',
 })
 export class ApiService {
-    API_URL = environment.API_URL;
+    API_URL = localStorage.getItem('api_url')
+        ? localStorage.getItem('api_url')
+        : environment.API_URL;
 
-    constructor(
-        private http: HttpClient,
-        private platform: Platform
-    ) {}
+    constructor(private http: HttpClient, private platform: Platform) {}
 
     postAuthLogin(email: string, password: string): Observable<any> {
         const headers = new HttpHeaders({
@@ -495,7 +494,9 @@ export class ApiService {
         });
         try {
             return this.http.get<any>(
-                `${this.API_URL}/api/logs/${email}/${service == '' ? 'all' : service}`,
+                `${this.API_URL}/api/logs/${email}/${
+                    service == '' ? 'all' : service
+                }`,
                 { headers }
             );
         } catch (error) {

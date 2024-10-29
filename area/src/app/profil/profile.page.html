@@ -12,3 +12,8 @@
         <div style="margin-bottom: 55px" *ngIf="!platform.is('desktop')"></div>
     </div>
 </ion-content>
+<ion-fab>
+    <ion-fab-button (click)="changeAPIURL()">
+        <ion-icon name="hammer-outline"></ion-icon>
+    </ion-fab-button>
+</ion-fab>

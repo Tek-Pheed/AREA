@@ -4,6 +4,7 @@ import { APIServices } from '../utils/data.models';
 import { ProfileData } from '../utils/data.models';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-profil',
@@ -226,5 +227,23 @@ export class ProfilePage implements OnInit {
                 });
             }
         );
+    }
+
+    changeAPIURL() {
+        const value = window.prompt(
+            'Enter your api url like http://localhost:8080',
+            localStorage.getItem('api_url')
+                ? `${localStorage.getItem('api_url')}`
+                : environment.API_URL
+        );
+
+        if (`${value}`.length == 0) {
+            localStorage.removeItem('api_url');
+        } else {
+            localStorage.setItem('api_url', `${value}`);
+        }
+        this.service.API_URL = localStorage.getItem('api_url')
+            ? `${localStorage.getItem('api_url')}`
+            : environment.API_URL;
     }
 }
