@@ -28,7 +28,7 @@ RUN npx cap add android
 
 RUN ionic capacitor build android
 
-RUN npx @capacitor/assets generate
+RUN npx @capacitor/assets generate --android
 
 WORKDIR /app/android
 

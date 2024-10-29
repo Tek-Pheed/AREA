@@ -6,6 +6,10 @@
     </div>
     <div class="bottom-left-circles">
         <img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/recycle-bin-icon.png"
-            class="deleteBin" (click)="deleteCard()" alt="delete icon" title="Delete this configuration">
+            *ngIf="!this.example" class="deleteBin" (click)="deleteCard()" alt="delete icon"
+            title="Delete this configuration">
+        <img *ngIf="this.example"
+            src="https://uxwing.com/wp-content/themes/uxwing/download/arts-graphic-shapes/innovation-icon.png"
+            class="deleteBin" alt="example icon" title="Configuration preset">
     </div>
 </div>

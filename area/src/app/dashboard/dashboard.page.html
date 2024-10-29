@@ -3,19 +3,24 @@
     <div class="content">
         <div class="topWrappedContent">
             <h1>Start creating your automations</h1>
-            <ion-searchbar placeholder="Search" value="{{searchText}}" [debounce]="500"
+            <ion-searchbar *ngIf="showActiveArea.length != 0" placeholder="Search" value="{{searchText}}" [debounce]="500"
                 (ionInput)="handleInput($event)"></ion-searchbar>
         </div>
         <div class="buttonContent">
             <a (click)="navigateToIntegrations()" class="lighButton">Create New</a>
             <a (click)="setOpen(true)"
-                class="lighButton">Logs</a>
+                class="lighButton">Show Logs</a>
         </div>
+        <h1 *ngIf="this.datas.length == 0">Or select an example:</h1>
         <div class="integrationList">
             <app-dashboard-cards *ngFor="let d of showActiveArea" service="{{d.apiname}}" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
                 image_2="{{d.reactionAPILogoUrl}}" id="{{d.configID}}" (onDeleteClicked)="this.deleteConfig($event)"
                 (onCardClicked)="this.launchEditor(d.configID)">
             </app-dashboard-cards>
+            <app-dashboard-cards *ngFor="let d of defaultDatas" service="{{d.apiname}}" title="{{d.name}}" image_1="{{d.actionAPILogoUrl}}"
+            image_2="{{d.reactionAPILogoUrl}}" [example]="true" id="{{d.configID}}" (onDeleteClicked)="this.deleteConfig($event)"
+            (onCardClicked)="this.launchEditor(d.configID, true)">
+        </app-dashboard-cards>
         </div>
         <div class="bottom"></div>
     </div>

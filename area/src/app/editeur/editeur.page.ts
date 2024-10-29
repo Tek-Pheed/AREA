@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/utils/api.services';
 import { ActivatedRoute } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import {
     APIServices,
     IActions,
@@ -58,7 +59,8 @@ export class EditeurPage implements OnInit {
         private service: ApiService,
         private route: ActivatedRoute,
         private platform: Platform,
-        private viewContainerRef: ViewContainerRef
+        private viewContainerRef: ViewContainerRef,
+        private toastController: ToastController
     ) {}
 
     ngOnInit(): void {
@@ -75,6 +77,20 @@ export class EditeurPage implements OnInit {
     }
 
     selectActionById(id: string | undefined) {
+
+        let action = this.actions.find(
+            (elm) => elm.id == Number(id)
+        )?.api_name;
+        if (action != undefined) {
+            if (this.isServiceConnected(action) != true) {
+                this.presentToast(
+                    10000,
+                    `The service ${action} is not connected. This area will not be active until you connect this service.`,
+                    'top'
+                );
+            }
+        }
+
         if (id == undefined || id == '') {
             this.configuredAction = undefined;
             return;
@@ -110,6 +126,20 @@ export class EditeurPage implements OnInit {
         new_id: string | undefined,
         values: any[] = []
     ) {
+
+        let reaction = this.reactions.find(
+            (elm) => elm.id == Number(new_id)
+        )?.api_name;
+        if (reaction != undefined) {
+            if (this.isServiceConnected(reaction) != true) {
+                this.presentToast(
+                    10000,
+                    `The service ${reaction} is not connected. This area will not be active until you connect this service.`,
+                    'top'
+                );
+            }
+        }
+
         let oldReactionIndex = this.configuredReactions.findIndex(
             (a) => a?.raw.id == Number(old_id) || a == old_id
         );
@@ -168,6 +198,7 @@ export class EditeurPage implements OnInit {
 
     isServiceConnected(api_name: string) {
         let int = this.integrations.find((elm) => elm.name == api_name);
+
         if (int != undefined) {
             return int.connected;
         } else {
@@ -295,6 +326,21 @@ export class EditeurPage implements OnInit {
             }
         );
     }
+
+    async presentToast(
+        duration: number = 1500,
+        message: string = '',
+        position: 'top' | 'middle' | 'bottom'
+    ) {
+        const toast = await this.toastController.create({
+            message: message,
+            duration: duration,
+            position: position,
+            cssClass: 'toast-custom-class',
+        });
+        await toast.present();
+    }
+
     loadConfig() {
         let url: string = window.location.href;
         this.service.getUserConfigs(this.token).subscribe(
@@ -356,7 +402,16 @@ export class EditeurPage implements OnInit {
                 }
                 const searchParams = new URLSearchParams(url.split('?')[1]);
                 let actionID = searchParams.get('actionID');
-                if (actionID != undefined) this.selectActionById(actionID);
+                let reactionID = searchParams.get('reactionID');
+                console.warn(this.integrations);
+
+                if (actionID != undefined) {
+                    this.selectActionById(actionID);
+                }
+                if (reactionID != undefined) {
+                    this.swapReactionById(undefined, reactionID);
+                }
+
                 this.loadValuesFromConfig();
             },
             (err) => {
@@ -404,8 +459,14 @@ export class EditeurPage implements OnInit {
         let component = this.viewContainerRef.createComponent(
             EditorSawpSettingsComponent
         );
-        component.setInput('services', this.integrations.filter((elm) => (elm.connected)));
-        component.setInput('areas', this.actions.filter((elm) => (this.isServiceConnected(elm.api_name))));
+        component.setInput(
+            'services',
+            this.integrations.filter((elm) => elm.connected)
+        );
+        component.setInput(
+            'areas',
+            this.actions.filter((elm) => this.isServiceConnected(elm.api_name))
+        );
         component.setInput('context', component);
         component.setInput('id', action?.raw.id);
         component.instance.onModalClose.subscribe(
@@ -469,8 +530,16 @@ export class EditeurPage implements OnInit {
         let component = this.viewContainerRef.createComponent(
             EditorSawpSettingsComponent
         );
-        component.setInput('services', this.integrations.filter((elm) => (elm.connected)));
-        component.setInput('areas', this.reactions.filter((elm) => (this.isServiceConnected(elm.api_name))));
+        component.setInput(
+            'services',
+            this.integrations.filter((elm) => elm.connected)
+        );
+        component.setInput(
+            'areas',
+            this.reactions.filter((elm) =>
+                this.isServiceConnected(elm.api_name)
+            )
+        );
         component.setInput('context', component);
         component.setInput('id', reaction?.raw.id);
         component.instance.onModalClose.subscribe(

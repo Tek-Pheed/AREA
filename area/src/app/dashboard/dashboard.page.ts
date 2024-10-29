@@ -33,14 +33,15 @@ export class DashboardPage implements OnInit {
         private service: ApiService,
         protected platform: Platform,
         private router: Router
-    ) {
-    }
+    ) {}
 
     userConfigs: IUserConfig[] = [];
+    exampleConfigs: IUserConfig[] = [];
     actions: IActions[] = [];
     reactions: IReactions[] = [];
     apis: IApi[] = [];
     datas: activeArea[] = [];
+    defaultDatas: activeArea[] = [];
     showActiveArea: activeArea[] = [];
     searchText: string = '';
     token: string = '';
@@ -109,6 +110,7 @@ export class DashboardPage implements OnInit {
             (res) => {
                 this.userConfigs = res.data;
                 this.generateCards();
+                this.getDefaultConfigs();
             },
             (err) => {
                 console.error(err);
@@ -145,13 +147,68 @@ export class DashboardPage implements OnInit {
         this.showActiveArea = this.datas.slice();
     }
 
-    launchEditor(id: string | null) {
+    generateDefaultCards() {
+        this.defaultDatas = [];
+        if (this.datas.length > 0)
+            return;
+        for (let element of this.exampleConfigs) {
+            let action = this.actions.find(
+                (elm) => elm.id === element.actions_id
+            );
+            let reaction = this.reactions.find(
+                (elm) => elm.id === (element as any).reaction_id
+            );
+            let apiA = this.apis.find((elm) => elm.name == action?.api_name);
+            let apiB = this.apis.find((elm) => elm.name == reaction?.api_name);
+            if (
+                apiA == undefined ||
+                apiB == undefined ||
+                action == undefined ||
+                reaction == undefined
+            )
+                continue;
+            this.defaultDatas.push({
+                name: `On ${action.title.toLowerCase()}, ${reaction.title.toLowerCase()}`,
+                actionAPILogoUrl: apiA.icon_url,
+                reactionAPILogoUrl: apiB.icon_url,
+                configID: element.id,
+                apiname: apiA.name,
+            });
+        }
+    }
+
+    getDefaultConfigs() {
+        this.service.getExampleConfigs(this.token).subscribe(
+            (res) => {
+                //this.defaultDatas = res.data;
+                this.exampleConfigs = res.data;
+                this.generateDefaultCards();
+                //if (this.datas.length <= 0) {
+                //    this.defaultDatas = this.datas.slice();
+                //}
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
+
+    launchEditor(id: string | null, isDefault: boolean = false) {
         if (id == null) return;
+        if (isDefault) {
+            this.router.navigate([`/dashboard/editor`], {
+                queryParams: {
+                    actionID : this.exampleConfigs.find((elm) => (elm.id == id))?.actions_id,
+                    reactionID : this.exampleConfigs.find((elm) => (elm.id == id))?.reaction_id
+                },
+            });
+        } else {
         this.router.navigate([`/dashboard/editor`], {
             queryParams: {
                 configID: id,
             },
         });
+    }
     }
 
     deleteConfig(id: string) {
