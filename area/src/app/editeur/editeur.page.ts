@@ -297,7 +297,7 @@ export class EditeurPage implements OnInit {
                     this.actions.findIndex(
                         (elm) => elm.api_name.toLowerCase() == 'nexus'
                     ),
-                    1
+                    0
                 );
                 this.getAllReactions();
             },
@@ -317,7 +317,7 @@ export class EditeurPage implements OnInit {
                     this.reactions.findIndex(
                         (elm) => elm.api_name.toLowerCase() == 'nexus'
                     ),
-                    1
+                    0
                 );
                 this.loadConfig();
             },
