@@ -78,7 +78,7 @@ unsplashRouter.get(
         })(req, res, next);
     },
     async (req: any, res: Response) => {
-        //#swagger.tags = ['Google OAuth']
+        //#swagger.tags = ['Unsplash OAuth']
     }
 );
 
@@ -101,7 +101,7 @@ unsplashRouter.get(
             origin.toLowerCase().includes('android') ||
             origin.toLowerCase().includes('iphone')
         ) {
-            res.send('You are connected close this modal !');
+            res.send('<script>window.close()</script>');
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
