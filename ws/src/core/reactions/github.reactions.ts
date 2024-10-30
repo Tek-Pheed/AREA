@@ -77,8 +77,8 @@ export async function reRunFailedWorkflow(params: IBody, email: string) {
     log.debug(data);
     const result = await rerunWorkflowFailedJobs(
         email,
-        data[1],
         data[0],
+        data[1],
         data[2],
         Boolean(data[3])
     );
@@ -91,8 +91,8 @@ export async function reRunWorkflow(params: IBody, email: string) {
     log.debug(data);
     const result = await rerunWorkflow(
         email,
-        data[1],
         data[0],
+        data[1],
         data[2],
         Boolean(data[3])
     );
