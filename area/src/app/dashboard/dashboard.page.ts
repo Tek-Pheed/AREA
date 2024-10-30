@@ -9,6 +9,7 @@ import {
 } from '../utils/data.models';
 import { IonModal, Platform } from '@ionic/angular';
 import { NavigationStart, Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface activeArea {
     name: string;
@@ -149,8 +150,7 @@ export class DashboardPage implements OnInit {
 
     generateDefaultCards() {
         this.defaultDatas = [];
-        if (this.datas.length > 0)
-            return;
+        if (this.datas.length > 0) return;
         for (let element of this.exampleConfigs) {
             let action = this.actions.find(
                 (elm) => elm.id === element.actions_id
@@ -198,17 +198,19 @@ export class DashboardPage implements OnInit {
         if (isDefault) {
             this.router.navigate([`/dashboard/editor`], {
                 queryParams: {
-                    actionID : this.exampleConfigs.find((elm) => (elm.id == id))?.actions_id,
-                    reactionID : this.exampleConfigs.find((elm) => (elm.id == id))?.reaction_id
+                    actionID: this.exampleConfigs.find((elm) => elm.id == id)
+                        ?.actions_id,
+                    reactionID: this.exampleConfigs.find((elm) => elm.id == id)
+                        ?.reaction_id,
                 },
             });
         } else {
-        this.router.navigate([`/dashboard/editor`], {
-            queryParams: {
-                configID: id,
-            },
-        });
-    }
+            this.router.navigate([`/dashboard/editor`], {
+                queryParams: {
+                    configID: id,
+                },
+            });
+        }
     }
 
     deleteConfig(id: string) {
@@ -281,5 +283,23 @@ export class DashboardPage implements OnInit {
         }
         this.getApis();
         this.logInterval = setInterval(this.getLogs.bind(this), 2000);
+    }
+
+    changeAPIURL() {
+        const value = window.prompt(
+            'Enter your api url like http://localhost:8080',
+            localStorage.getItem('api_url')
+                ? `${localStorage.getItem('api_url')}`
+                : environment.API_URL
+        );
+
+        if (`${value}`.length == 0 || value === null) {
+            localStorage.removeItem('api_url');
+        } else {
+            localStorage.setItem('api_url', `${value}`);
+        }
+        this.service.API_URL = localStorage.getItem('api_url')
+            ? `${localStorage.getItem('api_url')}`
+            : environment.API_URL;
     }
 }

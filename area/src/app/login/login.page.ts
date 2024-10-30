@@ -14,7 +14,7 @@ export class LoginPage implements OnInit {
     @ViewChild('passwordInput') passwordInput: IonInput | undefined;
     constructor(
         private service: ApiService,
-        private platform: Platform,
+        protected platform: Platform,
         private router: Router
     ) {}
 
