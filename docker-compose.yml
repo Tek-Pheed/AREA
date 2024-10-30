@@ -1,11 +1,13 @@
 volumes:
     common_volume:
+    log_volume:
 
 services:
     webservice:
         build: ./ws
         volumes:
             - common_volume:/output
+            - log_volume:/usr/src/app/logs
 
     android:
         build:
@@ -19,7 +21,8 @@ services:
         ports:
             - 8080:8080
         volumes:
-            - common_volume:/usr/src/app/src/output
+            - common_volume:/usr/server/src/app/src/output
+            - log_volume:/usr/server/src/ws/logs
 
     client_web:
         build: ./area

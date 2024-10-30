@@ -1,6 +1,7 @@
 FROM node:20-alpine
 
 VOLUME /output
+VOLUME /usr/src/app/logs
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 
