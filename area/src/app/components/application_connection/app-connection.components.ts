@@ -43,7 +43,9 @@ export class AppConnectedCardComponent {
             if (this.platform.is('desktop')) {
                 location.href = `${
                     environment.API_URL
-                }/api/oauth/${name.toLowerCase()}/login/`;
+                }/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem(
+                    'Email'
+                )}`;
             } else {
                 await Browser.open({
                     url: `${
