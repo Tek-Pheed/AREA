@@ -45,11 +45,6 @@
         <div class="bottom"></div>
     </div>
 </ion-content>
-<ion-fab *ngIf="!platform.is('desktop')">
-    <ion-fab-button (click)="changeAPIURL()">
-        <ion-icon name="hammer-outline"></ion-icon>
-    </ion-fab-button>
-</ion-fab>
 
 <ion-modal #editModal [isOpen]="isModalOpen" (willDismiss)="setOpen(false)">
     <ng-template>

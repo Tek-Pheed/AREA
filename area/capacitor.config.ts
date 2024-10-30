@@ -4,7 +4,9 @@ const config: CapacitorConfig = {
     appId: 'com.epitech.tekpheed.area',
     appName: 'Nexus',
     webDir: 'www',
-
+    server: {
+        cleartext: true,
+    },
     plugins: {
         CapacitorHttp: {
             enabled: true,

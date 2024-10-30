@@ -9,6 +9,11 @@
             <app-connection-card *ngFor="let s of servicesData" class="serviceCard" email="{{this.data.Email}}"
                 app_name="{{s.name}}" app_icon="{{s.icon_url}}" [connected]="s.connected"></app-connection-card>
         </div>
-        <div style="margin-bottom: 55px" *ngIf="!platform.is('desktop')"></div>
+        <ion-fab *ngIf="!platform.is('desktop')">
+            <ion-fab-button (click)="changeAPIURL()">
+                <ion-icon name="hammer-outline"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+        <div style="margin-bottom: 100px" *ngIf="!platform.is('desktop')"></div>
     </div>
 </ion-content>
