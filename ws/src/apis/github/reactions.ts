@@ -196,7 +196,7 @@ export async function rerunWorkflow(
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `https://api.github.com/repos/${repo}/${owner}/actions/runs/${workflowRunId}/rerun`,
+            url: `https://api.github.com/repos/${owner}/${repo}/actions/runs/${workflowRunId}/rerun`,
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
@@ -234,7 +234,7 @@ export async function rerunWorkflowFailedJobs(
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `https://api.github.com/repos/${repo}/${owner}/actions/runs/${workflowRunId}/rerun-failed-jobs`,
+            url: `https://api.github.com/repos/${owner}/${repo}/actions/runs/${workflowRunId}/rerun-failed-jobs`,
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/vnd.github+json',
