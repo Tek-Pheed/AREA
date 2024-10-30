@@ -530,4 +530,23 @@ export class ApiService {
             });
         }
     }
+
+    getAboutJson(): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+        try {
+            return this.http.get<any>(`${this.API_URL}/about.json`, {
+                headers,
+            });
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
 }

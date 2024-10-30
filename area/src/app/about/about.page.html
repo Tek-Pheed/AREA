@@ -1,0 +1,15 @@
+<ion-content>
+    <div class="container">
+        <div class="header">
+            <ion-back-button defaultHref="/" routerDirection="back" class="back-button" text=""
+                             icon="chevron-back-outline" />
+
+            <a href="{{this.api.API_URL}}/about.json">about.json</a>
+        </div>
+        <div class="preview">
+            <code>
+                {{about | json}}
+            </code>
+        </div>
+    </div>
+</ion-content>
