@@ -18,6 +18,7 @@ export async function getUserId(token: any, email: string): Promise<any> {
         }
     } catch (error) {
         log.error(`Error : ${error}`);
+        log.info(token);
         await refreshTwitchToken(email, token.tRefreshToken);
         return null;
     }

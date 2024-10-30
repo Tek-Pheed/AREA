@@ -41,10 +41,18 @@ export class AppConnectedCardComponent {
                 );
         } else {
             if (this.platform.is('desktop')) {
-                location.href = `${environment.API_URL}/api/oauth/${name.toLowerCase()}/login`;
+                location.href = `${
+                    environment.API_URL
+                }/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem(
+                    'Email'
+                )}`;
             } else {
                 await Browser.open({
-                    url: `${environment.API_URL}/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem('Email')}`,
+                    url: `${
+                        environment.API_URL
+                    }/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem(
+                        'Email'
+                    )}`,
                 });
 
                 await Browser.addListener('browserFinished', () => {

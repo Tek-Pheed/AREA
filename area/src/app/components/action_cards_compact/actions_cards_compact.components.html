@@ -2,4 +2,8 @@
   <img src="{{iconUrl}}" class="iconImg" alt="actions_image">
   <p>{{action_name}}</p>
   <img src="{{iconUrl}}" class="bgImg">
+  <div class="topRight" *ngIf="!connected" title="Service not connected.">
+    <img class="warnImg" alt="Service not connected"
+      src="https://uxwing.com/wp-content/themes/uxwing/download/web-app-development/hyperlink-unlinked-icon.png">
+  </div>
 </div>

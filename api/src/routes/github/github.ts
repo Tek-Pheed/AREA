@@ -85,23 +85,20 @@ githubRouter.get(
     async function (req: any, res) {
         const token: any = req.user;
         const email = req.query.state;
-        console.log(email);
+        await insertTokeninDb(
+            'github',
+            token.accessTokenGithub,
+            null,
+            `${email}`
+        );
         const origin = req.headers['user-agent'];
         if (
-            origin?.toLowerCase().includes('android') ||
-            origin?.toLowerCase().includes('iphone')
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
         ) {
-            await insertTokeninDb(
-                'github',
-                token.accessTokenGithub,
-                null,
-                `${email}`
-            );
-            res.send('You are connected close this modal !');
+            res.send('<script>window.close()</script>');
         } else {
-            res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile/?api=github&refresh_token=${req.user.refreshTokenGithub}&access_token=${req.user.accessTokenGithub}`
-            );
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
         //#swagger.tags   = ['Github OAuth']
     }

@@ -41,6 +41,23 @@
     }
 }
 
+.topRight {
+    position: absolute;
+    background-color: white;
+    width: 48px;
+    height: 48px;
+    top: 0px;
+    right: 0px;
+    border-radius: 100%;
+}
+
+.warnImg {
+    width: 48px;
+    height: 48px;
+    padding: 8px;
+    align-items: center;
+}
+
 .container:hover {
     filter: drop-shadow(0 0 0.75rem rgb(136, 136, 136));
 }

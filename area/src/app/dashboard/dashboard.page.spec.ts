@@ -58,15 +58,16 @@ describe('DashboardPage', () => {
                 actionAPILogoUrl: '',
                 reactionAPILogoUrl: '',
                 configID: '1',
+                apiname: '',
             },
             {
                 name: 'Example2',
                 actionAPILogoUrl: '',
                 reactionAPILogoUrl: '',
                 configID: '2',
+                apiname: '',
             },
         ];
-        console.log(component.datas.length);
         component.handleInput({ target: { value: 'test' } });
 
         expect(component.showActiveArea.length).toBe(1);
@@ -123,7 +124,6 @@ describe('DashboardPage', () => {
                 id: 1,
             },
         ];
-        console.log('component.datas ' + component.datas.length);
         component.generateCards();
 
         expect(component.datas.length).toBe(1);

@@ -40,6 +40,10 @@ export const options = {
             name: 'OAuth',
             description: '',
         },
+        {
+            name: 'Presets',
+            description: '',
+        },
     ],
     components: {
         securitySchemes: {
@@ -141,6 +145,18 @@ export const options = {
                 headers: 'json',
                 body: 'json',
                 reaction_id: 0,
+            },
+            preset: {
+                status: 200,
+                error: false,
+                message: 'string',
+                data: [
+                    {
+                        id: 0,
+                        action_id: 0,
+                        reaction_id: 0,
+                    },
+                ],
             },
         },
     },

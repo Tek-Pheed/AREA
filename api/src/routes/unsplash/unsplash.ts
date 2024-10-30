@@ -1,5 +1,6 @@
-import { Response, Router } from 'express';
+import { NextFunction, Response, Router } from 'express';
 import { insertTokeninDb } from '../oauth/oauth.query';
+import { googleRouter } from '../google/google';
 
 const OAuth2Strategy = require('passport-oauth2').Strategy;
 const axios = require('axios');
@@ -68,6 +69,20 @@ unsplashRouter.get(
 );
 
 unsplashRouter.get(
+    '/login/:email',
+    (req: any, res: Response, next: NextFunction) => {
+        const email = req.params.email;
+        passport.authenticate('unsplash', {
+            scope: UNSPLASH_SCOPE,
+            state: email,
+        })(req, res, next);
+    },
+    async (req: any, res: Response) => {
+        //#swagger.tags = ['Unsplash OAuth']
+    }
+);
+
+unsplashRouter.get(
     '/callback',
     passport.authenticate('unsplash', {
         failureRedirect: '/api/oauth/unsplash/login',
@@ -75,25 +90,21 @@ unsplashRouter.get(
     async (req: any, res: Response) => {
         const token: any = req.user;
         const email = req.query.state;
-        console.log(email);
+        await insertTokeninDb(
+            'unsplash',
+            token.accessTokenUnsplash,
+            token.refreshTokenUnsplash,
+            `${email}`
+        );
         const origin = req.headers['user-agent'];
         if (
-            origin?.toLowerCase().includes('android') ||
-            origin?.toLowerCase().includes('iphone')
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
         ) {
-            await insertTokeninDb(
-                'unsplash',
-                token.accessTokenUnsplash,
-                token.refreshTokenUnsplash,
-                `${email}`
-            );
-            res.send('You are connected close this modal !');
+            res.send('<script>window.close()</script>');
         } else {
-            res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile?api=unsplash&refresh_token=${req.user.refreshTokenUnsplash}&access_token=${req.user.accessTokenUnsplash}`
-            );
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        //res.redirect('http://localhost:8080/api/oauth/unsplash/get_random_img');
         //#swagger.tags   = ['Unsplash OAuth']
     }
 );

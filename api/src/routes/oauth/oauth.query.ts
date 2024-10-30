@@ -67,5 +67,6 @@ export async function logoutService(email: string, service: string) {
         }
     } catch (e) {
         log.error(e);
+        return null;
     }
 }

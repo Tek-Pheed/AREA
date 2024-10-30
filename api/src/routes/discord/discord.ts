@@ -82,23 +82,20 @@ discordRouter.get(
     async function (req: any, res: Response) {
         const token: any = req.user;
         const email = req.query.state;
-        console.log(email);
+        await insertTokeninDb(
+            'discord',
+            token.accessTokenDiscord,
+            token.refreshTokenDiscord,
+            `${email}`
+        );
         const origin = req.headers['user-agent'];
         if (
-            origin?.toLowerCase().includes('android') ||
-            origin?.toLowerCase().includes('iphone')
+            origin.toLowerCase().includes('android') ||
+            origin.toLowerCase().includes('iphone')
         ) {
-            await insertTokeninDb(
-                'discord',
-                token.accessTokenDiscord,
-                token.refreshTokenDiscord,
-                `${email}`
-            );
-            res.send('You are connected close this modal !');
+            res.send('<script>window.close()</script>');
         } else {
-            res.redirect(
-                `${process.env.WEB_HOST}/dashboard/profile?api=discord&refresh_token=${req.user.refreshTokenDiscord}&access_token=${req.user.accessTokenDiscord}`
-            );
+            res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
         //#swagger.tags   = ['Discord OAuth']
     }

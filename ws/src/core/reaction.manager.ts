@@ -19,6 +19,7 @@ import {
 } from './reactions/github.reactions';
 import { setEventInCalendar } from './reactions/google.reactions';
 import { likePhotoReaction } from './reactions/unsplash.reaction';
+import { nexusReactions } from './reactions/nexus.reactions';
 
 export function replaceLabel(
     label: string,
@@ -35,7 +36,11 @@ export async function launchReaction(
     actionParam: IBodySpecific[],
     email: string
 ) {
-    if (actionParam.length > 0 && params.reaction.length > 0) {
+    if (
+        actionParam.length > 0 &&
+        params.reaction.length > 0 &&
+        params.reaction[0].reaction === undefined
+    ) {
         for (const reaction of params.reaction) {
             for (const action of actionParam) {
                 reaction.value = replaceLabel(
@@ -77,16 +82,19 @@ export async function launchReaction(
             await createComment(params, email);
             break;
         case 'Re-run failed workflow':
-            await reRunWorkflow(params, email);
+            await reRunFailedWorkflow(params, email);
             break;
         case 'Re-run a workflow':
-            await reRunFailedWorkflow(params, email);
+            await reRunWorkflow(params, email);
             break;
         case 'Add event':
             await setEventInCalendar(params, email);
             break;
         case 'Like a photo':
             await likePhotoReaction(params, email);
+            break;
+        case 'Multiple reactions':
+            await nexusReactions(params, actionParam, email);
             break;
         default:
             break;

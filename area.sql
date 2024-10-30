@@ -81,3 +81,13 @@ create table `users_configs`
     FOREIGN KEY (email) REFERENCES users (email),
     FOREIGN KEY (reaction_id) REFERENCES reactions (id)
 )CHARSET=utf8;
+
+create table `preset_configs`
+(
+    id              int(11) NOT NULL AUTO_INCREMENT,
+    actions_id      int(11) NOT NULL,
+    reaction_id     int(11) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (actions_id) REFERENCES actions (id),
+    FOREIGN KEY (reaction_id) REFERENCES reactions (id)
+)CHARSET=utf8;

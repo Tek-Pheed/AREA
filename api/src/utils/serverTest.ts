@@ -9,6 +9,11 @@ import { actionsRouter } from '../routes/actions/actions';
 import { reactionRouter } from '../routes/reactions/reactions';
 import { userRouter } from '../routes/user/user';
 import { oauthRouter } from '../routes/oauth/oauth';
+import { serviceRouter } from '../routes/services/services';
+import { downloadRouter } from '../routes/download/download';
+import { logsRouter } from '../routes/logger/logs';
+import { presetsRouter } from '../routes/presets/presets';
+import { aboutRouter } from '../routes/about/about';
 
 function createTestServer() {
     const app: Express = express();
@@ -45,6 +50,11 @@ function createTestServer() {
     app.use('/api/reactions', reactionRouter);
     app.use('/api/users', userRouter);
     app.use('/api/oauth', oauthRouter);
+    app.use('/api/services', serviceRouter);
+    app.use('/api/download', downloadRouter);
+    app.use('/api/logs', logsRouter);
+    app.use('/api/presets', presetsRouter);
+    app.use('/about.json', aboutRouter);
 
     return app;
 }

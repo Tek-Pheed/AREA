@@ -29,11 +29,11 @@ jobs:
         run: |
           cd area/
           npm run build
-  web_coverage_test:
-    name: Test
+  web_deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-    permissions: write-all
     needs: web_compile_test
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,11 +41,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install npm dependencies
-        run: |
-          cd area
-          npm i
-      - name: Run test
-        run: |
-          cd area/
-          npm test
+      - name: Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ secrets.SSH_USERNAME }}
+          server: ${{ secrets.SSH_HOST }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          local_path: "./area/*"
+          remote_path: "/var/www/area-www/"
+          sftpArgs: "-o ConnectTimeout=5"
+      - name: Restart services
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: echo ${{ secrets.SSH_PASSWORD }} | sudo -S systemctl restart web-area.service

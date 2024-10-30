@@ -4,6 +4,7 @@ import { APIServices } from '../utils/data.models';
 import { ProfileData } from '../utils/data.models';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-profil',
@@ -36,37 +37,31 @@ export class ProfilePage implements OnInit {
         }
         this.getAllServices();
         this.getProfileData();
-        let url: string = window.location.href;
-        const searchParams = new URLSearchParams(url.split('?')[1]);
-        this.current_access_oauth_token = `${searchParams.get('access_token')}`;
-        this.current_refresh_oauth_token = `${searchParams.get('refresh_token')}`;
-        this.current_oauth_api = `${searchParams.get('api')}`;
     }
 
     data: ProfileData = {
         Name: 'Name',
         Email: 'email@example.com',
-        picture_url: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-        create_at: new Date().toDateString()
+        picture_url:
+            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        create_at: new Date().toDateString(),
     };
 
     servicesData: APIServices[] = [];
-
-    loaded: boolean = false;
 
     getProfileData() {
         this.service.getUserData(this.token).subscribe(
             (res) => {
                 this.data.Email = res.data[0].email;
                 this.data.Name = res.data[0].username;
-                if (res.data[0].picture_url != ""  && res.data[0].picture_url != null )
-                    this.data.picture_url = res.data[0].picture_url
-                this.data.create_at = new Date(res.data[0].create_at).toLocaleDateString();
-                this.servicesData = res.data;
-                this.loaded = true;
-                if (this.current_oauth_api.length > 0) {
-                    this.updateAPIBackend();
-                }
+                if (
+                    res.data[0].picture_url != '' &&
+                    res.data[0].picture_url != null
+                )
+                    this.data.picture_url = res.data[0].picture_url;
+                this.data.create_at = new Date(
+                    res.data[0].create_at
+                ).toLocaleDateString();
             },
             (err) => {
                 console.error(err);
@@ -142,7 +137,20 @@ export class ProfilePage implements OnInit {
             .updateAPILoginTokens(this.token, this.email, body)
             .subscribe(
                 (res) => {
-                    this.getAllServices();
+                    if (
+                        !(
+                            this.current_access_oauth_token == 'null' &&
+                            this.current_refresh_oauth_token == 'null' &&
+                            this.current_oauth_api == 'null'
+                        )
+                    ) {
+                        if (this.platform.is('desktop')) {
+                            location.href = '/dashboard/profile';
+                        } else {
+                            location.href = '/tabs/home/profile';
+                        }
+                    } else {
+                    }
                 },
                 (err) => {
                     console.error(err);
@@ -154,6 +162,12 @@ export class ProfilePage implements OnInit {
         this.service.getAllServices(this.token).subscribe(
             (res) => {
                 this.servicesData = res.data;
+                this.servicesData.splice(
+                    this.servicesData.findIndex(
+                        (elm) => elm.name.toLowerCase() == 'nexus'
+                    ),
+                    1
+                );
             },
             (err) => {
                 console.error(err);
@@ -213,5 +227,23 @@ export class ProfilePage implements OnInit {
                 });
             }
         );
+    }
+
+    changeAPIURL() {
+        const value = window.prompt(
+            'Enter your api url like http://localhost:8080',
+            localStorage.getItem('api_url')
+                ? `${localStorage.getItem('api_url')}`
+                : environment.API_URL
+        );
+
+        if (`${value}`.length == 0 || value === null) {
+            localStorage.removeItem('api_url');
+        } else {
+            localStorage.setItem('api_url', `${value}`);
+        }
+        this.service.API_URL = localStorage.getItem('api_url')
+            ? `${localStorage.getItem('api_url')}`
+            : environment.API_URL;
     }
 }

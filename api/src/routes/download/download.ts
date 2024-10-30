@@ -1,10 +1,9 @@
-import { Response, Express, Router } from 'express';
-import { auth } from '../../middlewares/auth';
+import { Response, Request, Router } from 'express';
 const fs = require('fs');
 
 export const downloadRouter = Router();
 
-downloadRouter.get('/', async (req, res: Response) => {
+downloadRouter.get('/', async (req: Request, res: Response) => {
     if (fs.existsSync('/usr/src/app/src/output/area.apk')) {
         res.download('/usr/src/app/src/output/area.apk');
     } else {

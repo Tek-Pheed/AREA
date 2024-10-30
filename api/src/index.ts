@@ -16,6 +16,7 @@ import { serviceRouter } from './routes/services/services';
 import { downloadRouter } from './routes/download/download';
 import { aboutRouter } from './routes/about/about';
 import { logsRouter } from './routes/logger/logs';
+import { presetsRouter } from './routes/presets/presets';
 
 const app: Express = require('express')();
 const port = process.env.API_PORT;
@@ -65,6 +66,7 @@ app.use('/api/oauth', oauthRouter);
 app.use('/api/services', serviceRouter);
 app.use('/api/download', downloadRouter);
 app.use('/api/logs', logsRouter);
+app.use('/api/presets', presetsRouter);
 app.use('/about.json', aboutRouter);
 
 app.use(
