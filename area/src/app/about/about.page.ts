@@ -13,7 +13,6 @@ export class AboutPage implements OnInit {
     constructor(protected api: ApiService) {}
 
     ngOnInit() {
-        console.log('test');
         this.api.getAboutJson().subscribe((res) => {
             this.about = res;
         });
