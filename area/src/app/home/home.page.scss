@@ -50,15 +50,15 @@
     height: 25vh;
     background-repeat: repeat-x;
     background-size: 40% 100%;
-    opacity: 0.3;
+    opacity: 0.2;
 }
 
 .sprite-container {
     position: absolute;
     top: 0;
     left: 0;
-    width: 4000px;
-    height: 1200px;
+    width: 6300px;
+    height: 3033px;
     z-index: 1;
     overflow: hidden;
     display: flex;
@@ -78,19 +78,19 @@
 }
 
 .sprite2 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction2.png');
 }
 
 .sprite3 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction3.png');
 }
 
 .sprite4 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction4.png');
 }
 
 .sprite5 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction5.png');
 }
 
 .sprite6 {
@@ -102,22 +102,46 @@
 }
 
 .sprite8 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction2.png');
 }
 
 .sprite9 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction3.png');
 }
 
 .sprite10 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction4.png');
 }
 
 .sprite11 {
-    background-image: url('./../../assets/icon/spriteAction.png');
+    background-image: url('./../../assets/icon/spriteAction5.png');
 }
 
 .sprite12 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite13 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite14 {
+    background-image: url('./../../assets/icon/spriteAction2.png');
+}
+
+.sprite15 {
+    background-image: url('./../../assets/icon/spriteAction3.png');
+}
+
+.sprite16 {
+    background-image: url('./../../assets/icon/spriteAction4.png');
+}
+
+.sprite17 {
+    background-image: url('./../../assets/icon/spriteAction5.png');
+}
+
+.sprite18 {
     background-image: url('./../../assets/icon/spriteAction.png');
 }
 
@@ -262,8 +286,8 @@ h2 {
         position: absolute;
         top: 0;
         left: 0;
-        width: 3000px;
-        height: 1000px;
+        width: 6000px;
+        height: 3000px;
         z-index: 1;
         overflow: hidden;
         display: flex;
