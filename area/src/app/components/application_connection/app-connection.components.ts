@@ -40,17 +40,23 @@ export class AppConnectedCardComponent {
                     }
                 );
         } else {
-            await Browser.open({
-                url: `${
+            if (this.platform.is('desktop')) {
+                location.href = `${
                     environment.API_URL
-                }/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem(
-                    'Email'
-                )}`,
-            });
+                }/api/oauth/${name.toLowerCase()}/login/`;
+            } else {
+                await Browser.open({
+                    url: `${
+                        environment.API_URL
+                    }/api/oauth/${name.toLowerCase()}/login/${localStorage.getItem(
+                        'Email'
+                    )}`,
+                });
 
-            await Browser.addListener('browserFinished', () => {
-                window.location.reload();
-            });
+                await Browser.addListener('browserFinished', () => {
+                    window.location.reload();
+                });
+            }
         }
     }
 }
