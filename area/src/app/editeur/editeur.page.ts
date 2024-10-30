@@ -77,10 +77,7 @@ export class EditeurPage implements OnInit {
     }
 
     selectActionById(id: string | undefined) {
-
-        let action = this.actions.find(
-            (elm) => elm.id == Number(id)
-        )?.api_name;
+        let action = this.actions.find((elm) => elm.id == Number(id))?.api_name;
         if (action != undefined) {
             if (this.isServiceConnected(action) != true) {
                 this.presentToast(
@@ -126,7 +123,6 @@ export class EditeurPage implements OnInit {
         new_id: string | undefined,
         values: any[] = []
     ) {
-
         let reaction = this.reactions.find(
             (elm) => elm.id == Number(new_id)
         )?.api_name;
@@ -155,7 +151,7 @@ export class EditeurPage implements OnInit {
             return;
         }
 
-        if (rawReaction.input != null) {
+        if (rawReaction.input != null && values != undefined) {
             for (let element of rawReaction.input) {
                 reactionFields.push({
                     fieldID: element.name,
@@ -385,10 +381,12 @@ export class EditeurPage implements OnInit {
                                 element.reaction;
                             }
                         } else {
+                            let r = config.body.reaction;
+                            if (r != undefined) r = r[0]?.params;
                             this.swapReactionById(
                                 undefined,
                                 config.reaction_id,
-                                config.body.reaction[0].params
+                                r
                             );
                         }
                     } else if (searchParams.get('configID') != null) {
