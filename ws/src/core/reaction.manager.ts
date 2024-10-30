@@ -82,10 +82,10 @@ export async function launchReaction(
             await createComment(params, email);
             break;
         case 'Re-run failed workflow':
-            await reRunWorkflow(params, email);
+            await reRunFailedWorkflow(params, email);
             break;
         case 'Re-run a workflow':
-            await reRunFailedWorkflow(params, email);
+            await reRunWorkflow(params, email);
             break;
         case 'Add event':
             await setEventInCalendar(params, email);
