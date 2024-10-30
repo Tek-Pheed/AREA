@@ -96,7 +96,9 @@ githubRouter.get(
             origin.toLowerCase().includes('android') ||
             origin.toLowerCase().includes('iphone')
         ) {
-            res.send('<script>window.close()</script>');
+            res.send(
+                '<body><h1>Your are login to github, you can close this modal !</h1><script>window.close()</script></body>'
+            );
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
