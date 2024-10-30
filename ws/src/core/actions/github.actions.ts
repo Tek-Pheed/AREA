@@ -17,7 +17,12 @@ export async function whenNewCommitByMe(
 ) {
     let data: any[] = [];
     for (const param of params.action) data.push(param.value);
-    const result = await getCommitFromSpecificUser(data[0], data[1], email);
+    const result = await getCommitFromSpecificUser(
+        data[0],
+        data[1],
+        data[2],
+        email
+    );
     const key: string = `${email}-${data[0]}-${data[1]}`;
     await createVariable(key);
     const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
