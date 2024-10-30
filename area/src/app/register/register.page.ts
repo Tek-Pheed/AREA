@@ -17,7 +17,7 @@ export class RegisterPage implements OnInit {
 
     constructor(
         private service: ApiService,
-        private platform: Platform,
+        protected platform: Platform,
         private router: Router
     ) {}
 
