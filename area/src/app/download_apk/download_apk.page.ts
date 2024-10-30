@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/utils/api.services';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-profil',
@@ -10,7 +11,6 @@ export class DownloadAPK implements OnInit {
     constructor(private service: ApiService) {}
 
     ngOnInit(): void {
-        location.href = 'http://localhost:8080/api/download';
-        //throw new Error('Method not implemented.');
+        location.href = `${this.service.API_URL}/api/download`;
     }
 }

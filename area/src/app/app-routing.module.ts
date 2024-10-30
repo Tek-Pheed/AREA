@@ -52,6 +52,11 @@ const routes: Routes = [
                 (m) => m.DownloadAPKModule
             ),
     },
+    {
+        path: 'about.json',
+        loadChildren: () =>
+            import('./about/about.page.module').then((m) => m.AboutPageModule),
+    },
 ];
 
 @NgModule({

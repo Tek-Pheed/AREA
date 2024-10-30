@@ -9,12 +9,11 @@ import { Platform } from '@ionic/angular';
     providedIn: 'root',
 })
 export class ApiService {
-    API_URL = environment.API_URL;
+    API_URL = localStorage.getItem('api_url')
+        ? localStorage.getItem('api_url')
+        : environment.API_URL;
 
-    constructor(
-        private http: HttpClient,
-        private platform: Platform
-    ) {}
+    constructor(private http: HttpClient, private platform: Platform) {}
 
     postAuthLogin(email: string, password: string): Observable<any> {
         const headers = new HttpHeaders({
@@ -327,6 +326,27 @@ export class ApiService {
         }
     }
 
+    getExampleConfigs(token: string): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        });
+
+        try {
+            return this.http.get<any>(`${this.API_URL}/api/presets`, {
+                headers: headers,
+            });
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
     deleteUserConfigs(token: string, id: string): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
@@ -495,9 +515,30 @@ export class ApiService {
         });
         try {
             return this.http.get<any>(
-                `${this.API_URL}/api/logs/${email}/${service == '' ? 'all' : service}`,
+                `${this.API_URL}/api/logs/${email}/${
+                    service == '' ? 'all' : service
+                }`,
                 { headers }
             );
+        } catch (error) {
+            console.error('Error :', error);
+            return of({
+                status: 500,
+                error: true,
+                message: 'Error',
+                data: {},
+            });
+        }
+    }
+
+    getAboutJson(): Observable<any> {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+        try {
+            return this.http.get<any>(`${this.API_URL}/about.json`, {
+                headers,
+            });
         } catch (error) {
             console.error('Error :', error);
             return of({

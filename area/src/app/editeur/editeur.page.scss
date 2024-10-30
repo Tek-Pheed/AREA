@@ -12,13 +12,16 @@ ion-content {
     flex-direction: row;
 }
 
+::ng-deep .toast-custom-class {
+    transform: translateY(45px) !important;
+ }
 .reactionContainer {
     height: 75vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .container-editor {

@@ -106,7 +106,7 @@ spotifyRouter.get(
             origin.toLowerCase().includes('android') ||
             origin.toLowerCase().includes('iphone')
         ) {
-            res.send('You are connected close this modal !');
+            res.send('<script>window.close()</script>');
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
