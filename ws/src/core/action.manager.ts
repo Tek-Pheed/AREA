@@ -31,7 +31,7 @@ export async function launchAction(
         case 'Listen specific sound':
             await whenListenSpecificSound(params, email, reaction);
             break;
-        case 'Live starting':
+        case 'User is streaming':
             await liveStart(params, email, reaction);
             break;
         case 'Specific game streamed':
