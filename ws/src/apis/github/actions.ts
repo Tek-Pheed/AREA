@@ -5,12 +5,13 @@ const axios = require('axios');
 export async function getCommitFromSpecificUser(
     org: string,
     repos: string,
+    emailInput: string,
     email: string
 ): Promise<any> {
     try {
         const { gAccessToken, gRefreshToken } = await getGithubToken(email);
         const response = await axios.get(
-            `https://api.github.com/repos/${org}/${repos}/commits?author=${email}`,
+            `https://api.github.com/repos/${org}/${repos}/commits?author=${emailInput}`,
             {
                 headers: {
                     Authorization: `Bearer ${gAccessToken}`,
