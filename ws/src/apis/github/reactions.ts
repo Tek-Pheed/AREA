@@ -209,7 +209,7 @@ export async function rerunWorkflow(
             return true;
         } else {
             log.warn(
-                `email:${email} service:Github Github merge pr error: ${response.status}`
+                `email:${email} service:Github Github re run error: ${response.status}`
             );
             return false;
         }

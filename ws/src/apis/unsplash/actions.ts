@@ -17,24 +17,28 @@ export async function getUserLastPictures(
                 },
             }
         );
-        return [
-            {
-                name: 'id',
-                value: response.data[0].id,
-            },
-            {
-                name: 'link',
-                value: response.data[0].urls.raw,
-            },
-            {
-                name: 'likes',
-                value: response.data[0].likes,
-            },
-        ];
+        if (response.data.length > 0) {
+            return [
+                {
+                    name: 'id',
+                    value: response.data[0].id,
+                },
+                {
+                    name: 'link',
+                    value: response.data[0].urls.raw,
+                },
+                {
+                    name: 'likes',
+                    value: response.data[0].likes,
+                },
+            ];
+        } else {
+            return false;
+        }
     } catch (error) {
         log.error(
             `email:${email} service:Unsplash Error fetching photos of user ${error}`
         );
-        return null;
+        return false;
     }
 }
