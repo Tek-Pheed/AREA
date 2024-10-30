@@ -324,3 +324,9 @@ app-dashboard-cards:hover {
     transform: scale(1.1);
     transition: 0.3s all ease-in-out;
 }
+
+ion-fab {
+    position: absolute;
+    top: 20px;
+    right: 20px
+}
