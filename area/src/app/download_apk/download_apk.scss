@@ -27,13 +27,123 @@
     background-color: #4d4d4d;
 }
 
-.container {
+.sprite-row {
     width: 100%;
-    height: 100%;
-    background-image: url('../../assets/image.png');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: 50% 250%;
+    height: 25vh;
+    background-repeat: repeat-x;
+    background-size: 40% 100%;
+    opacity: 0.2;
+}
+
+.sprite-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6300px;
+    height: 3033px;
+    z-index: -1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: -2;
+}
+
+.move-left {
+    animation: scroll-left 3000s linear infinite;
+}
+
+.move-right {
+    animation: scroll-right 3000s linear infinite;
+}
+
+.sprite1 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite2 {
+    background-image: url('./../../assets/icon/spriteAction2.png');
+}
+
+.sprite3 {
+    background-image: url('./../../assets/icon/spriteAction3.png');
+}
+
+.sprite4 {
+    background-image: url('./../../assets/icon/spriteAction4.png');
+}
+
+.sprite5 {
+    background-image: url('./../../assets/icon/spriteAction5.png');
+}
+
+.sprite6 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite7 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite8 {
+    background-image: url('./../../assets/icon/spriteAction2.png');
+}
+
+.sprite9 {
+    background-image: url('./../../assets/icon/spriteAction3.png');
+}
+
+.sprite10 {
+    background-image: url('./../../assets/icon/spriteAction4.png');
+}
+
+.sprite11 {
+    background-image: url('./../../assets/icon/spriteAction5.png');
+}
+
+.sprite12 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite13 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+.sprite14 {
+    background-image: url('./../../assets/icon/spriteAction2.png');
+}
+
+.sprite15 {
+    background-image: url('./../../assets/icon/spriteAction3.png');
+}
+
+.sprite16 {
+    background-image: url('./../../assets/icon/spriteAction4.png');
+}
+
+.sprite17 {
+    background-image: url('./../../assets/icon/spriteAction5.png');
+}
+
+.sprite18 {
+    background-image: url('./../../assets/icon/spriteAction.png');
+}
+
+@keyframes scroll-left {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -6000% 0;
+    }
+}
+
+@keyframes scroll-right {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 6000% 0;
+    }
 }
 
 .center {
@@ -126,6 +236,7 @@ a {
     background: grey;
     color: white;
     text-decoration: none;
+    margin-bottom: 30%;
 }
 
 .buttonLight:hover {
