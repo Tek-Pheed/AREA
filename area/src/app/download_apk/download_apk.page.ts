@@ -12,6 +12,5 @@ export class DownloadAPK implements OnInit {
 
     ngOnInit(): void {
         location.href = `${this.service.API_URL}/api/download`;
-        //throw new Error('Method not implemented.');
     }
 }
