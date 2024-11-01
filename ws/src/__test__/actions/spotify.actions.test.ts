@@ -29,7 +29,7 @@ describe('Spotify Actions', () => {
                 { label: 'Test Label' },
             ]);
 
-            await whenListenSpecificSong(params, email, reaction);
+            await whenListenSpecificSong(params, email, reaction, 0);
 
             expect(isPlaying).toHaveBeenCalledWith(email);
             expect(launchReaction).toHaveBeenCalledWith(
@@ -44,7 +44,7 @@ describe('Spotify Actions', () => {
         it('should not launch reaction if song is not playing', async () => {
             (isPlaying as jest.Mock).mockResolvedValue(false);
 
-            await whenListenSpecificSong(params, email, reaction);
+            await whenListenSpecificSong(params, email, reaction, 0);
 
             expect(isPlaying).toHaveBeenCalledWith(email);
             expect(launchReaction).not.toHaveBeenCalled();
@@ -58,7 +58,7 @@ describe('Spotify Actions', () => {
                 { label: 'Test Label' },
             ]);
 
-            await whenListenSpecificSound(params, email, reaction);
+            await whenListenSpecificSound(params, email, reaction, 0);
 
             expect(getSpecificSong).toHaveBeenCalledWith(email, 'Test Song');
             expect(launchReaction).toHaveBeenCalledWith(
@@ -73,7 +73,7 @@ describe('Spotify Actions', () => {
         it('should not launch reaction if specific song is not found', async () => {
             (getSpecificSong as jest.Mock).mockResolvedValue(false);
 
-            await whenListenSpecificSound(params, email, reaction);
+            await whenListenSpecificSound(params, email, reaction, 0);
 
             expect(getSpecificSong).toHaveBeenCalledWith(email, 'Test Song');
             expect(launchReaction).not.toHaveBeenCalled();
@@ -87,7 +87,7 @@ describe('Spotify Actions', () => {
                 { label: 'Test Label' },
             ]);
 
-            await whenListen(params, email, reaction);
+            await whenListen(params, email, reaction, 0);
 
             expect(isPlaying).toHaveBeenCalledWith(email);
             expect(launchReaction).toHaveBeenCalledWith(
@@ -102,7 +102,7 @@ describe('Spotify Actions', () => {
         it('should not launch reaction if song is not playing', async () => {
             (isPlaying as jest.Mock).mockResolvedValue(false);
 
-            await whenListen(params, email, reaction);
+            await whenListen(params, email, reaction, 0);
 
             expect(isPlaying).toHaveBeenCalledWith(email);
             expect(launchReaction).not.toHaveBeenCalled();

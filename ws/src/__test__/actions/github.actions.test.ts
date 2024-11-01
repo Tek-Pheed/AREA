@@ -48,7 +48,7 @@ describe('GitHub Actions', () => {
         (getCommitFromSpecificUser as jest.Mock).mockResolvedValue([]);
         (fs.readFileSync as jest.Mock).mockReturnValue(JSON.stringify({}));
 
-        await whenNewCommitByMe(params, email, reaction);
+        await whenNewCommitByMe(params, email, reaction, 0);
 
         expect(log.warn).toHaveBeenCalledWith(
             `email:${email} service:Github No commit on this repositories`
@@ -59,7 +59,7 @@ describe('GitHub Actions', () => {
         (getActionWhenKo as jest.Mock).mockResolvedValue([]);
         (fs.readFileSync as jest.Mock).mockReturnValue(JSON.stringify({}));
 
-        await whenLastWorkflowFailed(params, email, reaction);
+        await whenLastWorkflowFailed(params, email, reaction, 0);
 
         expect(log.warn).toHaveBeenCalledWith(
             `email:${email} service:Github No workflow have failed`
@@ -70,7 +70,7 @@ describe('GitHub Actions', () => {
         (getActionWhenOk as jest.Mock).mockResolvedValue([]);
         (createVariable as jest.Mock).mockResolvedValue({});
 
-        await whenLastWorkflowSuccess(params, email, reaction);
+        await whenLastWorkflowSuccess(params, email, reaction, 0);
 
         expect(log.warn).toHaveBeenCalledWith(
             `email:${email} service:Github No workflow success`
@@ -81,7 +81,7 @@ describe('GitHub Actions', () => {
         (getActionInProgress as jest.Mock).mockResolvedValue([]);
         (createVariable as jest.Mock).mockResolvedValue({});
 
-        await whenLastWorkflowInProgress(params, email, reaction);
+        await whenLastWorkflowInProgress(params, email, reaction, 0);
 
         expect(log.warn).toHaveBeenCalledWith(
             `email:${email} service:Github No workflow in progress currently`

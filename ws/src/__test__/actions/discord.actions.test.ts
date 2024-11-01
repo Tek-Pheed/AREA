@@ -35,11 +35,11 @@ describe('Discord Actions', () => {
                 discordActions.getDiscordLastServerName as jest.Mock
             ).mockResolvedValue(result);
 
-            await whenJoinNewServer(params, email, reaction);
+            await whenJoinNewServer(params, email, reaction, 0);
 
             expect(
                 discordActions.getDiscordLastServerName
-            ).toHaveBeenCalledWith(email);
+            ).toHaveBeenCalledWith(email, 0);
             expect(reactionManager.launchReaction).toHaveBeenCalledWith(
                 reaction[0].title,
                 params,
@@ -53,11 +53,11 @@ describe('Discord Actions', () => {
                 discordActions.getDiscordLastServerName as jest.Mock
             ).mockResolvedValue(false);
 
-            await whenJoinNewServer(params, email, reaction);
+            await whenJoinNewServer(params, email, reaction, 0);
 
             expect(
                 discordActions.getDiscordLastServerName
-            ).toHaveBeenCalledWith(email);
+            ).toHaveBeenCalledWith(email, 0);
             expect(reactionManager.launchReaction).not.toHaveBeenCalled();
         });
     });
@@ -72,17 +72,19 @@ describe('Discord Actions', () => {
                 username: 'oldUsername',
             });
 
-            await whenUsernameChange(params, email, reaction);
+            await whenUsernameChange(params, email, reaction, 0);
 
             expect(discordActions.getDiscordUsername).toHaveBeenCalledWith(
                 email
             );
             expect(storage.createVariable).toHaveBeenCalledWith(
-                `${email}-discord`
+                `${email}-discord-0`
             );
-            expect(storage.readValue).toHaveBeenCalledWith(`${email}-discord`);
+            expect(storage.readValue).toHaveBeenCalledWith(
+                `${email}-discord-0`
+            );
             expect(storage.setItem).toHaveBeenCalledWith(
-                `${email}-discord`,
+                `${email}-discord-0`,
                 'username',
                 'newUsername'
             );
@@ -103,15 +105,17 @@ describe('Discord Actions', () => {
                 username: 'sameUsername',
             });
 
-            await whenUsernameChange(params, email, reaction);
+            await whenUsernameChange(params, email, reaction, 0);
 
             expect(discordActions.getDiscordUsername).toHaveBeenCalledWith(
                 email
             );
             expect(storage.createVariable).toHaveBeenCalledWith(
-                `${email}-discord`
+                `${email}-discord-0`
             );
-            expect(storage.readValue).toHaveBeenCalledWith(`${email}-discord`);
+            expect(storage.readValue).toHaveBeenCalledWith(
+                `${email}-discord-0`
+            );
             expect(storage.setItem).not.toHaveBeenCalled();
             expect(reactionManager.launchReaction).not.toHaveBeenCalled();
         });
@@ -121,13 +125,13 @@ describe('Discord Actions', () => {
                 false
             );
 
-            await whenUsernameChange(params, email, reaction);
+            await whenUsernameChange(params, email, reaction, 0);
 
             expect(discordActions.getDiscordUsername).toHaveBeenCalledWith(
                 email
             );
             expect(storage.createVariable).toHaveBeenCalledWith(
-                `${email}-discord`
+                `${email}-discord-0`
             );
             expect(storage.readValue).not.toHaveBeenCalled();
             expect(storage.setItem).not.toHaveBeenCalled();
