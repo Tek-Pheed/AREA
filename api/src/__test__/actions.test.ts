@@ -20,17 +20,20 @@ const app = createTestServer();
 
 describe('Actions', () => {
     beforeAll(async () => {
-        pool.getConnection((err, connection) => {
-            if (err) {
-                log.error(
-                    'Erreur de connexion à la base de données MySQL :',
-                    err
-                );
-                process.exit(1);
-            } else {
-                log.info('Connexion au pool MySQL réussie.');
-                connection.release();
-            }
+        return new Promise((resolve, reject) => {
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    log.error(
+                        'Erreur de connexion à la base de données MySQL :',
+                        err
+                    );
+                    reject(err);
+                } else {
+                    log.info('Connexion au pool MySQL réussie.');
+                    connection.release();
+                    resolve(true);
+                }
+            });
         });
     });
 
