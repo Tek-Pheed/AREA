@@ -54,7 +54,8 @@ describe('action.manager.ts', () => {
                     'Listen specific sound',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     spotifyActions.whenListenSpecificSound
@@ -66,7 +67,7 @@ describe('action.manager.ts', () => {
                 jest.spyOn(twitchActions, 'liveStart').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Live starting', params, email, reaction);
+                await launchAction('Live starting', params, email, reaction, 0);
                 expect(twitchActions.liveStart).toHaveBeenCalledWith(
                     params,
                     email,
@@ -84,7 +85,8 @@ describe('action.manager.ts', () => {
                     'Specific game streamed',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     twitchActions.getCurrentGameOfStreamer
@@ -101,7 +103,8 @@ describe('action.manager.ts', () => {
                     'Specific live title',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(twitchActions.getSpecificTitle).toHaveBeenCalledWith(
                     params,
@@ -120,7 +123,8 @@ describe('action.manager.ts', () => {
                     'Game is the most streamed',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     twitchActions.getMostViewedCategory
@@ -137,7 +141,8 @@ describe('action.manager.ts', () => {
                     'Commit Specific User',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(githubActions.whenNewCommitByMe).toHaveBeenCalledWith(
                     params,
@@ -156,7 +161,8 @@ describe('action.manager.ts', () => {
                     'Github action failed',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     githubActions.whenLastWorkflowFailed
@@ -173,7 +179,8 @@ describe('action.manager.ts', () => {
                     'Github action success',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     githubActions.whenLastWorkflowSuccess
@@ -190,7 +197,8 @@ describe('action.manager.ts', () => {
                     'Github action in progress',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     githubActions.whenLastWorkflowInProgress
@@ -203,11 +211,18 @@ describe('action.manager.ts', () => {
                     discordActions,
                     'whenJoinNewServer'
                 ).mockImplementation(jest.fn());
-                await launchAction('Join new server', params, email, reaction);
+                await launchAction(
+                    'Join new server',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(discordActions.whenJoinNewServer).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -217,11 +232,18 @@ describe('action.manager.ts', () => {
                     discordActions,
                     'whenUsernameChange'
                 ).mockImplementation(jest.fn());
-                await launchAction('Change username', params, email, reaction);
+                await launchAction(
+                    'Change username',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(discordActions.whenUsernameChange).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -231,7 +253,7 @@ describe('action.manager.ts', () => {
                     googleActions,
                     'whenThereIsAEventToday'
                 ).mockImplementation(jest.fn());
-                await launchAction('Event today', params, email, reaction);
+                await launchAction('Event today', params, email, reaction, 0);
                 expect(
                     googleActions.whenThereIsAEventToday
                 ).toHaveBeenCalledWith(params, email, reaction);
@@ -242,7 +264,13 @@ describe('action.manager.ts', () => {
                 jest.spyOn(unsplashActions, 'whenPostPhoto').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Post a picture', params, email, reaction);
+                await launchAction(
+                    'Post a picture',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(unsplashActions.whenPostPhoto).toHaveBeenCalledWith(
                     params,
                     email,
@@ -255,7 +283,13 @@ describe('action.manager.ts', () => {
                 jest.spyOn(spotifyActions, 'whenListen').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Listen to music', params, email, reaction);
+                await launchAction(
+                    'Listen to music',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(spotifyActions.whenListen).toHaveBeenCalledWith(
                     params,
                     email,

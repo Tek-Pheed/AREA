@@ -39,11 +39,11 @@ describe('Twitch Actions', () => {
                 testuserIsStream: false,
             });
 
-            await liveStart(params, email, reaction);
+            await liveStart(params, email, reaction, 0);
 
-            expect(createVariable).toHaveBeenCalledWith(`${email}-twitch`);
+            expect(createVariable).toHaveBeenCalledWith(`${email}-twitch-0`);
             expect(setItem).toHaveBeenCalledWith(
-                `${email}-twitch`,
+                `${email}-twitch-0`,
                 'testuserIsStream',
                 true
             );
@@ -59,10 +59,10 @@ describe('Twitch Actions', () => {
         it('should not launch reaction if streamer is not live', async () => {
             (getStreamerStatus as jest.Mock).mockResolvedValue(false);
 
-            await liveStart(params, email, reaction);
+            await liveStart(params, email, reaction, 0);
 
             expect(setItem).toHaveBeenCalledWith(
-                `${email}-twitch`,
+                `${email}-twitch-0`,
                 'testuserIsStream',
                 false
             );
@@ -77,7 +77,7 @@ describe('Twitch Actions', () => {
                 { value: 'game' },
             ]);
 
-            await getCurrentGameOfStreamer(params, email, reaction);
+            await getCurrentGameOfStreamer(params, email, reaction, 0);
 
             expect(launchReaction).toHaveBeenCalledWith(
                 'Test Reaction',
@@ -95,7 +95,7 @@ describe('Twitch Actions', () => {
                 { value: 'title' },
             ]);
 
-            await getSpecificTitle(params, email, reaction);
+            await getSpecificTitle(params, email, reaction, 0);
 
             expect(launchReaction).toHaveBeenCalledWith(
                 'Test Reaction',
@@ -116,9 +116,9 @@ describe('Twitch Actions', () => {
                 mostViewedCategory: 'oldCategory',
             });
 
-            await getMostViewedCategory(params, email, reaction);
+            await getMostViewedCategory(params, email, reaction, 0);
 
-            expect(createVariable).toHaveBeenCalledWith(`${email}-twitch`);
+            expect(createVariable).toHaveBeenCalledWith(`${email}-twitch-0`);
             await new Promise((r) => setTimeout(r, 3500));
         }, 5000);
 
@@ -127,7 +127,7 @@ describe('Twitch Actions', () => {
                 { value: 'differentCategory' },
             ]);
 
-            await getMostViewedCategory(params, email, reaction);
+            await getMostViewedCategory(params, email, reaction, 0);
 
             expect(launchReaction).not.toHaveBeenCalled();
             await new Promise((r) => setTimeout(r, 3500));

@@ -37,11 +37,11 @@ describe('whenPostPhoto', () => {
         (getUserLastPictures as jest.Mock).mockResolvedValue(mockResult);
         (readValue as jest.Mock).mockResolvedValue({ lastPostID: 'oldPostID' });
 
-        await whenPostPhoto(params, email, reaction);
+        await whenPostPhoto(params, email, reaction, 0);
 
-        expect(createVariable).toHaveBeenCalledWith(`${email}-unsplash`);
+        expect(createVariable).toHaveBeenCalledWith(`${email}-unsplash-0`);
         expect(setItem).toHaveBeenCalledWith(
-            `${email}-unsplash`,
+            `${email}-unsplash-0`,
             'lastPostID',
             'newPostID'
         );
@@ -62,7 +62,7 @@ describe('whenPostPhoto', () => {
             lastPostID: 'samePostID',
         });
 
-        await whenPostPhoto(params, email, reaction);
+        await whenPostPhoto(params, email, reaction, 0);
 
         expect(setItem).not.toHaveBeenCalled();
         expect(launchReaction).not.toHaveBeenCalled();
@@ -73,7 +73,7 @@ describe('whenPostPhoto', () => {
     it('should not set item or launch reaction if result is false', async () => {
         (getUserLastPictures as jest.Mock).mockResolvedValue(false);
 
-        await whenPostPhoto(params, email, reaction);
+        await whenPostPhoto(params, email, reaction, 0);
 
         expect(setItem).not.toHaveBeenCalled();
         expect(launchReaction).not.toHaveBeenCalled();
