@@ -337,10 +337,6 @@ export class EditeurPage implements OnInit {
         await toast.present();
     }
 
-    getFieldValue(elm: any, params: any) {
-        
-    }
-
     loadConfig() {
         let url: string = window.location.href;
         this.service.getUserConfigs(this.token).subscribe(
@@ -373,12 +369,19 @@ export class EditeurPage implements OnInit {
                                             fieldType: elm.type,
                                             fieldDescription: elm.description,
                                             fieldValue:
-                                            (elm.type == 'datetime') ? new Date(element.params.find(
-                                                (el: any) => el.name == elm.name
-                                            )?.value).toISOString() :
-                                            element.params.find(
-                                                (el: any) => el.name == elm.name
-                                            )?.value,
+                                                elm.type == 'datetime'
+                                                    ? new Date(
+                                                          element.params.find(
+                                                              (el: any) =>
+                                                                  el.name ==
+                                                                  elm.name
+                                                          )?.value
+                                                      ).toISOString()
+                                                    : element.params.find(
+                                                          (el: any) =>
+                                                              el.name ==
+                                                              elm.name
+                                                      )?.value,
                                         });
                                     }
                                 }
@@ -506,8 +509,8 @@ export class EditeurPage implements OnInit {
                 element.fieldType == 'datetime'
                     ? this.date.toISOString()
                     : reaction.fields[i].fieldValue == undefined
-                      ? ''
-                      : reaction.fields[i].fieldValue;
+                    ? ''
+                    : reaction.fields[i].fieldValue;
             i++;
         }
         component.setInput('fields', reaction.fields);
@@ -606,6 +609,12 @@ export class EditeurPage implements OnInit {
             body: { action: [], reaction: [] },
         };
         for (const element of this.configuredAction.fields) {
+            if (String(element.fieldValue).length == 0) {
+                alert(
+                    'Unable to save configuration, please fill all inputs in action.'
+                );
+                return;
+            }
             conf.body.action.push({
                 name: element.fieldID,
                 value: String(element.fieldValue),
@@ -613,15 +622,34 @@ export class EditeurPage implements OnInit {
             });
         }
         for (const reaction of this.configuredReactions) {
-            if (reaction == undefined) continue;
+            if (reaction == undefined) {
+                alert(
+                    'Unable to save configuration, please select the necessary items.'
+                );
+                return;
+            }
             let params: IConfigContent[] = [];
             for (let element of reaction.fields) {
+                if (String(element.fieldValue).length == 0) {
+                    alert(
+                        'Unable to save configuration, please fill all inputs in reaction.'
+                    );
+                    return;
+                }
                 params.push({
                     name: element.fieldID,
                     value: String(element.fieldValue),
                 });
             }
             if (this.configuredReactions.length > 1) {
+                for (let element of reaction.fields) {
+                    if (String(element.fieldValue).length == 0) {
+                        alert(
+                            'Unable to save configuration, please fill all inputs in reaction.'
+                        );
+                        return;
+                    }
+                }
                 conf.body.reaction.push({
                     reaction: reaction?.raw.title,
                     params: params,
