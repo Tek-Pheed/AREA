@@ -4,6 +4,7 @@ import { getJsonAbout } from './about.query';
 export const aboutRouter = Router();
 
 aboutRouter.get('/', async (req: Request, res: Response) => {
+    //#swagger.tags = ['About.json']
     const json = await getJsonAbout();
 
     let fJson = {

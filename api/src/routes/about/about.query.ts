@@ -2,6 +2,7 @@ import { db } from '../../database/db';
 import log from '../../utils/logger';
 
 export async function getJsonAbout(): Promise<any> {
+    //
     try {
         const result: any = await db.promise().query(
             `SELECT 

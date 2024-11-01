@@ -59,7 +59,7 @@ githubRouter.get(
     '/login',
     passport.authenticate('github', { scope: ['user, repo'] }),
     function (req, res) {
-        //#swagger.tags   = ['Github OAuth']
+        //#swagger.tags = ['Github OAuth']
     }
 );
 
@@ -83,6 +83,7 @@ githubRouter.get(
         failureRedirect: '/api/oauth/github/login',
     }),
     async function (req: any, res) {
+        //#swagger.tags = ['Github OAuth']
         const token: any = req.user;
         const email = req.query.state;
         await insertTokeninDb(
@@ -102,6 +103,5 @@ githubRouter.get(
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        //#swagger.tags   = ['Github OAuth']
     }
 );

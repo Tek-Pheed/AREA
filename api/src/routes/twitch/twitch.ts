@@ -66,9 +66,7 @@ twitchRouter.get(
         scope: TWITCH_OAUTH_SCOPE,
     }),
     function (req, res) {
-        /*
-                #swagger.tags   = ['Twitch OAuth']
-            */
+        //#swagger.tags = ['Twitch OAuth']
     }
 );
 
@@ -92,6 +90,7 @@ twitchRouter.get(
         failureRedirect: '/api/oauth/twitch/login',
     }),
     async (req: any, res: Response) => {
+        //#swagger.tags = ['Twitch OAuth']
         const token: any = req.user;
         const email = req.query.state;
         await insertTokeninDb(
@@ -111,6 +110,5 @@ twitchRouter.get(
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        //#swagger.tags   = ['Twitch OAuth']
     }
 );

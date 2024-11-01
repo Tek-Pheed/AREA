@@ -7,8 +7,9 @@ export const presetsRouter = Router();
 
 presetsRouter.get('/', auth, async (req: Request, res: Response) => {
     /*
+        #swagger.tags = ['Presets']
         #swagger.responses[200] = {
-            description: "Some description...",
+            description: "Return all presets configs",
             content: {
                 "application/json": {
                     schema:{
@@ -17,7 +18,26 @@ presetsRouter.get('/', auth, async (req: Request, res: Response) => {
                 }
             }
         }
-        #swagger.tags = ['Presets']
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when getting presets configs",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
     */
     res.header('Content-Type', 'application/json');
     const result = await getPresetsConfigs();
