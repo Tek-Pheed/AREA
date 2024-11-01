@@ -9,6 +9,7 @@ import { db, pool } from '../../../utils/database';
 import * as twitchQuery from '../../../apis/twitch/twitch.query';
 import * as refresh from '../../../utils/refresh';
 import axios from 'axios';
+import * as twitchActions from '../../../apis/twitch/actions';
 
 describe('Twitch API Actions', () => {
     afterEach(() => {
@@ -162,5 +163,117 @@ describe('Twitch API Actions', () => {
             expect(topGame).toBe(false);
             await new Promise((r) => setTimeout(r, 3500));
         }, 5000);
+    });
+
+    describe('getCurrentGame', () => {
+        it('should return current game if game matches', async () => {
+            const mockChannelInfo = [
+                { name: 'game_name', value: 'Game1' },
+                { name: 'title', value: 'Title1' },
+            ];
+            jest.spyOn(twitchQuery, 'getTwitchToken').mockResolvedValue(
+                mockToken
+            );
+            jest.spyOn(twitchActions, 'getChannelInfo').mockResolvedValue(
+                mockChannelInfo
+            );
+
+            const currentGame = await twitchActions.getCurrentGame(
+                mockEmail,
+                mockUsername,
+                'Game1'
+            );
+            expect(currentGame).toEqual(false);
+        });
+
+        it('should return false if game does not match', async () => {
+            const mockChannelInfo = [
+                { name: 'game_name', value: 'Game2' },
+                { name: 'title', value: 'Title1' },
+            ];
+            jest.spyOn(twitchQuery, 'getTwitchToken').mockResolvedValue(
+                mockToken
+            );
+            jest.spyOn(twitchActions, 'getChannelInfo').mockResolvedValue(
+                mockChannelInfo
+            );
+
+            const currentGame = await twitchActions.getCurrentGame(
+                mockEmail,
+                mockUsername,
+                'Game1'
+            );
+            expect(currentGame).toBe(false);
+        });
+
+        it('should return false if channel info is not found', async () => {
+            jest.spyOn(twitchQuery, 'getTwitchToken').mockResolvedValue(
+                mockToken
+            );
+            jest.spyOn(twitchActions, 'getChannelInfo').mockResolvedValue(null);
+
+            const currentGame = await twitchActions.getCurrentGame(
+                mockEmail,
+                mockUsername,
+                'Game1'
+            );
+            expect(currentGame).toBe(false);
+        });
+    });
+
+    describe('getCurrentTitle', () => {
+        it('should return current title if title matches', async () => {
+            const mockChannelInfo = [
+                { name: 'game_name', value: 'Game1' },
+                { name: 'title', value: 'Title1' },
+            ];
+            jest.spyOn(twitchQuery, 'getTwitchToken').mockResolvedValue(
+                mockToken
+            );
+            jest.spyOn(twitchActions, 'getChannelInfo').mockResolvedValue(
+                mockChannelInfo
+            );
+
+            const currentTitle = await twitchActions.getCurrentTitle(
+                mockEmail,
+                mockUsername,
+                'Title1'
+            );
+            expect(currentTitle).toEqual(false);
+        });
+
+        it('should return false if title does not match', async () => {
+            const mockChannelInfo = [
+                { name: 'game_name', value: 'Game1' },
+                { name: 'title', value: 'Title2' },
+            ];
+            jest.spyOn(twitchQuery, 'getTwitchToken').mockResolvedValue(
+                mockToken
+            );
+            jest.spyOn(twitchActions, 'getChannelInfo').mockResolvedValue(
+                mockChannelInfo
+            );
+
+            const currentTitle = await twitchActions.getCurrentTitle(
+                mockEmail,
+                mockUsername,
+                'Title1'
+            );
+            expect(currentTitle).toBe(false);
+        });
+
+        it('should return false if channel info is not found', async () => {
+            jest.spyOn(twitchQuery, 'getTwitchToken').mockResolvedValue(
+                mockToken
+            );
+            jest.spyOn(twitchActions, 'getChannelInfo').mockResolvedValue(null);
+
+            const currentTitle = await twitchActions.getCurrentTitle(
+                mockEmail,
+                mockUsername,
+                'Title1'
+            );
+            expect(currentTitle).toBe(false);
+        });
     });
 });

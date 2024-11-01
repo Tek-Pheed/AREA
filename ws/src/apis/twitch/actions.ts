@@ -140,7 +140,7 @@ export async function getStreamerStatus(
     }
 }
 
-async function getChannelInfo(email: string, username: string): Promise<any> {
+export async function getChannelInfo(email: string, username: string): Promise<any> {
     const token = await getTwitchToken(email);
     const broadcasterId = await getBroadcasterIdFromUsername(
         token,
