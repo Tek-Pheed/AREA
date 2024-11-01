@@ -12,22 +12,42 @@ import { getSpecificAction } from '../actions/action.query';
 export const reactionRouter = Router();
 
 reactionRouter.get('/', auth, async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    const data = await getAllReactions();
-    if (data !== null) {
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/reactions"
-                        }
+    /*
+        #swagger.tags = ['Reactions']
+        #swagger.responses[200] = {
+            description: "Return all reactions",
+            content: {
+                "application/json": {
+                    schema:{
+                        $ref: "#/components/schemas/reactions"
                     }
                 }
             }
-            #swagger.tags = ['Reactions']
-        */
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when fetching reactions",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
+    */
+    res.header('Content-Type', 'application/json');
+    const data = await getAllReactions();
+    if (data !== null) {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
@@ -37,12 +57,10 @@ reactionRouter.get('/', auth, async (req: Request, res: Response) => {
 });
 
 reactionRouter.get('/api', auth, async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    const data = await getReactionAPI();
-    if (data !== null) {
-        /*
+    /*
+            #swagger.tags = ['Reactions']
             #swagger.responses[200] = {
-                description: "Some description...",
+                description: "Return all api use for reactions",
                 content: {
                     "application/json": {
                         schema:{
@@ -51,20 +69,43 @@ reactionRouter.get('/api', auth, async (req: Request, res: Response) => {
                     }
                 }
             }
-            #swagger.tags = ['Reactions']
+            #swagger.responses[401] = {
+                description: "Error when bad credentials provided",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_401"
+                        }
+                    }
+                }
+            }
+            #swagger.responses[500] = {
+                description: "Error when fetching api reaction",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_500"
+                        }
+                    }
+                }
+            }
         */
+    res.header('Content-Type', 'application/json');
+    const data = await getReactionAPI();
+    if (data !== null) {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
-            API(500, true, 'Error when fetching reactions', null)
+            API(500, true, 'Error when fetching api reaction', null)
         );
     }
 });
 
 reactionRouter.get('/:id', auth, async (req: Request, res: Response) => {
     /*
+            #swagger.tags = ['Reactions']
             #swagger.responses[200] = {
-                description: "Some description...",
+                description: "Return specific reaction by id",
                 content: {
                     "application/json": {
                         schema:{
@@ -73,7 +114,26 @@ reactionRouter.get('/:id', auth, async (req: Request, res: Response) => {
                     }
                 }
             }
-            #swagger.tags = ['Reactions']
+            #swagger.responses[401] = {
+                description: "Error when bad credentials provided",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_401"
+                        }
+                    }
+                }
+            }
+            #swagger.responses[500] = {
+                description: "Error when fetching reaction",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_500"
+                        }
+                    }
+                }
+            }
         */
     res.header('Content-Type', 'application/json');
     const data = await getSpecificReaction(`${req.params.id}`);
@@ -81,7 +141,7 @@ reactionRouter.get('/:id', auth, async (req: Request, res: Response) => {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
-            API(500, true, 'Error when fetching action', null)
+            API(500, true, 'Error when fetching reaction', null)
         );
     }
 });

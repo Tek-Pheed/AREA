@@ -88,6 +88,7 @@ googleRouter.get(
         failureRedirect: '/api/oauth/google/login',
     }),
     async (req: any, res: Response) => {
+        //#swagger.tags = ['Google OAuth']
         const token: any = req.user;
         const email = req.query.state;
         await insertTokeninDb(
@@ -107,6 +108,5 @@ googleRouter.get(
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        // #swagger.tags   = ['Google OAuth']
     }
 );

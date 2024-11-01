@@ -17,32 +17,72 @@ export const options = {
     ],
     tags: [
         {
+            name: 'About.json',
+            description: 'About.json file route',
+        },
+        {
             name: 'Auth',
-            description: '',
+            description: 'Authentication routes',
         },
         {
             name: 'Actions',
-            description: '',
-        },
-        {
-            name: 'Reactions',
-            description: '',
-        },
-        {
-            name: 'Users',
-            description: '',
+            description: 'Actions routes',
         },
         {
             name: 'Configs',
-            description: '',
+            description: 'Users configs routes',
+        },
+        {
+            name: 'Discord OAuth',
+            description: 'Discord oauth routes',
+        },
+        {
+            name: 'Download APK',
+            description: 'Download apk routes',
+        },
+        {
+            name: 'Github OAuth',
+            description: 'Github oauth routes',
+        },
+        {
+            name: 'Google OAuth',
+            description: 'Google oauth routes',
+        },
+        {
+            name: 'Logger',
+            description: 'Logger routes',
         },
         {
             name: 'OAuth',
-            description: '',
+            description: 'OAuth routes',
         },
         {
             name: 'Presets',
-            description: '',
+            description: 'Presets routes',
+        },
+        {
+            name: 'Reactions',
+            description: 'Reactions routes',
+        },
+        {
+            name: 'Services',
+            description: 'Services routes',
+        },
+        {
+            name: 'Spotify OAuth',
+            description: 'Spotify oauth routes',
+        },
+        {
+            name: 'Twitch OAuth',
+            description: 'Twitch oauth routes',
+        },
+        {
+            name: 'Unsplash OAuth',
+            description: 'Unsplash oauth routes',
+        },
+        {
+            name: 'Users',
+            description: 'Users routes',
         },
     ],
     components: {
@@ -61,6 +101,12 @@ export const options = {
                 username: 'string',
                 email: 'string',
                 password: 'string',
+            },
+            req_users: {
+                username: 'string',
+                email: 'string',
+                password: 'string',
+                picture_url: 'string',
             },
             auth: {
                 status: 200,
@@ -157,6 +203,26 @@ export const options = {
                         reaction_id: 0,
                     },
                 ],
+            },
+            error_500: {
+                status: 500,
+                error: true,
+                message: 'Internal Server Error',
+            },
+            error_401: {
+                status: 401,
+                error: true,
+                message: 'Unauthorized',
+            },
+            error_400: {
+                status: 400,
+                error: true,
+                message: 'Bad request',
+            },
+            error_404: {
+                status: 404,
+                error: true,
+                message: 'File not found',
             },
         },
     },

@@ -58,16 +58,16 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use('/about.json', aboutRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/actions', actionsRouter);
-app.use('/api/reactions', reactionRouter);
-app.use('/api/users', userRouter);
-app.use('/api/oauth', oauthRouter);
-app.use('/api/services', serviceRouter);
 app.use('/api/download', downloadRouter);
 app.use('/api/logs', logsRouter);
+app.use('/api/oauth', oauthRouter);
 app.use('/api/presets', presetsRouter);
-app.use('/about.json', aboutRouter);
+app.use('/api/reactions', reactionRouter);
+app.use('/api/services', serviceRouter);
+app.use('/api/users', userRouter);
 
 app.use(
     '/docs',

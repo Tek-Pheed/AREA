@@ -14,11 +14,31 @@ userConfigRouter.get('/', async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Configs']
         #swagger.responses[200] = {
-            description: "Some description...",
+            description: "Get all current user configs",
             content: {
                 "application/json": {
                     schema:{
                         $ref: "#/components/schemas/configs"
+                    }
+                }
+            }
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when fetching all user configs",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
                     }
                 }
             }
@@ -37,6 +57,7 @@ userConfigRouter.get('/', async (req: Request, res: Response) => {
 
 userConfigRouter.post('/', auth, async (req: Request, res: Response) => {
     /*
+        #swagger.tags = ['Configs']
         #swagger.requestBody = {
             required: true,
             content: {
@@ -47,13 +68,32 @@ userConfigRouter.post('/', auth, async (req: Request, res: Response) => {
                 }
             }
         }
-        #swagger.tags = ['Configs']
         #swagger.responses[200] = {
-            description: "Some description...",
+            description: "User config create successfully",
             content: {
                 "application/json": {
                     schema:{
                         $ref: "#/components/schemas/configs"
+                    }
+                }
+            }
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when creating user config",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
                     }
                 }
             }
@@ -77,6 +117,7 @@ userConfigRouter.post('/', auth, async (req: Request, res: Response) => {
 
 userConfigRouter.put('/:id', auth, async (req: Request, res: Response) => {
     /*
+        #swagger.tags = ['Configs']
         #swagger.requestBody = {
             required: true,
             content: {
@@ -87,13 +128,32 @@ userConfigRouter.put('/:id', auth, async (req: Request, res: Response) => {
                 }
             }
         }
-        #swagger.tags = ['Configs']
         #swagger.responses[200] = {
-            description: "Some description...",
+            description: "User config update successfully",
             content: {
                 "application/json": {
                     schema:{
                         $ref: "#/components/schemas/configs"
+                    }
+                }
+            }
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when updating user config",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
                     }
                 }
             }
@@ -114,6 +174,29 @@ userConfigRouter.put('/:id', auth, async (req: Request, res: Response) => {
 userConfigRouter.delete('/:id', auth, async (req: Request, res: Response) => {
     /*
         #swagger.tags = ['Configs']
+        #swagger.responses[200] = {
+            description: "User config delete successfully",
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when delete user config",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
     */
     const result = await removeUserConfig(
         req.params.id,

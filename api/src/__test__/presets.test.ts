@@ -11,7 +11,7 @@ const app = createTestServer();
 
 const token = generateToken('test@example.com');
 
-describe('actions', () => {
+describe('Presets', () => {
     beforeAll(async () => {
         pool.getConnection((err, connection) => {
             if (err) {

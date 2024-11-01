@@ -69,9 +69,7 @@ spotifyRouter.get(
     '/login',
     passport.authenticate('spotify'),
     function (req, res) {
-        /*
-                #swagger.tags   = ['Spotify OAuth']
-            */
+        //#swagger.tags = ['Spotify OAuth']
     }
 );
 

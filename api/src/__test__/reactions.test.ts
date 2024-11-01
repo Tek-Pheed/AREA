@@ -14,7 +14,7 @@ require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
 
 const app = createTestServer();
 
-describe('reactions', () => {
+describe('Reactions', () => {
     beforeAll(async () => {
         pool.getConnection((err, connection) => {
             if (err) {
