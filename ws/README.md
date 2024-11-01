@@ -26,12 +26,17 @@ DISCORD_CLIENT_ID=
 DISCORD_CLIENT_SECRET=
 DISCORD_REDIRECT_URI=
 
-TWITTER_APIKEY=
-TWITTER_SECRET=
-
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 GITHUB_REDIRECT_URI=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REDIRECT_URI=
+
+UNSPLASH_CLIENT_ID=
+UNSPLASH_CLIENT_SECRET=
+UNSPLASH_REDIRECT_URI=
 ```
 
 ## How do I start it?
@@ -47,3 +52,20 @@ npm run dev
 ```
 
 The commands you'll execute will place you in the right folder, install the dependencies needed for the **WebService** to function properly, and compile and launch it.
+
+## Units tests
+
+You can run units tests with coverage with the following commands :
+
+```bash
+cd ws/
+npm test
+```
+
+This commands you'll execute units tests and generate coverage in coverage folder.
+
+## Documentation
+
+To find out how to add your own action and reaction torque, please see the technical documentation below.
+
+[Technical documentation](https://github.com/Tek-Pheed/AREA/blob/master/docs/nexus_ws_doc.pdf)
