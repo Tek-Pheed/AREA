@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "jest --coverage=true",
+        "test": "jest",
         "build": "tsc",
         "start": "node build/index.js",
         "dev": "tsc && node build/index.js"
