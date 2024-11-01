@@ -40,3 +40,33 @@ ionic capacitor build android
 ```
 
 The commands you'll execute will place you in the right folder, install the dependencies needed for the **Mobile app** to function properly, and compile and launch android studio.
+
+### Mobile (IOS)
+
+**only macos**
+
+```bash
+cd area/
+npm i
+ionic capacitor build ios
+```
+
+The commands you'll execute will place you in the right folder, install the dependencies needed for the **Mobile app** to function properly, and compile and launch xcode.
+
+
+## Units tests
+
+You can run units tests with coverage with the following commands :
+
+```bash
+cd ws/
+npm test
+```
+
+This commands you'll execute units tests and generate coverage in coverage folder.
+
+## Documentation
+
+You will find below the technical documentation to know which components we have created as well as the different endpoints of the site.
+
+[Technical documentation](https://github.com/Tek-Pheed/AREA/blob/master/docs/nexus_front_doc.pdf)
