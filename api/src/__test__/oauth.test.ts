@@ -17,7 +17,7 @@ const app = createTestServer();
 
 const token = generateToken('test@example.com');
 
-describe('actions', () => {
+describe('OAuth', () => {
     beforeAll(async () => {
         pool.getConnection((err, connection) => {
             if (err) {

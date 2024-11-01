@@ -8,7 +8,7 @@ require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
 
 const app = createTestServer();
 
-describe('Services', () => {
+describe('Download', () => {
     beforeAll(async () => {
         pool.getConnection((err, connection) => {
             if (err) {
@@ -24,16 +24,9 @@ describe('Services', () => {
         });
     });
 
-    describe('return 200', () => {
-        it('Get all services', async () => {
-            await supertest(app).get('/api/services/').expect(200);
-        });
-    });
-
-    describe('return 500', () => {
-        it('Get all services', async () => {
-            db.end();
-            await supertest(app).get('/api/services/').expect(500);
+    describe('return 404', () => {
+        it('Get log file', async () => {
+            await supertest(app).get('/api/download').expect(404);
         });
     });
 
