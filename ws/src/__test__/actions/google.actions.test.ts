@@ -45,7 +45,7 @@ describe('whenThereIsAEventToday', () => {
         expect(createVariable).toHaveBeenCalledWith(`${email}-google-0`);
         expect(readValue).toHaveBeenCalledWith(`${email}-google-0`);
         expect(setItem).toHaveBeenCalledWith(
-            `${email}-google`,
+            `${email}-google-0`,
             'nextEvent',
             'newEvent'
         );

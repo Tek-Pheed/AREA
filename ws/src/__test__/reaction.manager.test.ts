@@ -203,12 +203,29 @@ describe('reaction.manager.ts', () => {
                 await new Promise((r) => setTimeout(r, 500));
             });
 
-            it('should call reRunWorkflow for "Re-run failed workflow"', async () => {
+            it('should call reRunFailedWorkflow for "Re-run failed workflow"', async () => {
+                jest.spyOn(
+                    githubReactions,
+                    'reRunFailedWorkflow'
+                ).mockImplementation(jest.fn());
+                await launchReaction(
+                    'Re-run failed workflow',
+                    params,
+                    actionParam,
+                    email
+                );
+                expect(
+                    githubReactions.reRunFailedWorkflow
+                ).toHaveBeenCalledWith(params, email);
+                await new Promise((r) => setTimeout(r, 500));
+            });
+
+            it('should call reRunWorkflow for "Re-run a workflow"', async () => {
                 jest.spyOn(githubReactions, 'reRunWorkflow').mockImplementation(
                     jest.fn()
                 );
                 await launchReaction(
-                    'Re-run failed workflow',
+                    'Re-run a workflow',
                     params,
                     actionParam,
                     email
@@ -217,23 +234,6 @@ describe('reaction.manager.ts', () => {
                     params,
                     email
                 );
-                await new Promise((r) => setTimeout(r, 500));
-            });
-
-            it('should call reRunFailedWorkflow for "Re-run a workflow"', async () => {
-                jest.spyOn(
-                    githubReactions,
-                    'reRunFailedWorkflow'
-                ).mockImplementation(jest.fn());
-                await launchReaction(
-                    'Re-run a workflow',
-                    params,
-                    actionParam,
-                    email
-                );
-                expect(
-                    githubReactions.reRunFailedWorkflow
-                ).toHaveBeenCalledWith(params, email);
                 await new Promise((r) => setTimeout(r, 500));
             });
 

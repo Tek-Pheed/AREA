@@ -123,8 +123,8 @@ describe('github.reactions.ts', () => {
         await reRunFailedWorkflow(params, email);
         expect(githubApi.rerunWorkflowFailedJobs).toHaveBeenCalledWith(
             email,
-            'value2',
             'value1',
+            'value2',
             'value3',
             true
         );
@@ -135,8 +135,8 @@ describe('github.reactions.ts', () => {
         await reRunWorkflow(params, email);
         expect(githubApi.rerunWorkflow).toHaveBeenCalledWith(
             email,
-            'value2',
             'value1',
+            'value2',
             'value3',
             true
         );

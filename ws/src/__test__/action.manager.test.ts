@@ -59,19 +59,26 @@ describe('action.manager.ts', () => {
                 );
                 expect(
                     spotifyActions.whenListenSpecificSound
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
-            it('should call liveStart for "Live starting"', async () => {
+            it('should call liveStart for "User is streaming"', async () => {
                 jest.spyOn(twitchActions, 'liveStart').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Live starting', params, email, reaction, 0);
+                await launchAction(
+                    'User is streaming',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(twitchActions.liveStart).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -90,7 +97,7 @@ describe('action.manager.ts', () => {
                 );
                 expect(
                     twitchActions.getCurrentGameOfStreamer
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -109,7 +116,8 @@ describe('action.manager.ts', () => {
                 expect(twitchActions.getSpecificTitle).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -128,7 +136,7 @@ describe('action.manager.ts', () => {
                 );
                 expect(
                     twitchActions.getMostViewedCategory
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -147,7 +155,8 @@ describe('action.manager.ts', () => {
                 expect(githubActions.whenNewCommitByMe).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -166,7 +175,7 @@ describe('action.manager.ts', () => {
                 );
                 expect(
                     githubActions.whenLastWorkflowFailed
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -184,7 +193,7 @@ describe('action.manager.ts', () => {
                 );
                 expect(
                     githubActions.whenLastWorkflowSuccess
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -202,7 +211,7 @@ describe('action.manager.ts', () => {
                 );
                 expect(
                     githubActions.whenLastWorkflowInProgress
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -256,7 +265,7 @@ describe('action.manager.ts', () => {
                 await launchAction('Event today', params, email, reaction, 0);
                 expect(
                     googleActions.whenThereIsAEventToday
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -274,7 +283,8 @@ describe('action.manager.ts', () => {
                 expect(unsplashActions.whenPostPhoto).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -293,7 +303,8 @@ describe('action.manager.ts', () => {
                 expect(spotifyActions.whenListen).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });

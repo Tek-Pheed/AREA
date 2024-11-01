@@ -39,7 +39,7 @@ describe('Discord Actions', () => {
 
             expect(
                 discordActions.getDiscordLastServerName
-            ).toHaveBeenCalledWith(email);
+            ).toHaveBeenCalledWith(email, 0);
             expect(reactionManager.launchReaction).toHaveBeenCalledWith(
                 reaction[0].title,
                 params,
@@ -57,7 +57,7 @@ describe('Discord Actions', () => {
 
             expect(
                 discordActions.getDiscordLastServerName
-            ).toHaveBeenCalledWith(email);
+            ).toHaveBeenCalledWith(email, 0);
             expect(reactionManager.launchReaction).not.toHaveBeenCalled();
         });
     });
