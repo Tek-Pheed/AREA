@@ -168,7 +168,7 @@ export class DashboardPage implements OnInit {
             )
                 continue;
             this.defaultDatas.push({
-                name: `On ${action.title.toLowerCase()}, ${reaction.title.toLowerCase()}`,
+                name: `${action.title.toLowerCase()}, ${reaction.title.toLowerCase()}`,
                 actionAPILogoUrl: apiA.icon_url,
                 reactionAPILogoUrl: apiB.icon_url,
                 configID: element.id,
