@@ -116,7 +116,7 @@ We have realized several bonuses during this project. You will find the list bel
 - Creation of “labels” to retrieve information about the action executed for the associated reaction.
 - When no pair of reaction actions is created, we automatically propose reaction actions.
 - We have also integrated the possibility of modifying actions / reactions.
-
+- We've made it possible for users to configure each field of their action and reactions as they see fit.
 
 ## Author
 
