@@ -17,19 +17,22 @@ require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
 
 const app = createTestServer();
 
-describe('users', () => {
+describe('Users', () => {
     beforeAll(async () => {
-        pool.getConnection((err, connection) => {
-            if (err) {
-                log.error(
-                    'Erreur de connexion à la base de données MySQL :',
-                    err
-                );
-                process.exit(1);
-            } else {
-                log.info('Connexion au pool MySQL réussie.');
-                connection.release();
-            }
+        return new Promise((resolve, reject) => {
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    log.error(
+                        'Erreur de connexion à la base de données MySQL :',
+                        err
+                    );
+                    reject(err);
+                } else {
+                    log.info('Connexion au pool MySQL réussie.');
+                    connection.release();
+                    resolve(true);
+                }
+            });
         });
     });
 

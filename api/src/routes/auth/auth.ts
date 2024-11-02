@@ -12,6 +12,7 @@ export const authRouter = Router();
 
 authRouter.post('/login', async (req: any, res: Response) => {
     /*
+        #swagger.tags = ['Auth']
         #swagger.requestBody = {
             required: true,
             content: {
@@ -22,7 +23,36 @@ authRouter.post('/login', async (req: any, res: Response) => {
                 }
             }
         }
-        #swagger.tags = ['Auth']
+        #swagger.responses[200] = {
+            description: "Return access_token",
+            content: {
+                "application/json": {
+                    schema:{
+                        $ref: "#/components/schemas/auth"
+                    }
+                }
+            }
+        }
+        #swagger.responses[400] = {
+            description: "Error when credentials was missing",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_400"
+                    }
+                }
+            }
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
     */
     res.header('Content-Type', 'application/json');
     const { email, password } = req.body;
@@ -34,18 +64,6 @@ authRouter.post('/login', async (req: any, res: Response) => {
     }
 
     if (await login(email, password)) {
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/auth"
-                        }
-                    }
-                }
-            }
-        */
         res.status(200).json(
             API(200, false, '', { token: generateToken(email) })
         );
@@ -56,6 +74,7 @@ authRouter.post('/login', async (req: any, res: Response) => {
 
 authRouter.post('/register', async (req: Request, res: Response) => {
     /*
+        #swagger.tags = ['Auth']
         #swagger.requestBody = {
             required: true,
             content: {
@@ -66,7 +85,36 @@ authRouter.post('/register', async (req: Request, res: Response) => {
                 }
             }
         }
-        #swagger.tags = ['Auth']
+        #swagger.responses[200] = {
+            description: "Return access_token",
+            content: {
+                "application/json": {
+                    schema:{
+                        $ref: "#/components/schemas/auth"
+                    }
+                }
+            }
+        }
+        #swagger.responses[400] = {
+            description: "Error when credentials was missing",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_400"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when post data",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
     */
     res.header('Content-Type', 'application/json');
     const { email, password, username } = req.body;
@@ -78,18 +126,6 @@ authRouter.post('/register', async (req: Request, res: Response) => {
     }
     const user: IUsers = req.body;
     if (await register(user)) {
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/auth"
-                        }
-                    }
-                }
-            }
-        */
         res.status(200).json(
             API(200, false, '', { token: generateToken(email) })
         );

@@ -36,18 +36,32 @@ export class LoginPage implements OnInit {
     }
 
     changeAPIURL() {
-        const value = window.prompt(
-            'Enter your api url like http://localhost:8080',
-            localStorage.getItem('api_url')
-                ? `${localStorage.getItem('api_url')}`
-                : environment.API_URL
-        );
+        if (this.platform.is('android') && localStorage.getItem('api_url')) {
+            const value = window.prompt(
+                `Enter your api url\nDefault url: ${
+                    environment.API_URL
+                }\nCurrent url: ${localStorage.getItem('api_url')}`,
+                localStorage.getItem('api_url')
+                    ? `${localStorage.getItem('api_url')}`
+                    : environment.API_URL
+            );
 
-        if (`${value}`.length == 0 || value === null) {
-            localStorage.removeItem('api_url');
+            if (`${value}`.length !== 0 && value !== null) {
+                localStorage.setItem('api_url', `${value}`);
+            }
         } else {
-            localStorage.setItem('api_url', `${value}`);
+            const value = window.prompt(
+                `Enter your api url\nDefault url: ${environment.API_URL}`,
+                localStorage.getItem('api_url')
+                    ? `${localStorage.getItem('api_url')}`
+                    : environment.API_URL
+            );
+
+            if (`${value}`.length !== 0 && value !== null) {
+                localStorage.setItem('api_url', `${value}`);
+            }
         }
+
         this.service.API_URL = localStorage.getItem('api_url')
             ? `${localStorage.getItem('api_url')}`
             : environment.API_URL;

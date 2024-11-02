@@ -1,5 +1,5 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-setupFilesAfterEnv: ['__test__/setup.js'],
+setupFilesAfterEnv: ['src/__test__/setup.js'],
     (module.exports = {
         preset: 'ts-jest',
         testEnvironment: 'node',
@@ -9,4 +9,6 @@ setupFilesAfterEnv: ['__test__/setup.js'],
         clearMocks: true,
         resetMocks: true,
         restoreMocks: true,
+        collectCoverage: true,
+        coverageDirectory: 'coverage',
     });

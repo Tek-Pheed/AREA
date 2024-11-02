@@ -12,7 +12,7 @@ import {
 export async function createIssueOnRepo(params: IBody, email: string) {
     let data: any[] = [];
     for (const param of params.reaction) data.push(param.value);
-    log.info(data);
+    log.debug(data);
     const result = await createIssue(
         email,
         data[0],
@@ -60,7 +60,7 @@ export async function mergePR(params: IBody, email: string) {
 export async function createComment(params: IBody, email: string) {
     let data = [];
     for (const param of params.reaction) data.push(param.value);
-    log.info(data);
+    log.debug(data);
     const result = await createIssueComment(
         email,
         data[0],
@@ -68,7 +68,7 @@ export async function createComment(params: IBody, email: string) {
         data[2],
         data[3]
     );
-    log.info(result);
+    log.debug(result);
 }
 
 export async function reRunFailedWorkflow(params: IBody, email: string) {

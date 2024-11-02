@@ -6,10 +6,11 @@ import { launchReaction } from '../reaction.manager';
 export async function whenThereIsAEventToday(
     params: IBody,
     email: string,
-    reaction: any
+    reaction: any,
+    id: Number
 ) {
     const result = await getEvents(email);
-    const key = `${email}-google`;
+    const key = `${email}-google-${id}`;
     await createVariable(key);
     if (result !== false) {
         if ((await readValue(key))['nextEvent'] !== result[0].value) {

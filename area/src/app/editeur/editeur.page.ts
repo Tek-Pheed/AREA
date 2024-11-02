@@ -337,10 +337,6 @@ export class EditeurPage implements OnInit {
         await toast.present();
     }
 
-    getFieldValue(elm: any, params: any) {
-        
-    }
-
     loadConfig() {
         let url: string = window.location.href;
         this.service.getUserConfigs(this.token).subscribe(
@@ -373,12 +369,19 @@ export class EditeurPage implements OnInit {
                                             fieldType: elm.type,
                                             fieldDescription: elm.description,
                                             fieldValue:
-                                            (elm.type == 'datetime') ? new Date(element.params.find(
-                                                (el: any) => el.name == elm.name
-                                            )?.value).toISOString() :
-                                            element.params.find(
-                                                (el: any) => el.name == elm.name
-                                            )?.value,
+                                                elm.type == 'datetime'
+                                                    ? new Date(
+                                                          element.params.find(
+                                                              (el: any) =>
+                                                                  el.name ==
+                                                                  elm.name
+                                                          )?.value
+                                                      ).toISOString()
+                                                    : element.params.find(
+                                                          (el: any) =>
+                                                              el.name ==
+                                                              elm.name
+                                                      )?.value,
                                         });
                                     }
                                 }
@@ -505,9 +508,12 @@ export class EditeurPage implements OnInit {
             reaction.fields[i].fieldValue =
                 element.fieldType == 'datetime'
                     ? this.date.toISOString()
+                    : element.fieldType === 'bool' &&
+                      reaction.fields[i].fieldValue === undefined
+                    ? 'true'
                     : reaction.fields[i].fieldValue == undefined
-                      ? ''
-                      : reaction.fields[i].fieldValue;
+                    ? ''
+                    : reaction.fields[i].fieldValue;
             i++;
         }
         component.setInput('fields', reaction.fields);
@@ -613,7 +619,12 @@ export class EditeurPage implements OnInit {
             });
         }
         for (const reaction of this.configuredReactions) {
-            if (reaction == undefined) continue;
+            if (reaction == undefined) {
+                alert(
+                    'Unable to save configuration, please select the necessary items.'
+                );
+                return;
+            }
             let params: IConfigContent[] = [];
             for (let element of reaction.fields) {
                 params.push({

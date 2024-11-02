@@ -24,7 +24,29 @@ oauthRouter.use('/unsplash', unsplashRouter);
 oauthRouter.use('/google', googleRouter);
 
 oauthRouter.get('/connections', auth, async (req: Request, res: Response) => {
-    //#swagger.tags = ['OAuth']
+    /*
+        #swagger.tags = ['OAuth']
+        #swagger.responses[500] = {
+            description: "Error when fetching connections",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
+        #swagger.responses[401] = {
+            description: "Error when bad credentials provided",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+    */
     res.header('Content-Type', 'application/json');
     const result = await getAllConnections(`${req.headers.authorization}`);
     if (result != null) {
@@ -40,7 +62,22 @@ oauthRouter.post(
     '/update/:email',
     auth,
     async (req: Request, res: Response) => {
-        //#swagger.tags = ['OAuth']
+        /*
+            #swagger.tags = ['OAuth']
+            #swagger.responses[200] = {
+                description: "Tokens updated",
+            }
+            #swagger.responses[401] = {
+                description: "Error when bad credentials provided",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_401"
+                        }
+                    }
+                }
+            }
+        */
         res.header('Content-Type', 'application/json');
         const email = req.params.email;
         const { twitch, spotify, github, discord, google, unsplash } = req.body;
@@ -114,7 +151,32 @@ oauthRouter.delete(
     '/logout/:service/:email',
     auth,
     async (req: Request, res: Response) => {
-        //#swagger.tags = ['OAuth']
+        /*
+            #swagger.tags = ['OAuth']
+            #swagger.responses[500] = {
+                description: "Error logging out of service",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_500"
+                        }
+                    }
+                }
+            }
+            #swagger.responses[200] = {
+                description: "Log out success",
+            }
+            #swagger.responses[401] = {
+                description: "Error when bad credentials provided",
+                content: {
+                    "application/json": {
+                        schema: {
+                            $ref: "#/components/schemas/error_401"
+                        }
+                    }
+                }
+            }
+        */
         res.header('Content-Type', 'application/json');
         const email = req.params.email;
         const service = req.params.service;
@@ -124,7 +186,7 @@ oauthRouter.delete(
             res.status(200).json(API(200, false, '', result));
         } else {
             res.status(500).json(
-                API(500, true, 'Error loggint out of ' + service, null)
+                API(500, true, 'Error logging out of ' + service, null)
             );
         }
     }

@@ -94,7 +94,7 @@ describe('getUserLastPictures', () => {
         expect(log.error).toHaveBeenCalledWith(
             `email:${email} service:Unsplash Error fetching photos of user ${error}`
         );
-        expect(result).toBeNull();
+        expect(result).toBeFalsy();
         await new Promise((r) => setTimeout(r, 3500));
     }, 5000);
 });

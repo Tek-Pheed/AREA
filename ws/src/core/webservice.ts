@@ -15,7 +15,8 @@ export async function coreWS() {
             action[0].title,
             config.body,
             config.email,
-            reaction
+            reaction,
+            Number(config.id)
         );
     }
 }

@@ -130,7 +130,6 @@ export async function sendChatMessage(
         }
     } catch (error) {
         log.error(`Error sending chat message : ${error}`);
-        log.info(tRefreshToken);
         await refreshTwitchToken(email, tRefreshToken);
         return false;
     }

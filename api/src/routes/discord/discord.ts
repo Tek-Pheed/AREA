@@ -80,6 +80,7 @@ discordRouter.get(
         failureRedirect: '/api/oauth/discord/login',
     }),
     async function (req: any, res: Response) {
+        //#swagger.tags   = ['Discord OAuth']
         const token: any = req.user;
         const email = req.query.state;
         await insertTokeninDb(
@@ -99,6 +100,5 @@ discordRouter.get(
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        //#swagger.tags   = ['Discord OAuth']
     }
 );

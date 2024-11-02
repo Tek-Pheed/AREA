@@ -64,7 +64,7 @@ unsplashRouter.get(
     '/login',
     passport.authenticate('unsplash', { scope: UNSPLASH_SCOPE }),
     function (req, res) {
-        //#swagger.tags   = ['Unsplash OAuth']
+        //#swagger.tags = ['Unsplash OAuth']
     }
 );
 
@@ -88,6 +88,7 @@ unsplashRouter.get(
         failureRedirect: '/api/oauth/unsplash/login',
     }),
     async (req: any, res: Response) => {
+        //#swagger.tags = ['Unsplash OAuth']
         const token: any = req.user;
         const email = req.query.state;
         await insertTokeninDb(
@@ -107,6 +108,5 @@ unsplashRouter.get(
         } else {
             res.redirect(`${process.env.WEB_HOST}/dashboard/profile`);
         }
-        //#swagger.tags   = ['Unsplash OAuth']
     }
 );

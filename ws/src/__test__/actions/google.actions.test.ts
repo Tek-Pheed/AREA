@@ -25,9 +25,9 @@ describe('whenThereIsAEventToday', () => {
     it('should create a variable and do nothing if no events are found', async () => {
         (getEvents as jest.Mock).mockResolvedValue(false);
 
-        await whenThereIsAEventToday(params, email, reaction);
+        await whenThereIsAEventToday(params, email, reaction, 0);
 
-        expect(createVariable).toHaveBeenCalledWith(`${email}-google`);
+        expect(createVariable).toHaveBeenCalledWith(`${email}-google-0`);
         expect(readValue).not.toHaveBeenCalled();
         expect(setItem).not.toHaveBeenCalled();
         expect(launchReaction).not.toHaveBeenCalled();
@@ -40,12 +40,12 @@ describe('whenThereIsAEventToday', () => {
         (getEvents as jest.Mock).mockResolvedValue(event);
         (readValue as jest.Mock).mockResolvedValue({ nextEvent: 'oldEvent' });
 
-        await whenThereIsAEventToday(params, email, reaction);
+        await whenThereIsAEventToday(params, email, reaction, 0);
 
-        expect(createVariable).toHaveBeenCalledWith(`${email}-google`);
-        expect(readValue).toHaveBeenCalledWith(`${email}-google`);
+        expect(createVariable).toHaveBeenCalledWith(`${email}-google-0`);
+        expect(readValue).toHaveBeenCalledWith(`${email}-google-0`);
         expect(setItem).toHaveBeenCalledWith(
-            `${email}-google`,
+            `${email}-google-0`,
             'nextEvent',
             'newEvent'
         );
@@ -63,10 +63,10 @@ describe('whenThereIsAEventToday', () => {
         (getEvents as jest.Mock).mockResolvedValue(event);
         (readValue as jest.Mock).mockResolvedValue({ nextEvent: 'sameEvent' });
 
-        await whenThereIsAEventToday(params, email, reaction);
+        await whenThereIsAEventToday(params, email, reaction, 0);
 
-        expect(createVariable).toHaveBeenCalledWith(`${email}-google`);
-        expect(readValue).toHaveBeenCalledWith(`${email}-google`);
+        expect(createVariable).toHaveBeenCalledWith(`${email}-google-0`);
+        expect(readValue).toHaveBeenCalledWith(`${email}-google-0`);
         expect(setItem).not.toHaveBeenCalled();
         expect(launchReaction).not.toHaveBeenCalled();
         await new Promise((r) => setTimeout(r, 3500));

@@ -11,22 +11,42 @@ import { getReactionAPI } from '../reactions/reactions.query';
 export const actionsRouter = Router();
 
 actionsRouter.get('/', auth, async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    const data = await getAllActions();
-    if (data !== null) {
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/actions"
-                        }
+    /*
+        #swagger.tags = ['Actions']
+        #swagger.responses[200] = {
+            description: "Response 200 ok",
+            content: {
+                "application/json": {
+                    schema:{
+                        $ref: "#/components/schemas/actions"
                     }
                 }
             }
-            #swagger.tags = ['Actions']
-        */
+        }
+        #swagger.responses[401] = {
+            description: "Error when authentication failed",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when api can't get data",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
+    */
+    res.header('Content-Type', 'application/json');
+    const data = await getAllActions();
+    if (data !== null) {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
@@ -36,22 +56,42 @@ actionsRouter.get('/', auth, async (req: Request, res: Response) => {
 });
 
 actionsRouter.get('/api', auth, async (req: Request, res: Response) => {
-    res.header('Content-Type', 'application/json');
-    const data = await getActionsAPI();
-    if (data !== null) {
-        /*
-            #swagger.responses[200] = {
-                description: "Some description...",
-                content: {
-                    "application/json": {
-                        schema:{
-                            $ref: "#/components/schemas/actions_api"
-                        }
+    /*
+        #swagger.tags = ['Actions']
+        #swagger.responses[200] = {
+            description: "Response 200 ok",
+            content: {
+                "application/json": {
+                    schema:{
+                        $ref: "#/components/schemas/actions_api"
                     }
                 }
             }
-            #swagger.tags = ['Actions']
-        */
+        }
+        #swagger.responses[401] = {
+            description: "Error when authentication failed",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when api can't get data",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
+    */
+    res.header('Content-Type', 'application/json');
+    const data = await getActionsAPI();
+    if (data !== null) {
         res.status(200).json(API(200, false, '', data));
     } else {
         res.status(500).json(
@@ -62,9 +102,9 @@ actionsRouter.get('/api', auth, async (req: Request, res: Response) => {
 
 actionsRouter.get('/:id', auth, async (req: Request, res: Response) => {
     /*
-    #swagger.tags = ['Actions']
-    #swagger.responses[200] = {
-                description: "Some description...",
+        #swagger.tags = ['Actions']
+        #swagger.responses[200] = {
+                description: "Response 200 ok",
                 content: {
                     "application/json": {
                         schema:{
@@ -73,6 +113,26 @@ actionsRouter.get('/:id', auth, async (req: Request, res: Response) => {
                     }
                 }
             }
+        #swagger.responses[401] = {
+            description: "Error when authentication failed",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_401"
+                    }
+                }
+            }
+        }
+        #swagger.responses[500] = {
+            description: "Error when api can't get data",
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/error_500"
+                    }
+                }
+            }
+        }
      */
     res.header('Content-Type', 'application/json');
     const data = await getSpecificAction(`${req.params.id}`);

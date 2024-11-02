@@ -54,23 +54,31 @@ describe('action.manager.ts', () => {
                     'Listen specific sound',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     spotifyActions.whenListenSpecificSound
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
-            it('should call liveStart for "Live starting"', async () => {
+            it('should call liveStart for "User is streaming"', async () => {
                 jest.spyOn(twitchActions, 'liveStart').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Live starting', params, email, reaction);
+                await launchAction(
+                    'User is streaming',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(twitchActions.liveStart).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -84,11 +92,12 @@ describe('action.manager.ts', () => {
                     'Specific game streamed',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     twitchActions.getCurrentGameOfStreamer
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -101,12 +110,14 @@ describe('action.manager.ts', () => {
                     'Specific live title',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(twitchActions.getSpecificTitle).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -120,29 +131,32 @@ describe('action.manager.ts', () => {
                     'Game is the most streamed',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     twitchActions.getMostViewedCategory
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
-            it('should call whenNewCommitByMe for "Commit Specific User"', async () => {
+            it('should call whenNewCommitByMe for "User commit on repository"', async () => {
                 jest.spyOn(
                     githubActions,
                     'whenNewCommitByMe'
                 ).mockImplementation(jest.fn());
                 await launchAction(
-                    'Commit Specific User',
+                    'User commit on repository',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(githubActions.whenNewCommitByMe).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -156,11 +170,12 @@ describe('action.manager.ts', () => {
                     'Github action failed',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     githubActions.whenLastWorkflowFailed
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -173,11 +188,12 @@ describe('action.manager.ts', () => {
                     'Github action success',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     githubActions.whenLastWorkflowSuccess
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -190,11 +206,12 @@ describe('action.manager.ts', () => {
                     'Github action in progress',
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 expect(
                     githubActions.whenLastWorkflowInProgress
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -203,11 +220,18 @@ describe('action.manager.ts', () => {
                     discordActions,
                     'whenJoinNewServer'
                 ).mockImplementation(jest.fn());
-                await launchAction('Join new server', params, email, reaction);
+                await launchAction(
+                    'Join new server',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(discordActions.whenJoinNewServer).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -217,11 +241,18 @@ describe('action.manager.ts', () => {
                     discordActions,
                     'whenUsernameChange'
                 ).mockImplementation(jest.fn());
-                await launchAction('Change username', params, email, reaction);
+                await launchAction(
+                    'Change username',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(discordActions.whenUsernameChange).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -231,10 +262,10 @@ describe('action.manager.ts', () => {
                     googleActions,
                     'whenThereIsAEventToday'
                 ).mockImplementation(jest.fn());
-                await launchAction('Event today', params, email, reaction);
+                await launchAction('Event today', params, email, reaction, 0);
                 expect(
                     googleActions.whenThereIsAEventToday
-                ).toHaveBeenCalledWith(params, email, reaction);
+                ).toHaveBeenCalledWith(params, email, reaction, 0);
                 await new Promise((r) => setTimeout(r, 500));
             });
 
@@ -242,11 +273,18 @@ describe('action.manager.ts', () => {
                 jest.spyOn(unsplashActions, 'whenPostPhoto').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Post a picture', params, email, reaction);
+                await launchAction(
+                    'Post a picture',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(unsplashActions.whenPostPhoto).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });
@@ -255,11 +293,18 @@ describe('action.manager.ts', () => {
                 jest.spyOn(spotifyActions, 'whenListen').mockImplementation(
                     jest.fn()
                 );
-                await launchAction('Listen to music', params, email, reaction);
+                await launchAction(
+                    'Listen to music',
+                    params,
+                    email,
+                    reaction,
+                    0
+                );
                 expect(spotifyActions.whenListen).toHaveBeenCalledWith(
                     params,
                     email,
-                    reaction
+                    reaction,
+                    0
                 );
                 await new Promise((r) => setTimeout(r, 500));
             });

@@ -73,6 +73,7 @@ img {
     width: 50px !important;
     height: 50px !important;
     object-fit: cover;
+    max-width: none;
 }
 
 @media (prefers-color-scheme: dark) {

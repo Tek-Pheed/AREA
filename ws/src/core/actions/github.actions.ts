@@ -13,7 +13,8 @@ import { launchReaction } from '../reaction.manager';
 export async function whenNewCommitByMe(
     params: IBody,
     email: string,
-    reaction: any
+    reaction: any,
+    id: Number
 ) {
     let data: any[] = [];
     for (const param of params.action) data.push(param.value);
@@ -23,7 +24,7 @@ export async function whenNewCommitByMe(
         data[2],
         email
     );
-    const key: string = `${email}-${data[0]}-${data[1]}`;
+    const key: string = `${email}-${data[0]}-${data[1]}-${id}`;
     await createVariable(key);
     const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
     if (result.length === 0) {
@@ -51,12 +52,13 @@ export async function whenNewCommitByMe(
 export async function whenLastWorkflowFailed(
     params: IBody,
     email: string,
-    reaction: any
+    reaction: any,
+    id: Number
 ) {
     let data: any[] = [];
     for (const param of params.action) data.push(param.value);
     const result = await getActionWhenKo(data[0], data[1], email);
-    const key: string = `${email}-${data[0]}-${data[1]}`;
+    const key: string = `${email}-${data[0]}-${data[1]}-${id}`;
     await createVariable(key);
     const storage = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
     if (result.length === 0) {
@@ -82,12 +84,13 @@ export async function whenLastWorkflowFailed(
 export async function whenLastWorkflowSuccess(
     params: IBody,
     email: string,
-    reaction: any
+    reaction: any,
+    id: Number
 ) {
     let data: any[] = [];
     for (const param of params.action) data.push(param.value);
     const result = await getActionWhenOk(data[0], data[1], email);
-    const key: string = `${email}-${data[0]}-${data[1]}`;
+    const key: string = `${email}-${data[0]}-${data[1]}-${id}`;
     const storage = await createVariable(key);
     if (result.length === 0) {
         log.warn(`email:${email} service:Github No workflow success`);
@@ -112,12 +115,13 @@ export async function whenLastWorkflowSuccess(
 export async function whenLastWorkflowInProgress(
     params: IBody,
     email: string,
-    reaction: any
+    reaction: any,
+    id: Number
 ) {
     let data: any[] = [];
     for (const param of params.action) data.push(param.value);
     const result = await getActionInProgress(data[0], data[1], email);
-    const key: string = `${email}-${data[0]}-${data[1]}`;
+    const key: string = `${email}-${data[0]}-${data[1]}-${id}`;
     const storage = await createVariable(key);
     if (result.length === 0) {
         log.warn(

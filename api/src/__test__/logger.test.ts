@@ -3,25 +3,29 @@ import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
 import log from '../utils/logger';
 import { getJsonAbout } from '../routes/about/about.query';
+import { generateToken } from '../routes/auth/auth';
 require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
     'foo'
 );
 
 const app = createTestServer();
 
-describe('actions', () => {
+describe('Logger', () => {
     beforeAll(async () => {
-        pool.getConnection((err, connection) => {
-            if (err) {
-                log.error(
-                    'Erreur de connexion à la base de données MySQL :',
-                    err
-                );
-                process.exit(1);
-            } else {
-                log.info('Connexion au pool MySQL réussie.');
-                connection.release();
-            }
+        return new Promise((resolve, reject) => {
+            pool.getConnection((err, connection) => {
+                if (err) {
+                    log.error(
+                        'Erreur de connexion à la base de données MySQL :',
+                        err
+                    );
+                    reject(err);
+                } else {
+                    log.info('Connexion au pool MySQL réussie.');
+                    connection.release();
+                    resolve(true);
+                }
+            });
         });
     });
 
@@ -29,6 +33,10 @@ describe('actions', () => {
         it('Get log file', async () => {
             await supertest(app)
                 .get('/api/logs/test@example.com/spotify')
+                .set(
+                    'Authorization',
+                    `Bearer ${generateToken('test@example.com')}`
+                )
                 .expect(500);
         });
     });

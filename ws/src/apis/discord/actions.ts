@@ -4,7 +4,10 @@ import { createVariable, readValue, setItem } from '../../utils/storage';
 
 const axios = require('axios');
 
-export async function getDiscordLastServerName(email: any): Promise<any> {
+export async function getDiscordLastServerName(
+    email: any,
+    id: Number
+): Promise<any> {
     const token = await getDiscordToken(email);
     try {
         const response = await axios.get(
@@ -16,14 +19,14 @@ export async function getDiscordLastServerName(email: any): Promise<any> {
             }
         );
 
-        await createVariable(`${email}-discord`);
+        await createVariable(`${email}-discord-${id}`);
 
         if (response.data) {
             const serverList: number[] = [];
             let newServer: any = null;
             const servers = response.data;
             const serverStorage: number[] = (
-                await readValue(`${email}-discord`)
+                await readValue(`${email}-discord-${id}`)
             )['allServers'];
 
             if (serverStorage) {
@@ -38,7 +41,7 @@ export async function getDiscordLastServerName(email: any): Promise<any> {
                     serverList.push(server.id);
                 }
             }
-            await setItem(`${email}-discord`, 'allServers', serverList);
+            await setItem(`${email}-discord-${id}`, 'allServers', serverList);
             if (newServer == null) {
                 return false;
             } else {

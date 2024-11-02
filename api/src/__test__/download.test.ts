@@ -1,14 +1,11 @@
 import supertest from 'supertest';
-import { db, pool } from '../database/db';
 import createTestServer from '../utils/serverTest';
+import { db, pool } from '../database/db';
 import log from '../utils/logger';
-require('../../node_modules/mysql2/node_modules/iconv-lite').encodingExists(
-    'foo'
-);
 
 const app = createTestServer();
 
-describe('Services', () => {
+describe('Download', () => {
     beforeAll(async () => {
         return new Promise((resolve, reject) => {
             pool.getConnection((err, connection) => {
@@ -27,19 +24,6 @@ describe('Services', () => {
         });
     });
 
-    describe('return 200', () => {
-        it('Get all services', async () => {
-            await supertest(app).get('/api/services/').expect(200);
-        });
-    });
-
-    describe('return 500', () => {
-        it('Get all services', async () => {
-            db.end();
-            await supertest(app).get('/api/services/').expect(500);
-        });
-    });
-
     afterAll(async () => {
         pool.end((err) => {
             if (err) {
@@ -51,6 +35,12 @@ describe('Services', () => {
                 log.info('Pool de connexions MySQL fermé avec succès.');
                 db.end();
             }
+        });
+    });
+
+    describe('return 404', () => {
+        it('Get log file', async () => {
+            await supertest(app).get('/api/download').expect(404);
         });
     });
 });

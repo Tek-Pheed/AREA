@@ -7,7 +7,6 @@ export async function getEvents(email: string) {
     const { gAccessToken, gRefreshToken } = await getGoogleToken(email);
     const date = new Date();
     const rfc339 = date.toISOString();
-    console.log(rfc339.split('T')[0]);
     try {
         const response = await axios.get(
             `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${rfc339}`,
