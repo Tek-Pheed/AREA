@@ -36,7 +36,6 @@ export async function refreshSpotifyToken(
                 },
             }
         );
-        //log.info(response);
         if (response.data.access_token) {
             await refreshAccessTokeninDB(
                 email,
@@ -105,8 +104,6 @@ export async function refreshTwitchToken(
     if (!TWITCH_CLIENT_ID || !TWITCH_CLIENT_SECRET) {
         throw new Error('Missing Twitch Client ID or Client Secret');
     }
-
-    log.info(refreshToken);
 
     if (refreshToken === null || refreshToken === undefined) {
         log.warn(`Twitch refresh token for ${email} is null`);

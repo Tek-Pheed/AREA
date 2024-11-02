@@ -41,7 +41,7 @@ describe('getEvents', () => {
         });
     });
 
-    /*it('should return event details if events are found for the current date', async () => {
+    it('should return event details if events are found for the current date', async () => {
         const mockDate = new Date();
         const rfc339 = mockDate.toISOString();
         const mockEvent = {
@@ -103,7 +103,7 @@ describe('getEvents', () => {
         );
         expect(result).toBe(false);
         await new Promise((r) => setTimeout(r, 3500));
-    }, 5000);*/
+    }, 5000);
 
     it('should return false and log error if an error occurs', async () => {
         const mockError = new Error('Network Error');

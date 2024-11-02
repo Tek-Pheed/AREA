@@ -44,7 +44,7 @@ export async function launchAction(
         case 'Game is the most streamed':
             await getMostViewedCategory(params, email, reaction, id);
             break;
-        case 'Commit Specific User':
+        case 'User commit on repository':
             await whenNewCommitByMe(params, email, reaction, id);
             break;
         case 'Github action failed':

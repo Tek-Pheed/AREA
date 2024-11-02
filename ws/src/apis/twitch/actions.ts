@@ -18,7 +18,6 @@ export async function getUserId(token: any, email: string): Promise<any> {
         }
     } catch (error) {
         log.error(`Error : ${error}`);
-        log.info(token);
         await refreshTwitchToken(email, token.tRefreshToken);
         return null;
     }
@@ -76,28 +75,6 @@ export async function getUserLogin(
     }
 }
 
-export async function getFollowedStreams(token: string): Promise<any> {
-    /*const id = await getUserId(token);
-
-    if (!id) {
-        return null;
-    }
-
-    const response = await axios.get(
-        `https://api.twitch.tv/helix/streams/followed?user_id=${id}`,
-        {
-            headers: {
-                'Client-Id': TWITCH_CLIENT_ID,
-                Authorization: `Bearer ${token}`,
-            },
-        }
-    );
-    if (!response.data) {
-        return null;
-    }
-    return response.data || null;*/
-}
-
 export async function getStreamerStatus(
     email: string,
     username: string
@@ -140,7 +117,10 @@ export async function getStreamerStatus(
     }
 }
 
-export async function getChannelInfo(email: string, username: string): Promise<any> {
+export async function getChannelInfo(
+    email: string,
+    username: string
+): Promise<any> {
     const token = await getTwitchToken(email);
     const broadcasterId = await getBroadcasterIdFromUsername(
         token,

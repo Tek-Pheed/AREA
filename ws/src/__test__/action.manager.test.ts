@@ -140,13 +140,13 @@ describe('action.manager.ts', () => {
                 await new Promise((r) => setTimeout(r, 500));
             });
 
-            it('should call whenNewCommitByMe for "Commit Specific User"', async () => {
+            it('should call whenNewCommitByMe for "User commit on repository"', async () => {
                 jest.spyOn(
                     githubActions,
                     'whenNewCommitByMe'
                 ).mockImplementation(jest.fn());
                 await launchAction(
-                    'Commit Specific User',
+                    'User commit on repository',
                     params,
                     email,
                     reaction,

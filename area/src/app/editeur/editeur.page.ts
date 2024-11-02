@@ -508,6 +508,9 @@ export class EditeurPage implements OnInit {
             reaction.fields[i].fieldValue =
                 element.fieldType == 'datetime'
                     ? this.date.toISOString()
+                    : element.fieldType === 'bool' &&
+                      reaction.fields[i].fieldValue === undefined
+                    ? 'true'
                     : reaction.fields[i].fieldValue == undefined
                     ? ''
                     : reaction.fields[i].fieldValue;

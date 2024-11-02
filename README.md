@@ -89,13 +89,16 @@ But we also use Xcode cloud to compile our iOS app as well as to release a beta.
 
 ## Unit testing
 
-This project includes unit tests for each service.
+This project includes unit tests for webservice and api.
 
 You'll find the commands you need to run them in the documentation.
 
 These unit tests generate coverage.
 
 We have set ourselves a target of 80% coverage for the entire project.
+
+- WS --> 80%
+- API --> 95.66%
 
 ## Bonus
 
