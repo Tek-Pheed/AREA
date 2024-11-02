@@ -1,3 +1,7 @@
+ion-content {
+    --overflow: hidden;
+}
+
 .content {
     height: 100%;
     margin-top: constant(safe-area-inset-top) !important;
@@ -282,7 +286,8 @@ code {
 }
 
 .bottom {
-    padding-bottom: 80px;
+    height: 1px;
+    margin-bottom: 125px;
 }
 
 

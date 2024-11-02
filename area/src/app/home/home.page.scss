@@ -194,6 +194,11 @@ h2 {
 .topBar {
     display: flex;
     align-items: center;
+
+    h1 {
+        margin-top: constant(safe-area-inset-top) !important;
+        margin-top: env(safe-area-inset-top) !important;
+    }
 }
 
 .androidBtn {
