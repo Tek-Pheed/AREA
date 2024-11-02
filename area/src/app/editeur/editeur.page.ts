@@ -612,12 +612,6 @@ export class EditeurPage implements OnInit {
             body: { action: [], reaction: [] },
         };
         for (const element of this.configuredAction.fields) {
-            if (String(element.fieldValue).length == 0) {
-                alert(
-                    'Unable to save configuration, please fill all inputs in action.'
-                );
-                return;
-            }
             conf.body.action.push({
                 name: element.fieldID,
                 value: String(element.fieldValue),
@@ -633,26 +627,12 @@ export class EditeurPage implements OnInit {
             }
             let params: IConfigContent[] = [];
             for (let element of reaction.fields) {
-                if (String(element.fieldValue).length == 0) {
-                    alert(
-                        'Unable to save configuration, please fill all inputs in reaction.'
-                    );
-                    return;
-                }
                 params.push({
                     name: element.fieldID,
                     value: String(element.fieldValue),
                 });
             }
             if (this.configuredReactions.length > 1) {
-                for (let element of reaction.fields) {
-                    if (String(element.fieldValue).length == 0) {
-                        alert(
-                            'Unable to save configuration, please fill all inputs in reaction.'
-                        );
-                        return;
-                    }
-                }
                 conf.body.reaction.push({
                     reaction: reaction?.raw.title,
                     params: params,
