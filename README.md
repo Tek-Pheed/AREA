@@ -117,6 +117,7 @@ We have realized several bonuses during this project. You will find the list bel
 - When no pair of reaction actions is created, we automatically propose reaction actions.
 - We have also integrated the possibility of modifying actions / reactions.
 - We've made it possible for users to configure each field of their action and reactions as they see fit.
+- Users can change their username, profile picture (gif, png, jpeg, etc.) and password.
 
 ## Author
 
