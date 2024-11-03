@@ -1,4 +1,10 @@
-# {E} - AREA
+# Tek'Pheed - Nexus
+[![Epitech - upload code](https://github.com/Tek-Pheed/AREA/actions/workflows/area-mirror.yml/badge.svg)](https://github.com/Tek-Pheed/AREA/actions/workflows/area-mirror.yml)
+[![API - Pipeline](https://github.com/Tek-Pheed/AREA/actions/workflows/area-api.yml/badge.svg)](https://github.com/Tek-Pheed/AREA/actions/workflows/area-api.yml)
+[![Android - Pipeline](https://github.com/Tek-Pheed/AREA/actions/workflows/area-android.yml/badge.svg)](https://github.com/Tek-Pheed/AREA/actions/workflows/area-android.yml)
+[![Docker - testing docker compose](https://github.com/Tek-Pheed/AREA/actions/workflows/area-docker.yml/badge.svg)](https://github.com/Tek-Pheed/AREA/actions/workflows/area-docker.yml)
+[![Web - Pipeline](https://github.com/Tek-Pheed/AREA/actions/workflows/area-web.yml/badge.svg)](https://github.com/Tek-Pheed/AREA/actions/workflows/area-web.yml)
+[![WebService - Pipeline](https://github.com/Tek-Pheed/AREA/actions/workflows/area-ws.yml/badge.svg?branch=master)](https://github.com/Tek-Pheed/AREA/actions/workflows/area-ws.yml)
 
 This project consists in creating a website and a mobile application in order to combine pairs of actions and reactions on different APIs such as Spotify, Twitch, etc...
 
