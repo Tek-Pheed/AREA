@@ -113,7 +113,7 @@ We have realized several bonuses during this project. You will find the list bel
 - Several reactions to one action.
 - An ios application.
 - A beta of our iOS app each time a new version is released.
-- Micro service to execute actions and reactions so that there are no service interruptions if our api or si crashes or slows down.
+- Micro service to execute actions and reactions so that there are no service interruptions if our api crashes or slows down.
 - Deployment of our api on a server so we can use the mobile app on our phones and not just in a simulator.
 - Execution logs of our actions and reactions, so that the user can see if there are any errors.
 - Micro service and Web site deployed on a server to find out if our solution works on machines other than ours and to offer our solution to everyone.
