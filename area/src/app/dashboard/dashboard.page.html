@@ -27,9 +27,9 @@
                 (ionInput)="handleInput($event)"></ion-searchbar>
         </div>
         <div class="buttonContent">
-            <a (click)="navigateToIntegrations()" class="lighButton">Create New</a>
-            <a (click)="setOpen(true)"
-                class="lighButton">Show Logs</a>
+            <button (click)="navigateToIntegrations()" class="lighButton">Create New</button>
+            <button (click)="setOpen(true)"
+                class="lighButton">Show Logs</button>
         </div>
         <h1 *ngIf="this.datas.length == 0">Or select an example:</h1>
         <div class="integrationList">

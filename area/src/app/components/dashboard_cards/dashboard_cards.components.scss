@@ -40,11 +40,10 @@
     position: absolute;
     left: 0px;
     top: 0px;
-    height: 100%;
-    width: 100%;
     margin: 0px;
     padding: 20px;
     padding-top: 20px;
+    background-color: transparent;
 }
 
 .card-description {
@@ -88,6 +87,7 @@
 .deleteBin {
     width: 28px;
     height: 28px;
+    background-color: transparent;
 }
 
 .small-circle-image {

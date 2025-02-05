@@ -1,13 +1,14 @@
 <div class="card-container" [ngStyle]="{'background-color': this.getServiceColor()}">
-    <h2 class="card-title" (click)="this.cardClicked()">When {{ title }}</h2>
+    <button class="card-title" (click)="this.cardClicked()">When {{ title }}</button>
     <div class="bottom-right-circles" (click)="this.cardClicked()">
-        <img class="small-circle-image" [src]="image_1" alt="first service logo" (click)="this.cardClicked()" />
-        <img class="small-circle-image" [src]="image_2" alt="second service logo" (click)="this.cardClicked()" />
+        <img class="small-circle-image" [src]="image_1" alt="{{service}} logo" (click)="this.cardClicked()" />
+        <img class="small-circle-image" [src]="image_2" alt="reaction service logo" (click)="this.cardClicked()" />
     </div>
     <div class="bottom-left-circles">
-        <img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/recycle-bin-icon.png"
-            *ngIf="!this.example" class="deleteBin" (click)="deleteCard()" alt="delete icon"
-            title="Delete this configuration">
+        <button *ngIf="!this.example" class="deleteBin" (click)="deleteCard()">
+            <img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/recycle-bin-icon.png"
+                alt="trash icon" title="Delete this configuration">
+        </button>
         <img *ngIf="this.example"
             src="https://uxwing.com/wp-content/themes/uxwing/download/arts-graphic-shapes/innovation-icon.png"
             class="deleteBin" alt="example icon" title="Configuration preset">

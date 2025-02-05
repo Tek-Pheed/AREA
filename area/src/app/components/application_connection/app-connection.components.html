@@ -1,8 +1,9 @@
 <div class="container {{app_name.toLowerCase()}}" (click)="OAuthLogin(app_name, email, connected)"
     title="Click to {{connected ? 'connect' : 'disconnect'}} {{app_name}}">
-    <img src="assets/icon/{{app_name.toLowerCase()}}.svg" alt="profile" class="profile-img" />
+    <img src="assets/icon/{{app_name.toLowerCase()}}.svg" alt="{{app_name}} logo" class="profile-img" />
     <p class="title">{{ app_name }}</p>
-    <button class="connect-btn {{connected ? 'red' : 'green'}}">
+    <button class="connect-btn {{connected ? 'red' : 'green'}}"
+        title="{{connected ? 'Disconnect from' : 'Connect to'}} {{app_name}}">
         {{ connected ? "Disconnect": "Connect"}}
     </button>
 </div>
