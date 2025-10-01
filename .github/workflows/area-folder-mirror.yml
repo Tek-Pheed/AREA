@@ -1,0 +1,20 @@
+name: AREA - Mirror folder
+
+on:
+    push:
+        branches:
+            - dev
+
+jobs:
+    mirror:
+        runs-on: ubuntu-latest
+        name: mirror
+        steps:
+            - uses: Linkheroes/git-mirror-repo@0.4.5
+              with:
+                  source_repo: 'git@github.com:Tek-Pheed/AREA.git'
+                  source_branch: 'dev'
+                  destination_repo: 'git@github.com:Linkheroes/test-mirror.git'
+                  destination_branch: 'main'
+                  destination_folder: 'area'
+                  ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
